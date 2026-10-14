@@ -1,36 +1,31 @@
-﻿backend:
+backend:
   name: github
   repo: danorov2915/catalogo-viajes
   branch: main
 
-media_folder: 
-public_folder: 
+media_folder: "images/flyers"
+public_folder: "images/flyers"
 
-locale: es
-
-media_library:
-  name: default
-  config:
-    max_file_size: 5120000
+locale: "es"
 
 collections:
-  - name: viajes
-    label: Viajes y Flyers
-    folder: content/viajes
-    create: true
-    slug: {{slug}}
-    fields:
-      - { label: Título del Viaje, name: titulo, widget: string, hint: Ej: Tour Chipilo Cuatrimoto }
-      - { 
-          label: Categoría, 
-          name: categoria, 
-          widget: select, 
-          options: [Playa, Aventura, Senderismo, Arqueologia, Coloniales, Pueblos Magicos, Mixtos],
-          default: Aventura
-        }
-      - { label: Precio o Tarifa, name: precio, widget: string, hint: Ej: ,800 MXN o Consultar tarifa }
-      - { label: Flyer (Imagen), name: flyer, widget: image }
-      - { label: Destino / Lugar, name: destino, widget: string, hint: Ej: Chipilo, Puebla, Cancún }
-      - { label: Activo / Visible en catálogo, name: activo, widget: boolean, default: true }
-      - { label: Destacado (Promoción especial), name: destacado, widget: boolean, default: false, required: false }
-      - { label: Descripción o Notas rápidas, name: descripcion, widget: text, required: false, hint: Notas breves o fechas }
+  - name: "catalogo"
+    label: "Catálogo de Viajes"
+    files:
+      - name: "viajes"
+        label: "Lista de Viajes"
+        file: "viajes.json"
+        fields:
+          - label: "Viajes"
+            name: "viajes"
+            widget: "list"
+            fields:
+              - { label: "ID único", name: "id", widget: "string" }
+              - { label: "Título del Viaje", name: "titulo", widget: "string" }
+              - { label: "Categoría", name: "categoria", widget: "select", options: ["Playa", "Aventura", "Senderismo", "Arqueologia", "Coloniales", "Pueblos Magicos", "Mixtos"] }
+              - { label: "Precio o Tarifa", name: "precio", widget: "string" }
+              - { label: "Destino", name: "destino", widget: "string" }
+              - { label: "Flyer (Imagen)", name: "flyer", widget: "string" }
+              - { label: "Activo / Visible", name: "activo", widget: "boolean", default: true }
+              - { label: "Destacado", name: "destacado", widget: "boolean", default: false, required: false }
+              - { label: "Descripción", name: "descripcion", widget: "text", required: false }
