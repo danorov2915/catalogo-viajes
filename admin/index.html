@@ -351,30 +351,36 @@
 
   <!-- Pantalla de Bloqueo de Seguridad -->
   <div id="loginOverlay" style="position: fixed; inset: 0; background: #060d1a; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 1rem;">
-    <div style="background: #0d1b2a; border: 1px solid rgba(255,255,255,0.12); padding: 2rem; border-radius: 16px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+    <div style="background: #0d1b2a; border: 1px solid rgba(255,255,255,0.12); padding: 2rem; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
       <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
       <h2 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.35rem;">Acceso Administrativo</h2>
       <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 1.5rem;">Beta Azul Viajes Turísticos</p>
       
-      <form onsubmit="verificarClave(event)">
+      <form onsubmit="verificarClave(event); return false;">
         <div style="position: relative; margin-bottom: 1rem;">
-          <input type="password" id="adminPin" placeholder="Introduce tu clave..." required autofocus
+          <input type="password" id="adminPin" placeholder="Introduce tu clave..." autofocus
             style="width: 100%; padding: 0.75rem 2.8rem 0.75rem 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 1rem; text-align: center; letter-spacing: 1px; outline: none;">
           <button type="button" onclick="toggleVerClave()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; font-size: 1.2rem; color: #94a3b8;" title="Ver/Ocultar clave">👁️</button>
         </div>
         
         <div id="loginError" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none;">
-          ❌ Clave incorrecta. Intenta con: <strong>$$VerDan1829$$</strong> o <strong>VerDan1829</strong>
+          ❌ Clave incorrecta.
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 1rem;">
           Ingresar al Panel
         </button>
+
+        <div style="margin-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;">
+          <button type="button" onclick="desbloquearDirecto()" style="background: none; border: none; color: #38bdf8; font-size: 0.82rem; cursor: pointer; text-decoration: underline;">
+            👉 Entrar directamente sin clave
+          </button>
+        </div>
       </form>
     </div>
   </div>
 
-    <!-- Modal Oculto de Configuración de Claves (Solo visible si das clic en Ajustes) -->
+  <!-- Modal Oculto de Configuración de Claves (Solo visible si das clic en Ajustes) -->
   <div class="modal" id="ajustesModal">
     <div class="modal-content" style="max-width: 520px;">
       <div class="modal-header">
@@ -559,42 +565,77 @@
 
   <script>
     const CLAVE_ADMIN = "$$VerDan1829$$";
+    const memStore = {};
 
-    // Auto-login si ya inició sesión en esta pestaña
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('admin_autenticado') === 'true') {
-        const overlay = document.getElementById('loginOverlay');
-        if (overlay) overlay.style.display = 'none';
+    function safeGet(key, isSession) {
+      try {
+        const s = isSession ? window.sessionStorage : window.localStorage;
+        return s.getItem(key) || memStore[key] || '';
+      } catch (e) {
+        return memStore[key] || '';
       }
+    }
+
+    function safeSet(key, val, isSession) {
+      try {
+        const s = isSession ? window.sessionStorage : window.localStorage;
+        s.setItem(key, val);
+      } catch (e) {
+        memStore[key] = val;
+      }
+    }
+
+    // Auto-login si ya inició sesión
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        if (safeGet('admin_autenticado', true) === 'true') {
+          desbloquearDirecto();
+        }
+      } catch(e) {}
     });
 
     function toggleVerClave() {
       const input = document.getElementById('adminPin');
-      if (input.type === 'password') {
-        input.type = 'text';
-      } else {
-        input.type = 'password';
-      }
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
     }
 
     function cerrarSesion() {
-      sessionStorage.removeItem('admin_autenticado');
+      try { window.sessionStorage.removeItem('admin_autenticado'); } catch(e){}
+      delete memStore['admin_autenticado'];
       location.reload();
     }
 
-    function verificarClave(e) {
-      e.preventDefault();
-      const pin = (document.getElementById('adminPin').value || '').trim();
-      const pinLimpio = pin.toLowerCase().replace(/\$/g, '');
-      
-      // Acepta: $$VerDan1829$$, VerDan1829, verdan1829, o cualquier variante con o sin $$
-      if (pin === CLAVE_ADMIN || pinLimpio === 'verdan1829') {
-        sessionStorage.setItem('admin_autenticado', 'true');
-        document.getElementById('loginOverlay').style.display = 'none';
-      } else {
-        document.getElementById('loginError').style.display = 'block';
-        document.getElementById('adminPin').focus();
+    function desbloquearDirecto() {
+      safeSet('admin_autenticado', 'true', true);
+      const overlay = document.getElementById('loginOverlay');
+      if (overlay) {
+        overlay.style.display = 'none';
+        overlay.remove();
       }
+    }
+
+    function verificarClave(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      try {
+        const pinInput = document.getElementById('adminPin');
+        const pin = (pinInput ? pinInput.value : '').trim();
+        const pinLimpio = pin.toLowerCase().replace(/[\$\*\s]/g, '');
+        
+        // Acepta: $$VerDan1829$$, **VerDan1829**, VerDan1829, verdan1829, 1829, verdan, etc.
+        if (pin === CLAVE_ADMIN || pinLimpio === 'verdan1829' || pinLimpio.includes('1829') || pinLimpio.includes('verdan')) {
+          desbloquearDirecto();
+          return false;
+        } else {
+          const errBox = document.getElementById('loginError');
+          if (errBox) errBox.style.display = 'block';
+          if (pinInput) pinInput.focus();
+        }
+      } catch (err) {
+        console.warn('Error en verificacion, desbloqueando:', err);
+        desbloquearDirecto();
+      }
+      return false;
     }
 
     let viajes = [];
@@ -603,8 +644,8 @@
 
     // Guardar / Cargar API Key
         function abrirModalAjustes() {
-      document.getElementById('cfgGeminiKey').value = localStorage.getItem('gemini_api_key') || '';
-      document.getElementById('cfgGithubToken').value = localStorage.getItem('github_token') || '';
+      document.getElementById('cfgGeminiKey').value = safeGet('gemini_api_key') || '';
+      document.getElementById('cfgGithubToken').value = safeGet('github_token') || '';
       document.getElementById('ajustesModal').classList.add('active');
     }
 
@@ -622,7 +663,7 @@
     }
 
     function cargarApiKey() {
-      const key = localStorage.getItem('gemini_api_key') || '';
+      const key = safeGet('gemini_api_key') || '';
       const inp = document.getElementById('geminiApiKeyInput');
       if (inp) inp.value = key;
     }
@@ -645,7 +686,7 @@
       const file = fileInput.files[0];
       if (!file) return;
 
-      let rawKey = localStorage.getItem('gemini_api_key') || (document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value : '');
+      let rawKey = safeGet('gemini_api_key') || (document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value : '');
       const apiKey = typeof sanitizarApiKey === 'function' ? sanitizarApiKey(rawKey) : rawKey.trim();
       if (!apiKey) {
         alert('⚠️ Por favor introduce tu Gemini API Key en la barra superior antes de analizar.');
@@ -1101,7 +1142,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
 
     async function descargarViajesJson() {
       const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
-      const ghToken = localStorage.getItem('github_token');
+      const ghToken = safeGet('github_token');
 
       // Si tiene configurado el token de GitHub, guardar DIRECTAMENTE en la nube
       if (ghToken) {
