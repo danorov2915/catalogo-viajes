@@ -1,192 +1,178 @@
-﻿// Configuración Oficial de Beta Azul Viajes Turísticos
+// Configuracion Oficial de Beta Azul Viajes Turisticos
 const CONFIG = {
-  // WhatsApp directo de Verónica Hernández Echeverría
-  whatsappNumber: 522444470237,
-  agencyName: Beta Azul Viajes Turísticos,
-  responsibleName: Verónica Hernández Echeverría,
-  currencySymbol: MXN
+  whatsappNumber: "522444470237",
+  agencyName: "Beta Azul Viajes Turisticos",
+  responsibleName: "Veronica Hernandez Echeverria"
 };
 
-// Estado global
 let todosLosViajes = [];
-let categoriaActual = Todos;
-let busquedaActual = ";
+let categoriaActual = "Todos";
+let busquedaActual = "";
 
-// Cargar viajes dinámicamente desde viajes.json
 async function cargarViajes() {
- const countEl = document.getElementById('resultsCount');
- if (countEl) countEl.innerText = Cargando catálogo...;
+  const countEl = document.getElementById("resultsCount");
+  if (countEl) countEl.innerText = "Cargando catalogo...";
 
- try {
- // Intentar leer viajes.json relativo con cache buster
- const res = await fetch('viajes.json?v=' + Date.now());
- if (!res.ok) throw new Error(Respuesta no OK de viajes.json);
- const data = await res.json();
- todosLosViajes = data.viajes || [];
- renderizarViajes();
- } catch (err) {
- console.warn(Fallo lectura local de viajes.json, intentando fallback de GitHub Raw:, err);
- try {
- const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
- if (!resRaw.ok) throw new Error(Fallback falló);
- const dataRaw = await resRaw.json();
- todosLosViajes = dataRaw.viajes || [];
- renderizarViajes();
- } catch (err2) {
- console.error(Error al cargar viajes:, err2);
- document.getElementById('flyersGrid').innerHTML = 
- <div class=empty-state>
- <h3>Hubo un problema al cargar los flyers</h3>
- <p>Verifica tu conexión o que viajes.json esté publicado en tu repositorio.</p>
- </div>
- ;
- if (countEl) countEl.innerText = Error al cargar;
- }
- }
+  try {
+    const res = await fetch("viajes.json?v=" + Date.now());
+    if (!res.ok) throw new Error("No cargo viajes.json local");
+    const data = await res.json();
+    todosLosViajes = data.viajes || [];
+    renderizarViajes();
+  } catch (err) {
+    console.warn("Fallo local, usando respaldo remoto:", err);
+    try {
+      const resRaw = await fetch("https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json");
+      if (!resRaw.ok) throw new Error("Fallback remoto no respondio");
+      const dataRaw = await resRaw.json();
+      todosLosViajes = dataRaw.viajes || [];
+      renderizarViajes();
+    } catch (err2) {
+      console.error("Error definitivo al cargar:", err2);
+      const grid = document.getElementById("flyersGrid");
+      if (grid) {
+        grid.innerHTML = '<div class="empty-state"><h3>Hubo un problema al cargar los flyers</h3><p>Intenta recargar la pagina.</p></div>';
+      }
+      if (countEl) countEl.innerText = "Error al cargar";
+    }
+  }
 }
 
-// Filtrar viajes
 function obtenerViajesFiltrados() {
- return todosLosViajes.filter(viaje => {
- if (!viaje.activo) return false;
+  return todosLosViajes.filter(function(viaje) {
+    if (!viaje.activo) return false;
 
- // Filtro por categoría
- const cumpleCategoria = categoriaActual === Todos || 
- viaje.categoria.toLowerCase() === categoriaActual.toLowerCase();
+    const cumpleCat = categoriaActual === "Todos" ||
+      (viaje.categoria && viaje.categoria.toLowerCase() === categoriaActual.toLowerCase());
 
- // Filtro por búsqueda de texto
- const termino = busquedaActual.toLowerCase().trim();
- const cumpleBusqueda = !termino || 
- (viaje.titulo && viaje.titulo.toLowerCase().includes(termino)) ||
- (viaje.destino && viaje.destino.toLowerCase().includes(termino)) ||
- (viaje.categoria && viaje.categoria.toLowerCase().includes(termino));
+    const term = busquedaActual.toLowerCase().trim();
+    const cumpleTerm = !term ||
+      (viaje.titulo && viaje.titulo.toLowerCase().includes(term)) ||
+      (viaje.destino && viaje.destino.toLowerCase().includes(term)) ||
+      (viaje.categoria && viaje.categoria.toLowerCase().includes(term));
 
- return cumpleCategoria && cumpleBusqueda;
- });
+    return cumpleCat && cumpleTerm;
+  });
 }
 
-// Renderizar tarjetas de flyers
 function renderizarViajes() {
- const grid = document.getElementById('flyersGrid');
- const countEl = document.getElementById('resultsCount');
- const filtrados = obtenerViajesFiltrados();
+  const grid = document.getElementById("flyersGrid");
+  const countEl = document.getElementById("resultsCount");
+  const filtrados = obtenerViajesFiltrados();
 
- if (countEl) {
- countEl.innerText = Mostrando ;
- }
+  if (countEl) {
+    countEl.innerText = "Mostrando " + filtrados.length + (filtrados.length === 1 ? " viaje" : " viajes");
+  }
 
- if (filtrados.length === 0) {
- grid.innerHTML = 
- <div class=empty-state>
- <h3>No encontramos viajes con estos filtros</h3>
- <p>Intenta seleccionar otra categoría o cambiar tu búsqueda.</p>
- </div>
- ;
- return;
- }
+  if (!grid) return;
 
- grid.innerHTML = filtrados.map(viaje => {
- // Mensaje directo y personalizado para WhatsApp
- const msg = encodeURIComponent(¡Hola Verónica! Me interesa información sobre el viaje:  de Beta Azul Viajes Turísticos que vi en su catálogo web.);
- const waLink = https://wa.me/?text=;
+  if (filtrados.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><h3>No encontramos viajes con estos filtros</h3><p>Intenta con otra categoria o termino.</p></div>';
+    return;
+  }
 
- return 
- <article class=flyer-card>
- <div class=flyer-img-wrap onclick=abrirLightbox('')>
- <img src= alt=Flyer  class=flyer-img loading=lazy>
- <span class=badge-category></span>
- 
- <div class=flyer-zoom-hint>
- <span>🔍 Ver Flyer Completo</span>
- </div>
- </div>
+  let html = "";
+  for (let i = 0; i < filtrados.length; i++) {
+    const v = filtrados[i];
+    const msg = encodeURIComponent("¡Hola Veronica! Me interesa informacion sobre el viaje: \"" + v.titulo + "\" de Beta Azul Viajes Turisticos que vi en su catalogo web.");
+    const waLink = "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + msg;
 
- <div class=flyer-content>
- <div>
- <h3 class=flyer-title></h3>
- <p class=flyer-location>📍 </p>
- </div>
+    html += '<article class="flyer-card">';
+    html += '  <div class="flyer-img-wrap" onclick="abrirLightbox(\'' + v.id + '\')">';
+    html += '    <img src="' + v.flyer + '" alt="Flyer ' + v.titulo + '" class="flyer-img" loading="lazy">';
+    html += '    <span class="badge-category">' + (v.categoria || "Viaje") + '</span>';
+    if (v.destacado) {
+      html += '    <span class="badge-featured">★ Destacado</span>';
+    }
+    html += '    <div class="flyer-zoom-hint"><span>🔍 Ver Flyer Completo</span></div>';
+    html += '  </div>';
+    html += '  <div class="flyer-content">';
+    html += '    <div>';
+    html += '      <h3 class="flyer-title">' + v.titulo + '</h3>';
+    html += '      <p class="flyer-location">📍 ' + (v.destino || "Destino Turistico") + '</p>';
+    html += '    </div>';
+    html += '    <div>';
+    html += '      <div class="flyer-price-row">';
+    html += '        <span class="price-label">Tarifa</span>';
+    html += '        <span class="price-value">' + (v.precio || "Consultar tarifa") + '</span>';
+    html += '      </div>';
+    html += '      <div class="card-actions">';
+    html += '        <button class="btn-details" onclick="abrirLightbox(\'' + v.id + '\')">🔍 Ver Flyer</button>';
+    html += '        <a href="' + waLink + '" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">💬 WhatsApp</a>';
+    html += '      </div>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '</article>';
+  }
 
- <div>
- <div class=flyer-price-row>
- <span class=price-label>Tarifa</span>
- <span class=price-value></span>
- </div>
-
- <div class=card-actions>
- <button class=btn-details onclick=abrirLightbox('')>
- 🔍 Ver Flyer
- </button>
- <a href= target=_blank rel=noopener noreferrer class=btn-whatsapp>
- 💬 WhatsApp
- </a>
- </div>
- </div>
- </div>
- </article>
- ;
- }).join('');
+  grid.innerHTML = html;
 }
 
-// Abrir Modal Lightbox con Zoom
 function abrirLightbox(viajeId) {
- const viaje = todosLosViajes.find(v => v.id === viajeId);
- if (!viaje) return;
+  let viaje = null;
+  for (let i = 0; i < todosLosViajes.length; i++) {
+    if (todosLosViajes[i].id === viajeId) {
+      viaje = todosLosViajes[i];
+      break;
+    }
+  }
+  if (!viaje) return;
 
- const modal = document.getElementById('lightboxModal');
- const imgEl = document.getElementById('lightboxImg');
- const titleEl = document.getElementById('lightboxTitle');
- const catEl = document.getElementById('lightboxCategory');
- const priceEl = document.getElementById('lightboxPrice');
- const descEl = document.getElementById('lightboxDesc');
- const waBtn = document.getElementById('lightboxWaBtn');
+  const modal = document.getElementById("lightboxModal");
+  const imgEl = document.getElementById("lightboxImg");
+  const titleEl = document.getElementById("lightboxTitle");
+  const catEl = document.getElementById("lightboxCategory");
+  const priceEl = document.getElementById("lightboxPrice");
+  const descEl = document.getElementById("lightboxDesc");
+  const waBtn = document.getElementById("lightboxWaBtn");
 
- imgEl.src = viaje.flyer;
- titleEl.innerText = viaje.titulo;
- catEl.innerText = viaje.categoria;
- priceEl.innerText = viaje.precio;
- descEl.innerText = viaje.descripcion || Consulta detalles, fechas e inclusiones completas directamente con Verónica en Beta Azul Viajes Turísticos.;
+  if (imgEl) imgEl.src = viaje.flyer;
+  if (titleEl) titleEl.innerText = viaje.titulo;
+  if (catEl) catEl.innerText = viaje.categoria;
+  if (priceEl) priceEl.innerText = viaje.precio || "Consultar tarifa";
+  if (descEl) descEl.innerText = viaje.descripcion || "Consulta detalles, fechas e itinerario directamente con Veronica en Beta Azul Viajes Turisticos.";
 
- const msg = encodeURIComponent(¡Hola Verónica! Me interesa información detallada del viaje:  de Beta Azul Viajes Turísticos que vi en su catálogo.);
- waBtn.href = https://wa.me/?text=;
+  if (waBtn) {
+    const msg = encodeURIComponent("¡Hola Veronica! Me interesa informacion detallada del viaje: \"" + viaje.titulo + "\" de Beta Azul Viajes Turisticos que vi en su catalogo.");
+    waBtn.href = "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + msg;
+  }
 
- modal.classList.add('active');
- document.body.style.overflow = 'hidden';
+  if (modal) {
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
 }
 
-// Cerrar Modal Lightbox
 function cerrarLightbox() {
- const modal = document.getElementById('lightboxModal');
- modal.classList.remove('active');
- document.body.style.overflow = '';
+  const modal = document.getElementById("lightboxModal");
+  if (modal) {
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
 }
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
- cargarViajes();
+document.addEventListener("DOMContentLoaded", function() {
+  cargarViajes();
 
- // Filtros de categoría
- const filterBtns = document.querySelectorAll('.filter-btn');
- filterBtns.forEach(btn => {
- btn.addEventListener('click', () => {
- filterBtns.forEach(b => b.classList.remove('active'));
- btn.classList.add('active');
- categoriaActual = btn.getAttribute('data-category');
- renderizarViajes();
- });
- });
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      filterBtns.forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      categoriaActual = btn.getAttribute("data-category");
+      renderizarViajes();
+    });
+  });
 
- // Buscador en tiempo real
- const searchInput = document.getElementById('searchInput');
- if (searchInput) {
- searchInput.addEventListener('input', (e) => {
- busquedaActual = e.target.value;
- renderizarViajes();
- });
- }
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
+    searchInput.addEventListener("input", function(e) {
+      busquedaActual = e.target.value;
+      renderizarViajes();
+    });
+  }
 
- // Cerrar lightbox con tecla ESC
- document.addEventListener('keydown', (e) => {
- if (e.key === 'Escape') cerrarLightbox();
- });
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") cerrarLightbox();
+  });
 });
