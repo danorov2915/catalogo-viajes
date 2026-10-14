@@ -332,6 +332,7 @@
       </div>
       <div class="header-actions">
         <a href="../" class="btn btn-secondary">&larr; Ver Catalogo Web</a>
+        <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesion</button>
         <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
         <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar y Descargar viajes.json</button>
       </div>
@@ -428,6 +429,11 @@
 // Seguridad: Clave de acceso administrativa (Puedes cambiarla cuando quieras)
 const CLAVE_ADMIN = "$$VerDan1829$$";
 
+function cerrarSesion() {
+  sessionStorage.removeItem('admin_autenticado');
+  location.reload();
+}
+
 function verificarClave(e) {
   e.preventDefault();
   const pin = document.getElementById('adminPin').value.trim();
@@ -441,13 +447,7 @@ function verificarClave(e) {
   }
 }
 
-// Si ya ingresó la clave en esta sesión, no se la vuelve a pedir
-if (sessionStorage.getItem('admin_autenticado') === 'true') {
-  document.addEventListener('DOMContentLoaded', function() {
-    const overlay = document.getElementById('loginOverlay');
-    if (overlay) overlay.style.display = 'none';
-  });
-}
+
 
 let viajes = [];
 let cambiosPendientes = false;
