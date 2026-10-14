@@ -1157,7 +1157,6 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       }
 
       // Fallback a disco duro si no hay token de GitHub configurado
-      const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
 
       // 1. Si el navegador soporta File System Access (Chrome/Edge en https o localhost)
       if ('showSaveFilePicker' in window) {
