@@ -3,29 +3,59 @@ backend:
   repo: danorov2915/catalogo-viajes
   branch: main
 
-media_folder: "images/flyers"
-public_folder: "images/flyers"
+media_folder: images/flyers
+public_folder: images/flyers
 
-locale: "es"
+locale: es
 
 collections:
-  - name: "catalogo"
-    label: "Catálogo de Viajes"
+  - name: catalogo
+    label: Catalogo de Viajes
     files:
-      - name: "viajes"
-        label: "Lista de Viajes"
-        file: "viajes.json"
+      - name: viajes
+        label: Lista de Viajes
+        file: viajes.json
         fields:
-          - label: "Viajes"
-            name: "viajes"
-            widget: "list"
+          - label: Viajes
+            name: viajes
+            widget: list
             fields:
-              - { label: "ID único", name: "id", widget: "string" }
-              - { label: "Título del Viaje", name: "titulo", widget: "string" }
-              - { label: "Categoría", name: "categoria", widget: "select", options: ["Playa", "Aventura", "Senderismo", "Arqueologia", "Coloniales", "Pueblos Magicos", "Mixtos"] }
-              - { label: "Precio o Tarifa", name: "precio", widget: "string" }
-              - { label: "Destino", name: "destino", widget: "string" }
-              - { label: "Flyer (Imagen)", name: "flyer", widget: "string" }
-              - { label: "Activo / Visible", name: "activo", widget: "boolean", default: true }
-              - { label: "Destacado", name: "destacado", widget: "boolean", default: false, required: false }
-              - { label: "Descripción", name: "descripcion", widget: "text", required: false }
+              - label: ID unico
+                name: id
+                widget: string
+              - label: Titulo del Viaje
+                name: titulo
+                widget: string
+              - label: Categoria
+                name: categoria
+                widget: select
+                options:
+                  - Playa
+                  - Aventura
+                  - Senderismo
+                  - Arqueologia
+                  - Coloniales
+                  - Pueblos Magicos
+                  - Mixtos
+              - label: Tarifa
+                name: precio
+                widget: string
+              - label: Destino
+                name: destino
+                widget: string
+              - label: Flyer
+                name: flyer
+                widget: string
+              - label: Activo
+                name: activo
+                widget: boolean
+                default: true
+              - label: Destacado
+                name: destacado
+                widget: boolean
+                default: false
+                required: false
+              - label: Descripcion
+                name: descripcion
+                widget: text
+                required: false
