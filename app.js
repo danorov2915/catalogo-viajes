@@ -95,7 +95,25 @@ function renderizarViajes() {
     html += '  <div class="flyer-content">';
     html += '    <div>';
     html += '      <h3 class="flyer-title">' + v.titulo + '</h3>';
-    html += '      <p class="flyer-location">📍 ' + (v.destino || "Destino Turistico") + '</p>';
+    
+    // Si tiene ruta o lugares que visita, mostrarlo destacado
+    if (v.lugaresVisita) {
+      html += '      <p class="flyer-location" style="color: #38bdf8; font-weight: 600;">📍 Visita: ' + v.lugaresVisita + '</p>';
+    } else {
+      html += '      <p class="flyer-location">📍 ' + (v.destino || "Destino Turistico") + '</p>';
+    }
+
+    // Si tiene tipo o modalidad (ej. Tour de 1 día, Pet Friendly)
+    if (v.tipoServicio) {
+      html += '      <p style="font-size: 0.78rem; color: #a7f3d0; margin-top: 0.2rem;">⏱️ ' + v.tipoServicio + '</p>';
+    }
+
+    // Mini resumen de inclusiones si existen
+    if (v.incluye) {
+      let miniInc = v.incluye.length > 80 ? (v.incluye.substring(0, 80) + '...') : v.incluye;
+      html += '      <p style="font-size: 0.76rem; color: #94a3b8; margin-top: 0.25rem;">✅ ' + miniInc + '</p>';
+    }
+
     html += '    </div>';
     html += '    <div>';
     html += '      <div class="flyer-price-row">';
