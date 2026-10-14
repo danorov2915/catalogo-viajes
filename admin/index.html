@@ -1,12 +1,581 @@
-﻿<!DOCTYPE html>
-<html lang=es>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset=utf-8 />
-  <meta name=viewport content=width=device-width, initial-scale=1.0 />
-  <title>Administrador de Catálogo | Beta Azul Viajes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración | Beta Azul Viajes Turísticos</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #060d1a;
+      --card-bg: #0d1b2a;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .admin-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-title h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .admin-title p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid var(--card-border); }
+    .btn-secondary:hover { background: #334155; }
+
+    .btn-success { background: var(--success); color: #042f0e; font-weight: 700; }
+    .btn-success:hover { filter: brightness(1.1); }
+
+    .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.4); }
+
+    /* Barra de filtros y búsqueda */
+    .controls-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .search-box input:focus { border-color: var(--accent); }
+    .search-box span { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); }
+
+    /* Lista de viajes */
+    .viajes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .viaje-item {
+      display: grid;
+      grid-template-columns: 70px 2fr 1fr 1fr 90px 140px;
+      align-items: center;
+      gap: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      transition: border-color 0.2s;
+    }
+
+    .viaje-item:hover { border-color: rgba(56, 189, 248, 0.3); }
+
+    .viaje-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .viaje-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .viaje-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .badge-cat {
+      background: #1e293b;
+      color: var(--accent);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .viaje-precio {
+      font-weight: 700;
+      color: #38bdf8;
+      font-size: 0.95rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155; transition: .3s; border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: var(--success); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Modal Formulario */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      background: #0c1827;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 600px;
+      padding: 1.75rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+    }
+
+    .modal-close {
+      background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      background: #060d1a;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Banner de cambios sin guardar */
+    .unsaved-bar {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0284c7;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      z-index: 900;
+      font-weight: 600;
+    }
+
+    .unsaved-bar.active { display: flex; }
+
+    @media (max-width: 768px) {
+      .viaje-item {
+        grid-template-columns: 50px 1fr;
+        gap: 0.5rem;
+      }
+      .viaje-item > *:nth-child(n+3) {
+        grid-column: 2;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Decap CMS con backend directo a GitHub -->
-  <script src=https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js></script>
+
+  <div class="admin-container">
+    
+    <header class="admin-header">
+      <div class="admin-title">
+        <h1>⚙️ Panel de Control de Viajes</h1>
+        <p>Beta Azul Viajes Turísticos · Verónica Hernández Echeverría</p>
+      </div>
+      <div class="header-actions">
+        <a href="../" class="btn btn-secondary">← Ver Catálogo Web</a>
+        <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
+        <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar y Descargar viajes.json</button>
+      </div>
+    </header>
+
+    <div class="controls-bar">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="busquedaInput" placeholder="Buscar por título, destino o categoría..." oninput="filtrarLista()">
+      </div>
+      <div id="conteoViajes" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
+        Cargando viajes...
+      </div>
+    </div>
+
+    <!-- Lista -->
+    <div class="viajes-list" id="listaContenedor">
+      <!-- Se inyectan con JS -->
+    </div>
+
+  </div>
+
+  <!-- Barra flotante de aviso de cambios -->
+  <div class="unsaved-bar" id="unsavedBar">
+    <span>⚠️ Tienes cambios pendientes de guardar</span>
+    <button class="btn btn-success" onclick="descargarViajesJson()">Descargar viajes.json actualizado</button>
+  </div>
+
+  <!-- Modal para Crear/Editar Viaje -->
+  <div class="modal" id="viajeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitulo">Editar Viaje</h3>
+        <button class="modal-close" onclick="cerrarModal()">✕</button>
+      </div>
+
+      <form id="viajeForm" onsubmit="guardarViaje(event)">
+        <input type="hidden" id="editIndex" value="-1">
+
+        <div class="form-group">
+          <label>Título del Viaje / Promoción</label>
+          <input type="text" id="formTitulo" required placeholder="Ej: Tour Chipilo Cuatrimoto y Quesos">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="formCategoria" required>
+              <option value="Playa">🏖️ Playa</option>
+              <option value="Aventura">🧗 Aventura</option>
+              <option value="Senderismo">🥾 Senderismo</option>
+              <option value="Arqueologia">🏛️ Arqueología</option>
+              <option value="Coloniales">🏰 Coloniales</option>
+              <option value="Pueblos Magicos">✨ Pueblos Mágicos</option>
+              <option value="Mixtos">🎒 Mixtos</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tarifa / Precio</label>
+            <input type="text" id="formPrecio" required placeholder="Ej: $1,800 MXN o Consultar tarifa">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Destino / Ubicación</label>
+          <input type="text" id="formDestino" placeholder="Ej: Chipilo, Puebla">
+        </div>
+
+        <div class="form-group">
+          <label>URL o Nombre del Flyer</label>
+          <input type="text" id="formFlyer" required placeholder="Ej: https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/01.jpg">
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imágenes nuevas, sube el archivo a GitHub y pega su enlace aquí.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción / Fechas / Notas</label>
+          <textarea id="formDesc" rows="3" placeholder="Información sobre salidas, qué incluye o notas para el cliente..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 2rem; margin-top: 1rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="formActivo" checked style="width: auto;"> Activo en catálogo
+          </label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="formDestacado" style="width: auto;"> ⭐ Destacado
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar en Catálogo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let viajes = [];
+    let cambiosPendientes = false;
+
+    // Cargar viajes.json
+    async function inicializar() {
+      try {
+        const res = await fetch('../viajes.json?v=' + Date.now());
+        if (!res.ok) throw new Error("No cargó local");
+        const data = await res.json();
+        viajes = data.viajes || [];
+      } catch (err) {
+        console.warn("Cargando desde GitHub raw:", err);
+        const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
+        const dataRaw = await resRaw.json();
+        viajes = dataRaw.viajes || [];
+      }
+      renderizar();
+    }
+
+    function renderizar() {
+      const lista = document.getElementById('listaContenedor');
+      const filtro = document.getElementById('busquedaInput').value.toLowerCase().trim();
+      const conteo = document.getElementById('conteoViajes');
+
+      const filtrados = viajes.filter(v => {
+        return !filtro ||
+          (v.titulo && v.titulo.toLowerCase().includes(filtro)) ||
+          (v.destino && v.destino.toLowerCase().includes(filtro)) ||
+          (v.categoria && v.categoria.toLowerCase().includes(filtro));
+      });
+
+      conteo.innerText = `Mostrando ${filtrados.length} de ${viajes.length} viajes`;
+
+      if (filtrados.length === 0) {
+        lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No se encontraron viajes con ese término.</div>';
+        return;
+      }
+
+      lista.innerHTML = filtrados.map(v => {
+        const indexReal = viajes.findIndex(item => item.id === v.id);
+        return `
+          <div class="viaje-item">
+            <img src="${v.flyer}" class="viaje-thumb" alt="${v.titulo}" onerror="this.src='../images/logo.jpg'">
+            <div class="viaje-info">
+              <h4>${v.titulo}</h4>
+              <p>📍 ${v.destino || 'Sin especificar'}</p>
+            </div>
+            <div>
+              <span class="badge-cat">${v.categoria}</span>
+              ${v.destacado ? '<span style="font-size:0.75rem; color:#facc15;">⭐</span>' : ''}
+            </div>
+            <div class="viaje-precio">${v.precio}</div>
+            <div title="Activar/Desactivar visibilidad">
+              <label class="switch">
+                <input type="checkbox" ${v.activo ? 'checked' : ''} onchange="toggleActivo(${indexReal}, this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+              <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" onclick="abrirModalEditar(${indexReal})">✏️</button>
+              <button class="btn btn-danger" style="padding: 0.35rem 0.65rem;" onclick="eliminarViaje(${indexReal})">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filtrarLista() {
+      renderizar();
+    }
+
+    function toggleActivo(index, activo) {
+      viajes[index].activo = activo;
+      marcarCambio();
+    }
+
+    function eliminarViaje(index) {
+      if (confirm(`¿Seguro que deseas eliminar el viaje: "${viajes[index].titulo}"?`)) {
+        viajes.splice(index, 1);
+        marcarCambio();
+        renderizar();
+      }
+    }
+
+    function abrirModalNuevo() {
+      document.getElementById('editIndex').value = "-1";
+      document.getElementById('modalTitulo').innerText = "Nuevo Viaje";
+      document.getElementById('viajeForm').reset();
+      document.getElementById('formActivo').checked = true;
+      document.getElementById('viajeModal').classList.add('active');
+    }
+
+    function abrirModalEditar(index) {
+      const v = viajes[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('modalTitulo').innerText = "Editar: " + v.titulo;
+      document.getElementById('formTitulo').value = v.titulo || '';
+      document.getElementById('formCategoria').value = v.categoria || 'Playa';
+      document.getElementById('formPrecio').value = v.precio || '';
+      document.getElementById('formDestino').value = v.destino || '';
+      document.getElementById('formFlyer').value = v.flyer || '';
+      document.getElementById('formDesc').value = v.descripcion || '';
+      document.getElementById('formActivo').checked = !!v.activo;
+      document.getElementById('formDestacado').checked = !!v.destacado;
+      document.getElementById('viajeModal').classList.add('active');
+    }
+
+    function cerrarModal() {
+      document.getElementById('viajeModal').classList.remove('active');
+    }
+
+    function guardarViaje(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('editIndex').value, 10);
+      
+      const nuevoViaje = {
+        id: index >= 0 ? viajes[index].id : 'viaje-' + Date.now(),
+        titulo: document.getElementById('formTitulo').value.trim(),
+        categoria: document.getElementById('formCategoria').value,
+        precio: document.getElementById('formPrecio').value.trim(),
+        destino: document.getElementById('formDestino').value.trim(),
+        activo: document.getElementById('formActivo').checked,
+        destacado: document.getElementById('formDestacado').checked,
+        descripcion: document.getElementById('formDesc').value.trim(),
+        flyer: document.getElementById('formFlyer').value.trim()
+      };
+
+      if (index >= 0) {
+        viajes[index] = nuevoViaje;
+      } else {
+        viajes.unshift(nuevoViaje);
+      }
+
+      marcarCambio();
+      cerrarModal();
+      renderizar();
+    }
+
+    function marcarCambio() {
+      cambiosPendientes = true;
+      document.getElementById('unsavedBar').classList.add('active');
+    }
+
+    function descargarViajesJson() {
+      const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'viajes.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      cambiosPendientes = false;
+      document.getElementById('unsavedBar').classList.remove('active');
+      alert("¡viajes.json descargado con éxito!
+
+Solo súbelo a GitHub para publicar los cambios en tu catálogo.");
+    }
+
+    window.onload = inicializar;
+  </script>
 </body>
 </html>
