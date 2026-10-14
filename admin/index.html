@@ -21,6 +21,8 @@
       --text-muted: #94a3b8;
       --danger: #ef4444;
       --success: #22c55e;
+      --purple: #8b5cf6;
+      --purple-hover: #7c3aed;
       --radius: 12px;
     }
 
@@ -35,7 +37,7 @@
     }
 
     .admin-container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
     }
 
@@ -64,10 +66,11 @@
     .header-actions {
       display: flex;
       gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
     .btn {
-      padding: 0.6rem 1.2rem;
+      padding: 0.6rem 1.1rem;
       border-radius: var(--radius);
       font-weight: 600;
       font-size: 0.9rem;
@@ -92,6 +95,14 @@
 
     .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
     .btn-danger:hover { background: rgba(239, 68, 68, 0.4); }
+
+    .btn-ai {
+      background: linear-gradient(135deg, #7c3aed, #0284c7);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-ai:hover { filter: brightness(1.15); box-shadow: 0 0 15px rgba(139,92,246,0.5); }
 
     .controls-bar {
       display: flex;
@@ -119,6 +130,31 @@
 
     .search-box input:focus { border-color: var(--accent); }
     .search-box span { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); }
+
+    /* API Key Banner Config */
+    .api-key-bar {
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .api-key-bar input {
+      background: #060d1a;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+      width: 280px;
+      font-family: monospace;
+    }
 
     .viajes-list {
       display: flex;
@@ -217,7 +253,7 @@
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
       width: 100%;
-      max-width: 600px;
+      max-width: 680px;
       padding: 1.75rem;
       max-height: 90vh;
       overflow-y: auto;
@@ -227,7 +263,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 0.75rem;
     }
@@ -236,8 +272,17 @@
       background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;
     }
 
+    .ai-upload-box {
+      background: rgba(139, 92, 246, 0.1);
+      border: 2px dashed rgba(139, 92, 246, 0.4);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
 
     .form-group label {
@@ -257,6 +302,7 @@
       color: #fff;
       font-family: inherit;
       outline: none;
+      font-size: 0.9rem;
     }
 
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
@@ -328,20 +374,35 @@
     <header class="admin-header">
       <div class="admin-title">
         <h1>⚙️ Panel de Control de Viajes</h1>
-        <p>Beta Azul Viajes Turisticos - Veronica Hernandez Echeverria</p>
+        <p>Beta Azul Viajes Turísticos - Verónica Hernández Echeverría</p>
       </div>
       <div class="header-actions">
-        <a href="../" class="btn btn-secondary">&larr; Ver Catalogo Web</a>
-        <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesion</button>
+        <a href="../" class="btn btn-secondary">&larr; Ver Catálogo Web</a>
+        <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesión</button>
         <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
         <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar y Descargar viajes.json</button>
       </div>
     </header>
 
+    <!-- Barra de Configuración de Gemini API Key -->
+    <div class="api-key-bar">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.2rem;">✨</span>
+        <div>
+          <strong style="color: #c084fc; font-size: 0.9rem;">Gemini Omni Vision IA</strong>
+          <p style="color: var(--text-muted); font-size: 0.78rem;">Lee el flyer automáticamente y llena los campos turísticos</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <input type="password" id="geminiApiKeyInput" placeholder="Pega tu Gemini API Key..." title="Tu API Key se guarda localmente en tu navegador">
+        <button class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;" onclick="guardarApiKey()">Guardar Key</button>
+      </div>
+    </div>
+
     <div class="controls-bar">
       <div class="search-box">
         <span>🔍</span>
-        <input type="text" id="busquedaInput" placeholder="Buscar por titulo, destino o categoria..." oninput="filtrarLista()">
+        <input type="text" id="busquedaInput" placeholder="Buscar por título, destino o categoría..." oninput="filtrarLista()">
       </div>
       <div id="conteoViajes" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
         Cargando viajes...
@@ -354,9 +415,10 @@
 
   <div class="unsaved-bar" id="unsavedBar">
     <span>⚠️ Tienes cambios pendientes de guardar</span>
-    <button class="btn btn-success" onclick="descargarViajesJson()">Descargar viajes.json actualizado</button>
+    <button class="btn btn-success" onclick="descargarViajesJson()">Guardar viajes.json actualizado</button>
   </div>
 
+  <!-- Modal para Crear/Editar Viaje con IA -->
   <div class="modal" id="viajeModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -364,24 +426,42 @@
         <button class="modal-close" onclick="cerrarModal()">✕</button>
       </div>
 
+      <!-- Zona de Autocompletado con Gemini -->
+      <div class="ai-upload-box">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">✨</span>
+          <strong style="color: #c084fc; font-size: 0.95rem;">Llenado Inteligente con Gemini</strong>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.75rem;">
+          Selecciona la foto del flyer para que Gemini lea automáticamente las rutas, inclusiones, precios y tipo de tour.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <input type="file" id="aiImageFile" accept="image/*" style="display: none;" onchange="analizarFlyerConGemini(this)">
+          <button type="button" class="btn btn-ai" onclick="document.getElementById('aiImageFile').click()">
+            📄 Seleccionar Flyer para Analizar
+          </button>
+          <span id="aiStatus" style="font-size: 0.82rem; color: #38bdf8;"></span>
+        </div>
+      </div>
+
       <form id="viajeForm" onsubmit="guardarViaje(event)">
         <input type="hidden" id="editIndex" value="-1">
 
         <div class="form-group">
-          <label>Titulo del Viaje / Promocion</label>
+          <label>Título del Viaje / Promoción</label>
           <input type="text" id="formTitulo" required placeholder="Ej: Tour Chipilo Cuatrimoto y Quesos">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label>Categoria</label>
+            <label>Categoría</label>
             <select id="formCategoria" required>
               <option value="Playa">🏖️ Playa</option>
               <option value="Aventura">🧗 Aventura</option>
               <option value="Senderismo">🥾 Senderismo</option>
-              <option value="Arqueologia">🏛️ Arqueologia</option>
+              <option value="Arqueologia">🏛️ Arqueología</option>
               <option value="Coloniales">🏰 Coloniales</option>
-              <option value="Pueblos Magicos">✨ Pueblos Magicos</option>
+              <option value="Pueblos Magicos">✨ Pueblos Mágicos</option>
               <option value="Mixtos">🎒 Mixtos</option>
             </select>
           </div>
@@ -392,25 +472,47 @@
           </div>
         </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Tipo / Modalidad</label>
+            <input type="text" id="formTipoServicio" placeholder="Ej: Tour de 1 día (Salida grupal)">
+          </div>
+
+          <div class="form-group">
+            <label>Destino Principal</label>
+            <input type="text" id="formDestino" placeholder="Ej: Puebla / Cancún">
+          </div>
+        </div>
+
         <div class="form-group">
-          <label>Destino / Ubicacion</label>
-          <input type="text" id="formDestino" placeholder="Ej: Chipilo, Puebla">
+          <label>Lugares o Puntos que Visita (Ruta)</label>
+          <input type="text" id="formLugaresVisita" placeholder="Ej: Val'Quirico, Cholula y Atlixco">
+        </div>
+
+        <div class="form-group">
+          <label>✅ Qué Incluye</label>
+          <textarea id="formIncluye" rows="2" placeholder="Ej: Transporte redondo, seguro de viajero, coordinador de grupo, degustación..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>❌ Qué NO Incluye</label>
+          <textarea id="formNoIncluye" rows="2" placeholder="Ej: Entradas a parques, museos, alimentos no especificados ni propinas."></textarea>
         </div>
 
         <div class="form-group">
           <label>URL o Nombre del Flyer</label>
-          <input type="text" id="formFlyer" required placeholder="Ej: https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/01.jpg">
-          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imagenes nuevas, sube el archivo a GitHub y pega su enlace aqui.</small>
+          <input type="text" id="formFlyer" required placeholder="Ej: 01.jpg o https://raw.githubusercontent.com/.../01.jpg">
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imágenes nuevas, sube el archivo a GitHub y anota su nombre aquí.</small>
         </div>
 
         <div class="form-group">
-          <label>Descripcion / Fechas / Notas</label>
-          <textarea id="formDesc" rows="3" placeholder="Informacion sobre salidas, que incluye o notas para el cliente..."></textarea>
+          <label>Descripción / Fechas / Notas Generales</label>
+          <textarea id="formDesc" rows="2" placeholder="Información sobre salidas, reservaciones con Verónica por WhatsApp..."></textarea>
         </div>
 
         <div style="display: flex; gap: 2rem; margin-top: 1rem;">
           <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" id="formActivo" checked style="width: auto;"> Activo en catalogo
+            <input type="checkbox" id="formActivo" checked style="width: auto;"> Activo en catálogo
           </label>
           <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
             <input type="checkbox" id="formDestacado" style="width: auto;"> ⭐ Destacado
@@ -419,306 +521,422 @@
 
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar en Catalogo</button>
+          <button type="submit" class="btn btn-primary">Guardar en Catálogo</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-// Seguridad: Clave de acceso administrativa (Puedes cambiarla cuando quieras)
-const CLAVE_ADMIN = "$$VerDan1829$$";
+    const CLAVE_ADMIN = "$$VerDan1829$$";
 
-function cerrarSesion() {
-  sessionStorage.removeItem('admin_autenticado');
-  location.reload();
-}
-
-function verificarClave(e) {
-  e.preventDefault();
-  const pin = document.getElementById('adminPin').value.trim();
-  if (pin === CLAVE_ADMIN) {
-    sessionStorage.setItem('admin_autenticado', 'true');
-    document.getElementById('loginOverlay').style.display = 'none';
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('adminPin').value = '';
-    document.getElementById('adminPin').focus();
-  }
-}
-
-
-
-let viajes = [];
-let cambiosPendientes = false;
-
-async function inicializar() {
-  try {
-    const res = await fetch('../viajes.json?v=' + Date.now());
-    if (!res.ok) throw new Error("No cargo local");
-    const data = await res.json();
-    viajes = data.viajes || [];
-  } catch (err) {
-    console.warn("Cargando desde GitHub raw:", err);
-    try {
-      const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
-      const dataRaw = await resRaw.json();
-      viajes = dataRaw.viajes || [];
-    } catch (err2) {
-      console.error("Error al cargar viajes:", err2);
-    }
-  }
-  renderizar();
-}
-
-function renderizar() {
-  const lista = document.getElementById('listaContenedor');
-  const filtroInput = document.getElementById('busquedaInput');
-  const filtro = filtroInput ? filtroInput.value.toLowerCase().trim() : '';
-  const conteo = document.getElementById('conteoViajes');
-
-  const filtrados = viajes.filter(function(v) {
-    if (!v) return false;
-    if (!filtro) return true;
-    const t = (v.titulo || '').toLowerCase();
-    const d = (v.destino || '').toLowerCase();
-    const c = (v.categoria || '').toLowerCase();
-    return t.includes(filtro) || d.includes(filtro) || c.includes(filtro);
-  });
-
-  if (conteo) {
-    conteo.textContent = 'Mostrando ' + filtrados.length + ' de ' + viajes.length + ' viajes';
-  }
-
-  if (!lista) return;
-
-  if (filtrados.length === 0) {
-    lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: #94a3b8;">No se encontraron viajes con ese termino.</div>';
-    return;
-  }
-
-  lista.innerHTML = '';
-  for (let i = 0; i < filtrados.length; i++) {
-    const v = filtrados[i];
-    let indexReal = -1;
-    for (let j = 0; j < viajes.length; j++) {
-      if (viajes[j].id === v.id) { indexReal = j; break; }
+    function cerrarSesion() {
+      sessionStorage.removeItem('admin_autenticado');
+      location.reload();
     }
 
-    const item = document.createElement('div');
-    item.className = 'viaje-item';
-
-    const img = document.createElement('img');
-    let flyerUrl = v.flyer || '../logo.jpg';
-    if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../')) {
-      flyerUrl = '../' + flyerUrl;
-    }
-    img.className = 'viaje-thumb';
-    img.alt = v.titulo || 'Flyer';
-    img.onerror = function() {
-      // Si falla en '../01.jpg', intenta en '../images/flyers/01.jpg' antes de poner el logo
-      if (!this.dataset.triedSubfolder && !this.src.includes('images/flyers/')) {
-        this.dataset.triedSubfolder = 'true';
-        let filename = (v.flyer || '').split('/').pop();
-        this.src = '../images/flyers/' + filename;
+    function verificarClave(e) {
+      e.preventDefault();
+      const pin = document.getElementById('adminPin').value.trim();
+      if (pin === CLAVE_ADMIN) {
+        sessionStorage.setItem('admin_autenticado', 'true');
+        document.getElementById('loginOverlay').style.display = 'none';
       } else {
-        this.onerror = null;
-        this.src = '../logo.jpg';
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('adminPin').value = '';
+        document.getElementById('adminPin').focus();
       }
-    };
-    img.src = flyerUrl;
+    }
 
-    const info = document.createElement('div');
-    info.className = 'viaje-info';
-    info.innerHTML = '<h4>' + (v.titulo || 'Sin titulo') + '</h4><p>📍 ' + (v.destino || 'Sin especificar') + '</p>';
+    let viajes = [];
+    let cambiosPendientes = false;
+    let fileHandle = null;
 
-    const catDiv = document.createElement('div');
-    catDiv.innerHTML = '<span class="badge-cat">' + (v.categoria || 'General') + '</span>' + (v.destacado ? ' <span style="font-size:0.75rem; color:#facc15;">⭐</span>' : '');
+    // Guardar / Cargar API Key
+    function cargarApiKey() {
+      const key = localStorage.getItem('gemini_api_key') || '';
+      const inp = document.getElementById('geminiApiKeyInput');
+      if (inp) inp.value = key;
+    }
 
-    const precioDiv = document.createElement('div');
-    precioDiv.className = 'viaje-precio';
-    precioDiv.textContent = v.precio || 'Consultar tarifa';
+    function guardarApiKey() {
+      const inp = document.getElementById('geminiApiKeyInput');
+      const val = inp ? inp.value.trim() : '';
+      localStorage.setItem('gemini_api_key', val);
+      alert('✅ API Key guardada en tu navegador.');
+    }
 
-    const switchDiv = document.createElement('div');
-    switchDiv.title = 'Activar/Desactivar visibilidad';
-    const labelSwitch = document.createElement('label');
-    labelSwitch.className = 'switch';
-    const chk = document.createElement('input');
-    chk.type = 'checkbox';
-    chk.checked = !!v.activo;
-    chk.addEventListener('change', (function(idx) {
-      return function() { toggleActivo(idx, this.checked); };
-    })(indexReal));
-    const spanSlider = document.createElement('span');
-    spanSlider.className = 'slider';
-    labelSwitch.appendChild(chk);
-    labelSwitch.appendChild(spanSlider);
-    switchDiv.appendChild(labelSwitch);
+    // Analizador Gemini Multimodal
+    async function analizarFlyerConGemini(fileInput) {
+      const file = fileInput.files[0];
+      if (!file) return;
 
-    const actionsDiv = document.createElement('div');
-    actionsDiv.style.display = 'flex';
-    actionsDiv.style.gap = '0.5rem';
-    actionsDiv.style.justifyContent = 'flex-end';
-
-    const btnEdit = document.createElement('button');
-    btnEdit.className = 'btn btn-secondary';
-    btnEdit.style.padding = '0.35rem 0.65rem';
-    btnEdit.textContent = '✏️';
-    btnEdit.addEventListener('click', (function(idx) {
-      return function() { abrirModalEditar(idx); };
-    })(indexReal));
-
-    const btnDel = document.createElement('button');
-    btnDel.className = 'btn btn-danger';
-    btnDel.style.padding = '0.35rem 0.65rem';
-    btnDel.textContent = '🗑️';
-    btnDel.addEventListener('click', (function(idx) {
-      return function() { eliminarViaje(idx); };
-    })(indexReal));
-
-    actionsDiv.appendChild(btnEdit);
-    actionsDiv.appendChild(btnDel);
-
-    item.appendChild(img);
-    item.appendChild(info);
-    item.appendChild(catDiv);
-    item.appendChild(precioDiv);
-    item.appendChild(switchDiv);
-    item.appendChild(actionsDiv);
-
-    lista.appendChild(item);
-  }
-}
-
-function filtrarLista() {
-  renderizar();
-}
-
-function toggleActivo(index, activo) {
-  if (viajes[index]) {
-    viajes[index].activo = activo;
-    marcarCambio();
-  }
-}
-
-function eliminarViaje(index) {
-  if (!viajes[index]) return;
-  if (confirm('Seguro que deseas eliminar el viaje: "' + viajes[index].titulo + '"?')) {
-    viajes.splice(index, 1);
-    marcarCambio();
-    renderizar();
-  }
-}
-
-function abrirModalNuevo() {
-  document.getElementById('editIndex').value = '-1';
-  document.getElementById('modalTitulo').textContent = 'Nuevo Viaje';
-  document.getElementById('viajeForm').reset();
-  document.getElementById('formActivo').checked = true;
-  document.getElementById('viajeModal').classList.add('active');
-}
-
-function abrirModalEditar(index) {
-  const v = viajes[index];
-  if (!v) return;
-  document.getElementById('editIndex').value = index;
-  document.getElementById('modalTitulo').textContent = 'Editar: ' + v.titulo;
-  document.getElementById('formTitulo').value = v.titulo || '';
-  document.getElementById('formCategoria').value = v.categoria || 'Playa';
-  document.getElementById('formPrecio').value = v.precio || '';
-  document.getElementById('formDestino').value = v.destino || '';
-  document.getElementById('formFlyer').value = v.flyer || '';
-  document.getElementById('formDesc').value = v.descripcion || '';
-  document.getElementById('formActivo').checked = !!v.activo;
-  document.getElementById('formDestacado').checked = !!v.destacado;
-  document.getElementById('viajeModal').classList.add('active');
-}
-
-function cerrarModal() {
-  document.getElementById('viajeModal').classList.remove('active');
-}
-
-function guardarViaje(e) {
-  e.preventDefault();
-  const index = parseInt(document.getElementById('editIndex').value, 10);
-  
-  const nuevoViaje = {
-    id: index >= 0 ? viajes[index].id : 'viaje-' + Date.now(),
-    titulo: document.getElementById('formTitulo').value.trim(),
-    categoria: document.getElementById('formCategoria').value,
-    precio: document.getElementById('formPrecio').value.trim(),
-    destino: document.getElementById('formDestino').value.trim(),
-    activo: document.getElementById('formActivo').checked,
-    destacado: document.getElementById('formDestacado').checked,
-    descripcion: document.getElementById('formDesc').value.trim(),
-    flyer: document.getElementById('formFlyer').value.trim()
-  };
-
-  if (index >= 0) {
-    viajes[index] = nuevoViaje;
-  } else {
-    viajes.unshift(nuevoViaje);
-  }
-
-  marcarCambio();
-  cerrarModal();
-  renderizar();
-}
-
-function marcarCambio() {
-  cambiosPendientes = true;
-  document.getElementById('unsavedBar').classList.add('active');
-}
-
-let fileHandle = null;
-
-async function descargarViajesJson() {
-  const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
-
-  // Intentar guardar directamente en disco si el navegador lo soporta (Chrome/Edge moderno)
-  if ('showSaveFilePicker' in window) {
-    try {
-      if (!fileHandle) {
-        fileHandle = await window.showSaveFilePicker({
-          suggestedName: 'viajes.json',
-          types: [{
-            description: 'Archivo JSON de Catálogo',
-            accept: { 'application/json': ['.json'] }
-          }]
-        });
+      const apiKey = localStorage.getItem('gemini_api_key') || (document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value.trim() : '');
+      if (!apiKey) {
+        alert('⚠️ Por favor introduce tu Gemini API Key en la barra superior antes de analizar.');
+        return;
       }
-      const writable = await fileHandle.createWritable();
-      await writable.write(jsonStr);
-      await writable.close();
+
+      const statusEl = document.getElementById('aiStatus');
+      statusEl.innerText = '⏳ Analizando flyer con Gemini...';
+
+      try {
+        // Convertir a base64
+        const reader = new FileReader();
+        reader.onload = async function() {
+          const base64Data = reader.result.split(',')[1];
+          const mimeType = file.type || 'image/jpeg';
+
+          const prompt = `Eres un catalogador turístico experto para la agencia 'Beta Azul Viajes Turísticos' de Verónica Hernández Echeverría.
+Analiza detenidamente la imagen del flyer adjunto y extrae rigurosamente la información en formato JSON estricto:
+
+{
+  "titulo": "Título atractivo y completo del tour o paquete (Ej: 'Tour Ruta Mágica: Val'Quirico, Cholula y Atlixco' o 'Cancún Todo Incluido')",
+  "categoria": "Una de las siguientes: Playa, Aventura, Senderismo, Arqueologia, Coloniales, Pueblos Magicos, Mixtos",
+  "precio": "Tarifa exacta si aparece (ej: '$1,800 MXN' o '$4,500 MXN'). Si no tiene precio numérico, pon estrictamente 'Consultar tarifa'",
+  "tipoServicio": "Especifica si es 'Tour de 1 día (Salida grupal)', 'Tour privado', 'Viaje multidía con hospedaje', 'Pet Friendly', etc.",
+  "destino": "Ciudad o estado principal (ej: 'Puebla', 'Tlaxcala', 'Cancún, Q. Roo', 'Oaxaca')",
+  "lugaresVisita": "Lista concisa de todos los lugares, pueblos o parques que visita (ej: 'Val\'Quirico, Cholula y Atlixco' o 'Chipilo')",
+  "incluye": "Detalla lo que incluye (ej: 'Transporte redondo, seguro de viajero, coordinador, degustaciones'). Si no se lee nada, pon 'Consultar inclusiones por WhatsApp'",
+  "noIncluye": "Detalla lo que no incluye (ej: 'Entradas a museos/parques, alimentos no especificados ni propinas'). Si no se menciona nada, pon 'Alimentos ni entradas no especificadas'",
+  "descripcion": "Resumen breve y persuasivo de 1 o 2 oraciones para invitar al cliente a reservar."
+}
+Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown.`;
+
+          const payload = {
+            contents: [{
+              parts: [
+                { text: prompt },
+                {
+                  inline_data: {
+                    mime_type: mimeType,
+                    data: base64Data
+                  }
+                }
+              ]
+            }],
+            generationConfig: {
+              response_mime_type: "application/json"
+            }
+          };
+
+          const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey;
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error ? errData.error.message : 'Error en la llamada a Gemini');
+          }
+
+          const resData = await res.json();
+          const rawText = resData.candidates[0].content.parts[0].text;
+          const cleanJson = JSON.parse(rawText.replace(/```json/g, '').replace(/```/g, '').trim());
+
+          // Rellenar formulario automáticamente
+          if (cleanJson.titulo) document.getElementById('formTitulo').value = cleanJson.titulo;
+          if (cleanJson.categoria) document.getElementById('formCategoria').value = cleanJson.categoria;
+          if (cleanJson.precio) document.getElementById('formPrecio').value = cleanJson.precio;
+          if (cleanJson.tipoServicio) document.getElementById('formTipoServicio').value = cleanJson.tipoServicio;
+          if (cleanJson.destino) document.getElementById('formDestino').value = cleanJson.destino;
+          if (cleanJson.lugaresVisita) document.getElementById('formLugaresVisita').value = cleanJson.lugaresVisita;
+          if (cleanJson.incluye) document.getElementById('formIncluye').value = cleanJson.incluye;
+          if (cleanJson.noIncluye) document.getElementById('formNoIncluye').value = cleanJson.noIncluye;
+          if (cleanJson.descripcion) document.getElementById('formDesc').value = cleanJson.descripcion;
+
+          // Sugerir nombre de archivo si el flyer está vacío
+          const formFlyer = document.getElementById('formFlyer');
+          if (!formFlyer.value) {
+            formFlyer.value = file.name;
+          }
+
+          statusEl.innerText = '✅ ¡Campos llenados con éxito!';
+          setTimeout(() => { statusEl.innerText = ''; }, 4000);
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        console.error('Error analizando flyer:', err);
+        statusEl.innerText = '❌ Error al analizar: ' + err.message;
+      }
+    }
+
+    async function inicializar() {
+      cargarApiKey();
+      try {
+        const res = await fetch('../viajes.json?v=' + Date.now());
+        if (!res.ok) throw new Error("No cargo local");
+        const data = await res.json();
+        viajes = data.viajes || [];
+      } catch (err) {
+        console.warn("Cargando desde GitHub raw:", err);
+        try {
+          const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
+          const dataRaw = await resRaw.json();
+          viajes = dataRaw.viajes || [];
+        } catch (err2) {
+          console.error("Error al cargar viajes:", err2);
+        }
+      }
+      renderizar();
+    }
+
+    function renderizar() {
+      const lista = document.getElementById('listaContenedor');
+      const filtroInput = document.getElementById('busquedaInput');
+      const filtro = filtroInput ? filtroInput.value.toLowerCase().trim() : '';
+      const conteo = document.getElementById('conteoViajes');
+
+      const filtrados = viajes.filter(function(v) {
+        if (!v) return false;
+        if (!filtro) return true;
+        const t = (v.titulo || '').toLowerCase();
+        const d = (v.destino || '').toLowerCase();
+        const c = (v.categoria || '').toLowerCase();
+        const r = (v.lugaresVisita || '').toLowerCase();
+        return t.includes(filtro) || d.includes(filtro) || c.includes(filtro) || r.includes(filtro);
+      });
+
+      if (conteo) {
+        conteo.textContent = 'Mostrando ' + filtrados.length + ' de ' + viajes.length + ' viajes';
+      }
+
+      if (!lista) return;
+
+      if (filtrados.length === 0) {
+        lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: #94a3b8;">No se encontraron viajes con ese termino.</div>';
+        return;
+      }
+
+      lista.innerHTML = '';
+      for (let i = 0; i < filtrados.length; i++) {
+        const v = filtrados[i];
+        let indexReal = -1;
+        for (let j = 0; j < viajes.length; j++) {
+          if (viajes[j].id === v.id) { indexReal = j; break; }
+        }
+
+        const item = document.createElement('div');
+        item.className = 'viaje-item';
+
+        const img = document.createElement('img');
+        let flyerUrl = v.flyer || '../logo.jpg';
+        if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../')) {
+          flyerUrl = '../' + flyerUrl;
+        }
+        img.className = 'viaje-thumb';
+        img.alt = v.titulo || 'Flyer';
+        img.onerror = function() {
+          if (!this.dataset.triedSubfolder && !this.src.includes('images/flyers/')) {
+            this.dataset.triedSubfolder = 'true';
+            let filename = (v.flyer || '').split('/').pop();
+            this.src = '../images/flyers/' + filename;
+          } else {
+            this.onerror = null;
+            this.src = '../logo.jpg';
+          }
+        };
+        img.src = flyerUrl;
+
+        const info = document.createElement('div');
+        info.className = 'viaje-info';
+        const subInfo = v.lugaresVisita ? ('📍 ' + v.lugaresVisita) : ('📍 ' + (v.destino || 'Sin especificar'));
+        info.innerHTML = '<h4>' + (v.titulo || 'Sin titulo') + '</h4><p>' + subInfo + '</p>';
+
+        const catDiv = document.createElement('div');
+        catDiv.innerHTML = '<span class="badge-cat">' + (v.categoria || 'General') + '</span>' + (v.destacado ? ' <span style="font-size:0.75rem; color:#facc15;">⭐</span>' : '');
+
+        const precioDiv = document.createElement('div');
+        precioDiv.className = 'viaje-precio';
+        precioDiv.textContent = v.precio || 'Consultar tarifa';
+
+        const switchDiv = document.createElement('div');
+        switchDiv.title = 'Activar/Desactivar visibilidad';
+        const labelSwitch = document.createElement('label');
+        labelSwitch.className = 'switch';
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.checked = !!v.activo;
+        chk.addEventListener('change', (function(idx) {
+          return function() { toggleActivo(idx, this.checked); };
+        })(indexReal));
+        const spanSlider = document.createElement('span');
+        spanSlider.className = 'slider';
+        labelSwitch.appendChild(chk);
+        labelSwitch.appendChild(spanSlider);
+        switchDiv.appendChild(labelSwitch);
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.style.display = 'flex';
+        actionsDiv.style.gap = '0.5rem';
+        actionsDiv.style.justifyContent = 'flex-end';
+
+        const btnEdit = document.createElement('button');
+        btnEdit.className = 'btn btn-secondary';
+        btnEdit.style.padding = '0.35rem 0.65rem';
+        btnEdit.textContent = '✏️';
+        btnEdit.addEventListener('click', (function(idx) {
+          return function() { abrirModalEditar(idx); };
+        })(indexReal));
+
+        const btnDel = document.createElement('button');
+        btnDel.className = 'btn btn-danger';
+        btnDel.style.padding = '0.35rem 0.65rem';
+        btnDel.textContent = '🗑️';
+        btnDel.addEventListener('click', (function(idx) {
+          return function() { eliminarViaje(idx); };
+        })(indexReal));
+
+        actionsDiv.appendChild(btnEdit);
+        actionsDiv.appendChild(btnDel);
+
+        item.appendChild(img);
+        item.appendChild(info);
+        item.appendChild(catDiv);
+        item.appendChild(precioDiv);
+        item.appendChild(switchDiv);
+        item.appendChild(actionsDiv);
+
+        lista.appendChild(item);
+      }
+    }
+
+    function filtrarLista() {
+      renderizar();
+    }
+
+    function toggleActivo(index, activo) {
+      if (viajes[index]) {
+        viajes[index].activo = activo;
+        marcarCambio();
+      }
+    }
+
+    function eliminarViaje(index) {
+      if (!viajes[index]) return;
+      if (confirm('Seguro que deseas eliminar el viaje: "' + viajes[index].titulo + '"?')) {
+        viajes.splice(index, 1);
+        marcarCambio();
+        renderizar();
+      }
+    }
+
+    function abrirModalNuevo() {
+      document.getElementById('editIndex').value = '-1';
+      document.getElementById('modalTitulo').textContent = 'Nuevo Viaje';
+      document.getElementById('viajeForm').reset();
+      document.getElementById('formActivo').checked = true;
+      document.getElementById('aiStatus').innerText = '';
+      document.getElementById('viajeModal').classList.add('active');
+    }
+
+    function abrirModalEditar(index) {
+      const v = viajes[index];
+      if (!v) return;
+      document.getElementById('editIndex').value = index;
+      document.getElementById('modalTitulo').textContent = 'Editar: ' + v.titulo;
+      document.getElementById('formTitulo').value = v.titulo || '';
+      document.getElementById('formCategoria').value = v.categoria || 'Playa';
+      document.getElementById('formPrecio').value = v.precio || '';
+      document.getElementById('formTipoServicio').value = v.tipoServicio || '';
+      document.getElementById('formDestino').value = v.destino || '';
+      document.getElementById('formLugaresVisita').value = v.lugaresVisita || '';
+      document.getElementById('formIncluye').value = v.incluye || '';
+      document.getElementById('formNoIncluye').value = v.noIncluye || '';
+      document.getElementById('formFlyer').value = v.flyer || '';
+      document.getElementById('formDesc').value = v.descripcion || '';
+      document.getElementById('formActivo').checked = !!v.activo;
+      document.getElementById('formDestacado').checked = !!v.destacado;
+      document.getElementById('aiStatus').innerText = '';
+      document.getElementById('viajeModal').classList.add('active');
+    }
+
+    function cerrarModal() {
+      document.getElementById('viajeModal').classList.remove('active');
+    }
+
+    function guardarViaje(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('editIndex').value, 10);
+      
+      const nuevoViaje = {
+        id: index >= 0 ? viajes[index].id : 'viaje-' + Date.now(),
+        titulo: document.getElementById('formTitulo').value.trim(),
+        categoria: document.getElementById('formCategoria').value,
+        precio: document.getElementById('formPrecio').value.trim(),
+        tipoServicio: document.getElementById('formTipoServicio').value.trim(),
+        destino: document.getElementById('formDestino').value.trim(),
+        lugaresVisita: document.getElementById('formLugaresVisita').value.trim(),
+        incluye: document.getElementById('formIncluye').value.trim(),
+        noIncluye: document.getElementById('formNoIncluye').value.trim(),
+        activo: document.getElementById('formActivo').checked,
+        destacado: document.getElementById('formDestacado').checked,
+        descripcion: document.getElementById('formDesc').value.trim(),
+        flyer: document.getElementById('formFlyer').value.trim()
+      };
+
+      if (index >= 0) {
+        viajes[index] = nuevoViaje;
+      } else {
+        viajes.unshift(nuevoViaje);
+      }
+
+      marcarCambio();
+      cerrarModal();
+      renderizar();
+    }
+
+    function marcarCambio() {
+      cambiosPendientes = true;
+      document.getElementById('unsavedBar').classList.add('active');
+    }
+
+    async function descargarViajesJson() {
+      const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
+
+      if ('showSaveFilePicker' in window) {
+        try {
+          if (!fileHandle) {
+            fileHandle = await window.showSaveFilePicker({
+              suggestedName: 'viajes.json',
+              types: [{
+                description: 'Archivo JSON de Catálogo',
+                accept: { 'application/json': ['.json'] }
+              }]
+            });
+          }
+          const writable = await fileHandle.createWritable();
+          await writable.write(jsonStr);
+          await writable.close();
+
+          cambiosPendientes = false;
+          document.getElementById('unsavedBar').classList.remove('active');
+          alert('✅ ¡Cambios guardados directamente en C:\\_catalogo-viajes\\viajes.json con éxito!');
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+          console.warn('Fallback a descarga tradicional:', err);
+        }
+      }
+
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'viajes.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
       cambiosPendientes = false;
       document.getElementById('unsavedBar').classList.remove('active');
-      alert('✅ ¡Cambios guardados directamente en C:\\_catalogo-viajes\\viajes.json con éxito!');
-      return;
-    } catch (err) {
-      if (err.name === 'AbortError') return; // El usuario canceló la ventana
-      console.warn('Fallback a descarga tradicional:', err);
+      alert('📥 viajes.json descargado. Reemplázalo en tu carpeta C:\\_catalogo-viajes\\ y súbelo a GitHub.');
     }
-  }
 
-  // Fallback tradicional de descarga
-  const blob = new Blob([jsonStr], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'viajes.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  cambiosPendientes = false;
-  document.getElementById('unsavedBar').classList.remove('active');
-  alert('📥 viajes.json descargado. Reemplázalo en tu carpeta C:\\_catalogo-viajes\\ y súbelo a GitHub.');
-}
-
-window.addEventListener('DOMContentLoaded', inicializar);
-
+    window.addEventListener('DOMContentLoaded', inicializar);
   </script>
 </body>
 </html>
