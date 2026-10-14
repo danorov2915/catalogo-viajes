@@ -303,7 +303,6 @@
 <body>
 
   <div class="admin-container">
-    
     <header class="admin-header">
       <div class="admin-title">
         <h1>⚙️ Panel de Control de Viajes</h1>
@@ -328,7 +327,6 @@
 
     <div class="viajes-list" id="listaContenedor">
     </div>
-
   </div>
 
   <div class="unsaved-bar" id="unsavedBar">
@@ -405,182 +403,232 @@
   </div>
 
   <script>
-    let viajes = [];
-    let cambiosPendientes = false;
+let viajes = [];
+let cambiosPendientes = false;
 
-    async function inicializar() {
-      try {
-        const res = await fetch('../viajes.json?v=' + Date.now());
-        if (!res.ok) throw new Error("No cargo local");
-        const data = await res.json();
-        viajes = data.viajes || [];
-      } catch (err) {
-        console.warn("Cargando desde GitHub raw:", err);
-        try {
-          const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
-          const dataRaw = await resRaw.json();
-          viajes = dataRaw.viajes || [];
-        } catch (err2) {
-          console.error("Error al cargar viajes:", err2);
-        }
-      }
-      renderizar();
+async function inicializar() {
+  try {
+    const res = await fetch('../viajes.json?v=' + Date.now());
+    if (!res.ok) throw new Error("No cargo local");
+    const data = await res.json();
+    viajes = data.viajes || [];
+  } catch (err) {
+    console.warn("Cargando desde GitHub raw:", err);
+    try {
+      const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
+      const dataRaw = await resRaw.json();
+      viajes = dataRaw.viajes || [];
+    } catch (err2) {
+      console.error("Error al cargar viajes:", err2);
+    }
+  }
+  renderizar();
+}
+
+function renderizar() {
+  const lista = document.getElementById('listaContenedor');
+  const filtroInput = document.getElementById('busquedaInput');
+  const filtro = filtroInput ? filtroInput.value.toLowerCase().trim() : '';
+  const conteo = document.getElementById('conteoViajes');
+
+  const filtrados = viajes.filter(function(v) {
+    if (!v) return false;
+    if (!filtro) return true;
+    const t = (v.titulo || '').toLowerCase();
+    const d = (v.destino || '').toLowerCase();
+    const c = (v.categoria || '').toLowerCase();
+    return t.includes(filtro) || d.includes(filtro) || c.includes(filtro);
+  });
+
+  if (conteo) {
+    conteo.textContent = 'Mostrando ' + filtrados.length + ' de ' + viajes.length + ' viajes';
+  }
+
+  if (!lista) return;
+
+  if (filtrados.length === 0) {
+    lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: #94a3b8;">No se encontraron viajes con ese termino.</div>';
+    return;
+  }
+
+  lista.innerHTML = '';
+  for (let i = 0; i < filtrados.length; i++) {
+    const v = filtrados[i];
+    let indexReal = -1;
+    for (let j = 0; j < viajes.length; j++) {
+      if (viajes[j].id === v.id) { indexReal = j; break; }
     }
 
-    function renderizar() {
-      const lista = document.getElementById('listaContenedor');
-      const filtro = document.getElementById('busquedaInput').value.toLowerCase().trim();
-      const conteo = document.getElementById('conteoViajes');
+    const item = document.createElement('div');
+    item.className = 'viaje-item';
 
-      const filtrados = viajes.filter(function(v) {
-        return !filtro ||
-          (v.titulo && v.titulo.toLowerCase().includes(filtro)) ||
-          (v.destino && v.destino.toLowerCase().includes(filtro)) ||
-          (v.categoria && v.categoria.toLowerCase().includes(filtro));
-      });
+    const img = document.createElement('img');
+    img.src = v.flyer || '../logo.jpg';
+    img.className = 'viaje-thumb';
+    img.alt = v.titulo || 'Flyer';
+    img.onerror = function() { this.src = '../logo.jpg'; };
 
-      conteo.innerText = "Mostrando " + filtrados.length + " de " + viajes.length + " viajes";
+    const info = document.createElement('div');
+    info.className = 'viaje-info';
+    info.innerHTML = '<h4>' + (v.titulo || 'Sin titulo') + '</h4><p>📍 ' + (v.destino || 'Sin especificar') + '</p>';
 
-      if (filtrados.length === 0) {
-        lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No se encontraron viajes con ese termino.</div>';
-        return;
-      }
+    const catDiv = document.createElement('div');
+    catDiv.innerHTML = '<span class="badge-cat">' + (v.categoria || 'General') + '</span>' + (v.destacado ? ' <span style="font-size:0.75rem; color:#facc15;">⭐</span>' : '');
 
-      let html = "";
-      for (let i = 0; i < filtrados.length; i++) {
-        const v = filtrados[i];
-        let indexReal = -1;
-        for (let j = 0; j < viajes.length; j++) {
-          if (viajes[j].id === v.id) { indexReal = j; break; }
-        }
+    const precioDiv = document.createElement('div');
+    precioDiv.className = 'viaje-precio';
+    precioDiv.textContent = v.precio || 'Consultar tarifa';
 
-        html += '<div class="viaje-item">';
-        html += '  <img src="' + v.flyer + '" class="viaje-thumb" alt="' + v.titulo + '" onerror="this.src='../logo.jpg'">';
-        html += '  <div class="viaje-info">';
-        html += '    <h4>' + v.titulo + '</h4>';
-        html += '    <p>📍 ' + (v.destino || "Sin especificar") + '</p>';
-        html += '  </div>';
-        html += '  <div>';
-        html += '    <span class="badge-cat">' + v.categoria + '</span>';
-        if (v.destacado) {
-          html += '    <span style="font-size:0.75rem; color:#facc15;">⭐</span>';
-        }
-        html += '  </div>';
-        html += '  <div class="viaje-precio">' + v.precio + '</div>';
-        html += '  <div title="Activar/Desactivar visibilidad">';
-        html += '    <label class="switch">';
-        html += '      <input type="checkbox" ' + (v.activo ? 'checked' : '') + ' onchange="toggleActivo(' + indexReal + ', this.checked)">';
-        html += '      <span class="slider"></span>';
-        html += '    </label>';
-        html += '  </div>';
-        html += '  <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">';
-        html += '    <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" onclick="abrirModalEditar(' + indexReal + ')">✏️</button>';
-        html += '    <button class="btn btn-danger" style="padding: 0.35rem 0.65rem;" onclick="eliminarViaje(' + indexReal + ')">🗑️</button>';
-        html += '  </div>';
-        html += '</div>';
-      }
+    const switchDiv = document.createElement('div');
+    switchDiv.title = 'Activar/Desactivar visibilidad';
+    const labelSwitch = document.createElement('label');
+    labelSwitch.className = 'switch';
+    const chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.checked = !!v.activo;
+    chk.addEventListener('change', (function(idx) {
+      return function() { toggleActivo(idx, this.checked); };
+    })(indexReal));
+    const spanSlider = document.createElement('span');
+    spanSlider.className = 'slider';
+    labelSwitch.appendChild(chk);
+    labelSwitch.appendChild(spanSlider);
+    switchDiv.appendChild(labelSwitch);
 
-      lista.innerHTML = html;
-    }
+    const actionsDiv = document.createElement('div');
+    actionsDiv.style.display = 'flex';
+    actionsDiv.style.gap = '0.5rem';
+    actionsDiv.style.justifyContent = 'flex-end';
 
-    function filtrarLista() {
-      renderizar();
-    }
+    const btnEdit = document.createElement('button');
+    btnEdit.className = 'btn btn-secondary';
+    btnEdit.style.padding = '0.35rem 0.65rem';
+    btnEdit.textContent = '✏️';
+    btnEdit.addEventListener('click', (function(idx) {
+      return function() { abrirModalEditar(idx); };
+    })(indexReal));
 
-    function toggleActivo(index, activo) {
-      if (viajes[index]) {
-        viajes[index].activo = activo;
-        marcarCambio();
-      }
-    }
+    const btnDel = document.createElement('button');
+    btnDel.className = 'btn btn-danger';
+    btnDel.style.padding = '0.35rem 0.65rem';
+    btnDel.textContent = '🗑️';
+    btnDel.addEventListener('click', (function(idx) {
+      return function() { eliminarViaje(idx); };
+    })(indexReal));
 
-    function eliminarViaje(index) {
-      if (!viajes[index]) return;
-      if (confirm("¿Seguro que deseas eliminar el viaje: \"" + viajes[index].titulo + "\"?")) {
-        viajes.splice(index, 1);
-        marcarCambio();
-        renderizar();
-      }
-    }
+    actionsDiv.appendChild(btnEdit);
+    actionsDiv.appendChild(btnDel);
 
-    function abrirModalNuevo() {
-      document.getElementById('editIndex').value = "-1";
-      document.getElementById('modalTitulo').innerText = "Nuevo Viaje";
-      document.getElementById('viajeForm').reset();
-      document.getElementById('formActivo').checked = true;
-      document.getElementById('viajeModal').classList.add('active');
-    }
+    item.appendChild(img);
+    item.appendChild(info);
+    item.appendChild(catDiv);
+    item.appendChild(precioDiv);
+    item.appendChild(switchDiv);
+    item.appendChild(actionsDiv);
 
-    function abrirModalEditar(index) {
-      const v = viajes[index];
-      if (!v) return;
-      document.getElementById('editIndex').value = index;
-      document.getElementById('modalTitulo').innerText = "Editar: " + v.titulo;
-      document.getElementById('formTitulo').value = v.titulo || '';
-      document.getElementById('formCategoria').value = v.categoria || 'Playa';
-      document.getElementById('formPrecio').value = v.precio || '';
-      document.getElementById('formDestino').value = v.destino || '';
-      document.getElementById('formFlyer').value = v.flyer || '';
-      document.getElementById('formDesc').value = v.descripcion || '';
-      document.getElementById('formActivo').checked = !!v.activo;
-      document.getElementById('formDestacado').checked = !!v.destacado;
-      document.getElementById('viajeModal').classList.add('active');
-    }
+    lista.appendChild(item);
+  }
+}
 
-    function cerrarModal() {
-      document.getElementById('viajeModal').classList.remove('active');
-    }
+function filtrarLista() {
+  renderizar();
+}
 
-    function guardarViaje(e) {
-      e.preventDefault();
-      const index = parseInt(document.getElementById('editIndex').value, 10);
-      
-      const nuevoViaje = {
-        id: index >= 0 ? viajes[index].id : 'viaje-' + Date.now(),
-        titulo: document.getElementById('formTitulo').value.trim(),
-        categoria: document.getElementById('formCategoria').value,
-        precio: document.getElementById('formPrecio').value.trim(),
-        destino: document.getElementById('formDestino').value.trim(),
-        activo: document.getElementById('formActivo').checked,
-        destacado: document.getElementById('formDestacado').checked,
-        descripcion: document.getElementById('formDesc').value.trim(),
-        flyer: document.getElementById('formFlyer').value.trim()
-      };
+function toggleActivo(index, activo) {
+  if (viajes[index]) {
+    viajes[index].activo = activo;
+    marcarCambio();
+  }
+}
 
-      if (index >= 0) {
-        viajes[index] = nuevoViaje;
-      } else {
-        viajes.unshift(nuevoViaje);
-      }
+function eliminarViaje(index) {
+  if (!viajes[index]) return;
+  if (confirm('Seguro que deseas eliminar el viaje: "' + viajes[index].titulo + '"?')) {
+    viajes.splice(index, 1);
+    marcarCambio();
+    renderizar();
+  }
+}
 
-      marcarCambio();
-      cerrarModal();
-      renderizar();
-    }
+function abrirModalNuevo() {
+  document.getElementById('editIndex').value = '-1';
+  document.getElementById('modalTitulo').textContent = 'Nuevo Viaje';
+  document.getElementById('viajeForm').reset();
+  document.getElementById('formActivo').checked = true;
+  document.getElementById('viajeModal').classList.add('active');
+}
 
-    function marcarCambio() {
-      cambiosPendientes = true;
-      document.getElementById('unsavedBar').classList.add('active');
-    }
+function abrirModalEditar(index) {
+  const v = viajes[index];
+  if (!v) return;
+  document.getElementById('editIndex').value = index;
+  document.getElementById('modalTitulo').textContent = 'Editar: ' + v.titulo;
+  document.getElementById('formTitulo').value = v.titulo || '';
+  document.getElementById('formCategoria').value = v.categoria || 'Playa';
+  document.getElementById('formPrecio').value = v.precio || '';
+  document.getElementById('formDestino').value = v.destino || '';
+  document.getElementById('formFlyer').value = v.flyer || '';
+  document.getElementById('formDesc').value = v.descripcion || '';
+  document.getElementById('formActivo').checked = !!v.activo;
+  document.getElementById('formDestacado').checked = !!v.destacado;
+  document.getElementById('viajeModal').classList.add('active');
+}
 
-    function descargarViajesJson() {
-      const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
-      const blob = new Blob([jsonStr], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'viajes.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+function cerrarModal() {
+  document.getElementById('viajeModal').classList.remove('active');
+}
 
-      cambiosPendientes = false;
-      document.getElementById('unsavedBar').classList.remove('active');
-      alert("viajes.json descargado con exito.\n\nSolo subelo a GitHub para publicar los cambios en tu catalogo.");
-    }
+function guardarViaje(e) {
+  e.preventDefault();
+  const index = parseInt(document.getElementById('editIndex').value, 10);
+  
+  const nuevoViaje = {
+    id: index >= 0 ? viajes[index].id : 'viaje-' + Date.now(),
+    titulo: document.getElementById('formTitulo').value.trim(),
+    categoria: document.getElementById('formCategoria').value,
+    precio: document.getElementById('formPrecio').value.trim(),
+    destino: document.getElementById('formDestino').value.trim(),
+    activo: document.getElementById('formActivo').checked,
+    destacado: document.getElementById('formDestacado').checked,
+    descripcion: document.getElementById('formDesc').value.trim(),
+    flyer: document.getElementById('formFlyer').value.trim()
+  };
 
-    window.onload = inicializar;
+  if (index >= 0) {
+    viajes[index] = nuevoViaje;
+  } else {
+    viajes.unshift(nuevoViaje);
+  }
+
+  marcarCambio();
+  cerrarModal();
+  renderizar();
+}
+
+function marcarCambio() {
+  cambiosPendientes = true;
+  document.getElementById('unsavedBar').classList.add('active');
+}
+
+function descargarViajesJson() {
+  const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'viajes.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  cambiosPendientes = false;
+  document.getElementById('unsavedBar').classList.remove('active');
+  alert('viajes.json descargado con exito. Solo subelo a GitHub para publicar los cambios.');
+}
+
+window.addEventListener('DOMContentLoaded', inicializar);
+
   </script>
 </body>
 </html>
