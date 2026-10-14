@@ -581,14 +581,7 @@
       }
     }
 
-    // Auto-login si ya inició sesión
-    window.addEventListener('DOMContentLoaded', () => {
-      try {
-        if (safeGet('admin_autenticado', true) === 'true') {
-          desbloquearDirecto();
-        }
-      } catch(e) {}
-    });
+    // Siempre solicita clave al entrar
 
     function toggleVerClave() {
       const input = document.getElementById('adminPin');
