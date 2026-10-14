@@ -2,13 +2,17 @@
   "viajes": [
     {
       "id": "viaje-01",
-      "titulo": "Viaje & Promoción #01",
-      "categoria": "Playa",
-      "precio": "Consultar tarifa",
-      "destino": "Destino Turístico",
+      "titulo": "Tour Beta Azul a Chipilo: Experiencia Rancho El Tamuin",
+      "categoria": "Aventura",
+      "precio": "Desde $1,200 MXN",
+      "tipoServicio": "Tour privado (Pet Friendly)",
+      "destino": "Puebla",
+      "lugaresVisita": "Chipilo y Rancho El Tamuin",
+      "incluye": "Transporte privado (salida desde Puebla o Atlixco), servicio de guía, fotografías y degustación de quesos italianos",
+      "noIncluye": "Actividades adicionales con costo extra (cuatrimotos, monta a caballo, parapente), alimentos y bebidas no especificados",
       "activo": true,
       "destacado": true,
-      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
+      "descripcion": "Disfruta de una experiencia privada, exclusiva y 100% pet friendly hacia Chipilo y Rancho El Tamuin, ideal para degustar quesos tradicionales y vivir aventuras al aire libre con tu mejor amigo peludo.",
       "flyer": "01.jpg"
     },
     {
