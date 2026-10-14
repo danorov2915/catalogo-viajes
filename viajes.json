@@ -17,13 +17,17 @@
     },
     {
       "id": "viaje-02",
-      "titulo": "Viaje & Promoción #02",
+      "titulo": "Monta a Caballo y Cuatrimoto Ruta Plus",
       "categoria": "Aventura",
-      "precio": "Consultar tarifa",
-      "destino": "Destino Turístico",
+      "precio": "$1,800 MXN",
+      "tipoServicio": "Tour de 1 día / Pet Friendly",
+      "destino": "Chipilo, Puebla",
+      "lugaresVisita": "Rancho El Tamuin",
+      "incluye": "Casco de seguridad, chaleco, explicación de manejo, ruta guiada, fotografías, atención personalizada, 2 bebidas de cortesía",
+      "noIncluye": "Alimentos ni entradas no especificadas",
       "activo": true,
       "destacado": true,
-      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
+      "descripcion": "Vive una aventura completa en tierra y naturaleza con recorridos a caballo y en cuatrimoto. ¡Reserva hoy y disfruta de una experiencia inolvidable junto a tu mascota!",
       "flyer": "02.jpg"
     },
     {
