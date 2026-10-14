@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="data:,">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de Control | Beta Azul Viajes Turisticos</title>
   
@@ -519,9 +520,14 @@
           </label>
         </div>
 
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar en Catálogo</button>
+        <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <div style="font-size: 0.8rem; color: #38bdf8;">
+            💡 Al guardar, recuerda presionar el botón verde <strong>"Guardar viajes.json"</strong> para actualizar tu archivo.
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          </div>
         </div>
       </form>
     </div>
@@ -559,11 +565,17 @@
       if (inp) inp.value = key;
     }
 
+    function sanitizarApiKey(key) {
+      if (!key) return '';
+      // Quitar espacios, saltos de línea y caracteres invisibles que se copian por accidente
+      return key.trim().replace(/[\r\n\t\s]/g, '');
+    }
+
     function guardarApiKey() {
       const inp = document.getElementById('geminiApiKeyInput');
-      const val = inp ? inp.value.trim() : '';
+      const val = inp ? sanitizarApiKey(inp.value) : '';
       localStorage.setItem('gemini_api_key', val);
-      alert('✅ API Key guardada en tu navegador.');
+      alert('✅ API Key guardada y verificada en tu navegador.');
     }
 
     // Analizador Gemini Multimodal
@@ -571,7 +583,8 @@
       const file = fileInput.files[0];
       if (!file) return;
 
-      const apiKey = localStorage.getItem('gemini_api_key') || (document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value.trim() : '');
+      let rawKey = localStorage.getItem('gemini_api_key') || (document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value : '');
+      const apiKey = typeof sanitizarApiKey === 'function' ? sanitizarApiKey(rawKey) : rawKey.trim();
       if (!apiKey) {
         alert('⚠️ Por favor introduce tu Gemini API Key en la barra superior antes de analizar.');
         fileInput.value = '';
@@ -653,12 +666,12 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-        // Modelos vigentes recomendados directamente por Google en la consola: gemini-2.5-flash y gemini-3.8-flash
+        // Lista prioritaria: gemini-3.8-flash (el modelo oficial vigente activo) y gemini-3.1-pro-preview
         const modelos = [
-          { nombre: 'Gemini 2.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' },
-          { nombre: 'Gemini 3.8 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' },
-          { nombre: 'Gemini 2.5 Pro', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=' },
-          { nombre: 'Gemini Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=' }
+          { nombre: 'Gemini 3.8 Flash (Intento 1)', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' },
+          { nombre: 'Gemini 3.8 Flash (Intento 2)', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' },
+          { nombre: 'Gemini 3.1 Pro Preview', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=' },
+          { nombre: 'Gemini 3.8 Flash (Intento 3)', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' }
         ];
 
         let res = null;
