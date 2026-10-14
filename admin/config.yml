@@ -1,0 +1,31 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Carpeta donde se guardan los flyers subidos por Verónica
+media_folder: "images/flyers"
+public_folder: "/images/flyers"
+
+locale: "es"
+
+collections:
+  - name: "viajes"
+    label: "Viajes y Flyers"
+    folder: "content/viajes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título del Viaje", name: "titulo", widget: "string", hint: "Ej: Cancún Todo Incluido 4D/3N" }
+      - { 
+          label: "Categoría", 
+          name: "categoria", 
+          widget: "select", 
+          options: ["Playa", "Aventura", "Senderismo", "Arqueologia", "Coloniales", "Pueblos Magicos", "Mixtos"],
+          default: "Playa"
+        }
+      - { label: "Precio o Tarifa", name: "precio", widget: "string", hint: "Ej: $4,850 MXN o Desde $3,500" }
+      - { label: "Flyer (Imagen)", name: "flyer", widget: "image" }
+      - { label: "Destino / Lugar", name: "destino", widget: "string", hint: "Ej: Oaxaca, Cancún, San Cristóbal" }
+      - { label: "Activo / Visible en catálogo", name: "activo", widget: "boolean", default: true }
+      - { label: "Destacado (Promoción especial)", name: "destacado", widget: "boolean", default: false, required: false }
+      - { label: "Descripción o Notas rápidas", name: "descripcion", widget: "text", required: false, hint: "Notas breves o fechas del viaje" }
