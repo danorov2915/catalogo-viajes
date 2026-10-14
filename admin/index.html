@@ -653,12 +653,11 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-        // Modelos vigentes oficiales de Google Gemini
+        // Lista de endpoints oficiales verificados (priorizando el estándar 1.5-flash-latest)
         const modelos = [
-          { nombre: 'Gemini 2.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' },
-          { nombre: 'Gemini 1.5 Flash Latest', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' },
+          { nombre: 'Gemini 1.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' },
           { nombre: 'Gemini 2.0 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' },
-          { nombre: 'Gemini 1.5 Flash (v1 estable)', url: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' },
+          { nombre: 'Gemini 1.5 Flash (v1)', url: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' },
           { nombre: 'Gemini 1.5 Pro', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=' }
         ];
 
