@@ -624,8 +624,38 @@ function marcarCambio() {
   document.getElementById('unsavedBar').classList.add('active');
 }
 
-function descargarViajesJson() {
+let fileHandle = null;
+
+async function descargarViajesJson() {
   const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
+
+  // Intentar guardar directamente en disco si el navegador lo soporta (Chrome/Edge moderno)
+  if ('showSaveFilePicker' in window) {
+    try {
+      if (!fileHandle) {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: 'viajes.json',
+          types: [{
+            description: 'Archivo JSON de Catálogo',
+            accept: { 'application/json': ['.json'] }
+          }]
+        });
+      }
+      const writable = await fileHandle.createWritable();
+      await writable.write(jsonStr);
+      await writable.close();
+
+      cambiosPendientes = false;
+      document.getElementById('unsavedBar').classList.remove('active');
+      alert('✅ ¡Cambios guardados directamente en C:\\_catalogo-viajes\\viajes.json con éxito!');
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return; // El usuario canceló la ventana
+      console.warn('Fallback a descarga tradicional:', err);
+    }
+  }
+
+  // Fallback tradicional de descarga
   const blob = new Blob([jsonStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -638,7 +668,7 @@ function descargarViajesJson() {
 
   cambiosPendientes = false;
   document.getElementById('unsavedBar').classList.remove('active');
-  alert('viajes.json descargado con exito. Solo subelo a GitHub para publicar los cambios.');
+  alert('📥 viajes.json descargado. Reemplázalo en tu carpeta C:\\_catalogo-viajes\\ y súbelo a GitHub.');
 }
 
 window.addEventListener('DOMContentLoaded', inicializar);
