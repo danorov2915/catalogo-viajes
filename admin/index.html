@@ -756,11 +756,12 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
 
         // Lista prioritaria: Gemini 2.5 Flash como motor principal estable (alta disponibilidad)
         // con fallback a Gemini 3.8 Flash y Gemini 2.5 Flash Lite
+        // Modelos vigentes oficiales recomendados por Google (gemini-3.5-flash-lite y familia 3.x)
         const modelos = [
-          { nombre: 'Gemini 2.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' },
-          { nombre: 'Gemini 2.5 Flash (Reintento)', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' },
-          { nombre: 'Gemini 3.8 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' },
-          { nombre: 'Gemini 2.5 Flash Lite', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=' }
+          { nombre: 'Gemini 3.5 Flash Lite', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' },
+          { nombre: 'Gemini 3.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=' },
+          { nombre: 'Gemini 3.6 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=' },
+          { nombre: 'Gemini 3.8 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' }
         ];
 
         let res = null;
