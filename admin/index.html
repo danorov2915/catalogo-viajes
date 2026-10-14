@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Administración | Beta Azul Viajes Turísticos</title>
+  <title>Panel de Control | Beta Azul Viajes Turisticos</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,7 +93,6 @@
     .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
     .btn-danger:hover { background: rgba(239, 68, 68, 0.4); }
 
-    /* Barra de filtros y búsqueda */
     .controls-bar {
       display: flex;
       gap: 1rem;
@@ -121,7 +120,6 @@
     .search-box input:focus { border-color: var(--accent); }
     .search-box span { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); }
 
-    /* Lista de viajes */
     .viajes-list {
       display: flex;
       flex-direction: column;
@@ -200,7 +198,6 @@
     input:checked + .slider { background-color: var(--success); }
     input:checked + .slider:before { transform: translateX(20px); }
 
-    /* Modal Formulario */
     .modal {
       display: none;
       position: fixed;
@@ -273,7 +270,6 @@
       margin-top: 1.5rem;
     }
 
-    /* Banner de cambios sin guardar */
     .unsaved-bar {
       position: fixed;
       bottom: 1.5rem;
@@ -311,10 +307,10 @@
     <header class="admin-header">
       <div class="admin-title">
         <h1>⚙️ Panel de Control de Viajes</h1>
-        <p>Beta Azul Viajes Turísticos · Verónica Hernández Echeverría</p>
+        <p>Beta Azul Viajes Turisticos - Veronica Hernandez Echeverria</p>
       </div>
       <div class="header-actions">
-        <a href="../" class="btn btn-secondary">← Ver Catálogo Web</a>
+        <a href="../" class="btn btn-secondary">&larr; Ver Catalogo Web</a>
         <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
         <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar y Descargar viajes.json</button>
       </div>
@@ -323,27 +319,23 @@
     <div class="controls-bar">
       <div class="search-box">
         <span>🔍</span>
-        <input type="text" id="busquedaInput" placeholder="Buscar por título, destino o categoría..." oninput="filtrarLista()">
+        <input type="text" id="busquedaInput" placeholder="Buscar por titulo, destino o categoria..." oninput="filtrarLista()">
       </div>
       <div id="conteoViajes" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
         Cargando viajes...
       </div>
     </div>
 
-    <!-- Lista -->
     <div class="viajes-list" id="listaContenedor">
-      <!-- Se inyectan con JS -->
     </div>
 
   </div>
 
-  <!-- Barra flotante de aviso de cambios -->
   <div class="unsaved-bar" id="unsavedBar">
     <span>⚠️ Tienes cambios pendientes de guardar</span>
     <button class="btn btn-success" onclick="descargarViajesJson()">Descargar viajes.json actualizado</button>
   </div>
 
-  <!-- Modal para Crear/Editar Viaje -->
   <div class="modal" id="viajeModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -355,20 +347,20 @@
         <input type="hidden" id="editIndex" value="-1">
 
         <div class="form-group">
-          <label>Título del Viaje / Promoción</label>
+          <label>Titulo del Viaje / Promocion</label>
           <input type="text" id="formTitulo" required placeholder="Ej: Tour Chipilo Cuatrimoto y Quesos">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label>Categoría</label>
+            <label>Categoria</label>
             <select id="formCategoria" required>
               <option value="Playa">🏖️ Playa</option>
               <option value="Aventura">🧗 Aventura</option>
               <option value="Senderismo">🥾 Senderismo</option>
-              <option value="Arqueologia">🏛️ Arqueología</option>
+              <option value="Arqueologia">🏛️ Arqueologia</option>
               <option value="Coloniales">🏰 Coloniales</option>
-              <option value="Pueblos Magicos">✨ Pueblos Mágicos</option>
+              <option value="Pueblos Magicos">✨ Pueblos Magicos</option>
               <option value="Mixtos">🎒 Mixtos</option>
             </select>
           </div>
@@ -380,24 +372,24 @@
         </div>
 
         <div class="form-group">
-          <label>Destino / Ubicación</label>
+          <label>Destino / Ubicacion</label>
           <input type="text" id="formDestino" placeholder="Ej: Chipilo, Puebla">
         </div>
 
         <div class="form-group">
           <label>URL o Nombre del Flyer</label>
           <input type="text" id="formFlyer" required placeholder="Ej: https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/01.jpg">
-          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imágenes nuevas, sube el archivo a GitHub y pega su enlace aquí.</small>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imagenes nuevas, sube el archivo a GitHub y pega su enlace aqui.</small>
         </div>
 
         <div class="form-group">
-          <label>Descripción / Fechas / Notas</label>
-          <textarea id="formDesc" rows="3" placeholder="Información sobre salidas, qué incluye o notas para el cliente..."></textarea>
+          <label>Descripcion / Fechas / Notas</label>
+          <textarea id="formDesc" rows="3" placeholder="Informacion sobre salidas, que incluye o notas para el cliente..."></textarea>
         </div>
 
         <div style="display: flex; gap: 2rem; margin-top: 1rem;">
           <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" id="formActivo" checked style="width: auto;"> Activo en catálogo
+            <input type="checkbox" id="formActivo" checked style="width: auto;"> Activo en catalogo
           </label>
           <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
             <input type="checkbox" id="formDestacado" style="width: auto;"> ⭐ Destacado
@@ -406,7 +398,7 @@
 
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar en Catálogo</button>
+          <button type="submit" class="btn btn-primary">Guardar en Catalogo</button>
         </div>
       </form>
     </div>
@@ -416,18 +408,21 @@
     let viajes = [];
     let cambiosPendientes = false;
 
-    // Cargar viajes.json
     async function inicializar() {
       try {
         const res = await fetch('../viajes.json?v=' + Date.now());
-        if (!res.ok) throw new Error("No cargó local");
+        if (!res.ok) throw new Error("No cargo local");
         const data = await res.json();
         viajes = data.viajes || [];
       } catch (err) {
         console.warn("Cargando desde GitHub raw:", err);
-        const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
-        const dataRaw = await resRaw.json();
-        viajes = dataRaw.viajes || [];
+        try {
+          const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
+          const dataRaw = await resRaw.json();
+          viajes = dataRaw.viajes || [];
+        } catch (err2) {
+          console.error("Error al cargar viajes:", err2);
+        }
       }
       renderizar();
     }
@@ -437,47 +432,55 @@
       const filtro = document.getElementById('busquedaInput').value.toLowerCase().trim();
       const conteo = document.getElementById('conteoViajes');
 
-      const filtrados = viajes.filter(v => {
+      const filtrados = viajes.filter(function(v) {
         return !filtro ||
           (v.titulo && v.titulo.toLowerCase().includes(filtro)) ||
           (v.destino && v.destino.toLowerCase().includes(filtro)) ||
           (v.categoria && v.categoria.toLowerCase().includes(filtro));
       });
 
-      conteo.innerText = `Mostrando ${filtrados.length} de ${viajes.length} viajes`;
+      conteo.innerText = "Mostrando " + filtrados.length + " de " + viajes.length + " viajes";
 
       if (filtrados.length === 0) {
-        lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No se encontraron viajes con ese término.</div>';
+        lista.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No se encontraron viajes con ese termino.</div>';
         return;
       }
 
-      lista.innerHTML = filtrados.map(v => {
-        const indexReal = viajes.findIndex(item => item.id === v.id);
-        return `
-          <div class="viaje-item">
-            <img src="${v.flyer}" class="viaje-thumb" alt="${v.titulo}" onerror="this.src='../images/logo.jpg'">
-            <div class="viaje-info">
-              <h4>${v.titulo}</h4>
-              <p>📍 ${v.destino || 'Sin especificar'}</p>
-            </div>
-            <div>
-              <span class="badge-cat">${v.categoria}</span>
-              ${v.destacado ? '<span style="font-size:0.75rem; color:#facc15;">⭐</span>' : ''}
-            </div>
-            <div class="viaje-precio">${v.precio}</div>
-            <div title="Activar/Desactivar visibilidad">
-              <label class="switch">
-                <input type="checkbox" ${v.activo ? 'checked' : ''} onchange="toggleActivo(${indexReal}, this.checked)">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-              <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" onclick="abrirModalEditar(${indexReal})">✏️</button>
-              <button class="btn btn-danger" style="padding: 0.35rem 0.65rem;" onclick="eliminarViaje(${indexReal})">🗑️</button>
-            </div>
-          </div>
-        `;
-      }).join('');
+      let html = "";
+      for (let i = 0; i < filtrados.length; i++) {
+        const v = filtrados[i];
+        let indexReal = -1;
+        for (let j = 0; j < viajes.length; j++) {
+          if (viajes[j].id === v.id) { indexReal = j; break; }
+        }
+
+        html += '<div class="viaje-item">';
+        html += '  <img src="' + v.flyer + '" class="viaje-thumb" alt="' + v.titulo + '" onerror="this.src='../logo.jpg'">';
+        html += '  <div class="viaje-info">';
+        html += '    <h4>' + v.titulo + '</h4>';
+        html += '    <p>📍 ' + (v.destino || "Sin especificar") + '</p>';
+        html += '  </div>';
+        html += '  <div>';
+        html += '    <span class="badge-cat">' + v.categoria + '</span>';
+        if (v.destacado) {
+          html += '    <span style="font-size:0.75rem; color:#facc15;">⭐</span>';
+        }
+        html += '  </div>';
+        html += '  <div class="viaje-precio">' + v.precio + '</div>';
+        html += '  <div title="Activar/Desactivar visibilidad">';
+        html += '    <label class="switch">';
+        html += '      <input type="checkbox" ' + (v.activo ? 'checked' : '') + ' onchange="toggleActivo(' + indexReal + ', this.checked)">';
+        html += '      <span class="slider"></span>';
+        html += '    </label>';
+        html += '  </div>';
+        html += '  <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">';
+        html += '    <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem;" onclick="abrirModalEditar(' + indexReal + ')">✏️</button>';
+        html += '    <button class="btn btn-danger" style="padding: 0.35rem 0.65rem;" onclick="eliminarViaje(' + indexReal + ')">🗑️</button>';
+        html += '  </div>';
+        html += '</div>';
+      }
+
+      lista.innerHTML = html;
     }
 
     function filtrarLista() {
@@ -485,12 +488,15 @@
     }
 
     function toggleActivo(index, activo) {
-      viajes[index].activo = activo;
-      marcarCambio();
+      if (viajes[index]) {
+        viajes[index].activo = activo;
+        marcarCambio();
+      }
     }
 
     function eliminarViaje(index) {
-      if (confirm(`¿Seguro que deseas eliminar el viaje: "${viajes[index].titulo}"?`)) {
+      if (!viajes[index]) return;
+      if (confirm("¿Seguro que deseas eliminar el viaje: \"" + viajes[index].titulo + "\"?")) {
         viajes.splice(index, 1);
         marcarCambio();
         renderizar();
@@ -507,6 +513,7 @@
 
     function abrirModalEditar(index) {
       const v = viajes[index];
+      if (!v) return;
       document.getElementById('editIndex').value = index;
       document.getElementById('modalTitulo').innerText = "Editar: " + v.titulo;
       document.getElementById('formTitulo').value = v.titulo || '';
@@ -570,9 +577,7 @@
 
       cambiosPendientes = false;
       document.getElementById('unsavedBar').classList.remove('active');
-      alert("¡viajes.json descargado con éxito!
-
-Solo súbelo a GitHub para publicar los cambios en tu catálogo.");
+      alert("viajes.json descargado con exito.\n\nSolo subelo a GitHub para publicar los cambios en tu catalogo.");
     }
 
     window.onload = inicializar;
