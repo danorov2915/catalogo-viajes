@@ -136,10 +136,67 @@ function abrirLightbox(viajeId) {
   if (titleEl) titleEl.innerText = viaje.titulo;
   if (catEl) catEl.innerText = viaje.categoria;
   if (priceEl) priceEl.innerText = viaje.precio || "Consultar tarifa";
-  if (descEl) descEl.innerText = viaje.descripcion || "Consulta detalles, fechas e itinerario directamente con Veronica en Beta Azul Viajes Turisticos.";
+  if (descEl) descEl.innerText = viaje.descripcion || "";
+
+  // Ficha técnica estructurada
+  const lbTipo = document.getElementById("lbTipo");
+  const lbTipoWrap = document.getElementById("lbTipoWrap");
+  if (lbTipo && lbTipoWrap) {
+    if (viaje.tipoServicio) {
+      lbTipo.innerText = viaje.tipoServicio;
+      lbTipoWrap.style.display = "block";
+    } else {
+      lbTipoWrap.style.display = "none";
+    }
+  }
+
+  const lbRuta = document.getElementById("lbRuta");
+  const lbRutaWrap = document.getElementById("lbRutaWrap");
+  if (lbRuta && lbRutaWrap) {
+    if (viaje.lugaresVisita) {
+      lbRuta.innerText = viaje.lugaresVisita;
+      lbRutaWrap.style.display = "block";
+    } else {
+      lbRutaWrap.style.display = "none";
+    }
+  }
+
+  const lbIncluye = document.getElementById("lbIncluye");
+  const lbIncluyeWrap = document.getElementById("lbIncluyeWrap");
+  if (lbIncluye && lbIncluyeWrap) {
+    if (viaje.incluye) {
+      lbIncluye.innerText = viaje.incluye;
+      lbIncluyeWrap.style.display = "block";
+    } else {
+      lbIncluyeWrap.style.display = "none";
+    }
+  }
+
+  const lbNoIncluye = document.getElementById("lbNoIncluye");
+  const lbNoIncluyeWrap = document.getElementById("lbNoIncluyeWrap");
+  if (lbNoIncluye && lbNoIncluyeWrap) {
+    if (viaje.noIncluye) {
+      lbNoIncluye.innerText = viaje.noIncluye;
+      lbNoIncluyeWrap.style.display = "block";
+    } else {
+      lbNoIncluyeWrap.style.display = "none";
+    }
+  }
+
+  // Ocultar la caja de ficha si no hay ningún campo especial
+  const fichaBox = document.getElementById("lightboxFicha");
+  if (fichaBox) {
+    const hayDatos = viaje.tipoServicio || viaje.lugaresVisita || viaje.incluye || viaje.noIncluye;
+    fichaBox.style.display = hayDatos ? "block" : "none";
+  }
 
   if (waBtn) {
-    const msg = encodeURIComponent("¡Hola Veronica! Me interesa informacion detallada del viaje: \"" + viaje.titulo + "\" de Beta Azul Viajes Turisticos que vi en su catalogo.");
+    let msgTxt = "¡Hola Verónica! Me interesa información sobre el viaje: \"" + viaje.titulo + "\"";
+    if (viaje.lugaresVisita) {
+      msgTxt += " (visitando " + viaje.lugaresVisita + ")";
+    }
+    msgTxt += " que vi en el catálogo de Beta Azul Viajes Turísticos.";
+    const msg = encodeURIComponent(msgTxt);
     waBtn.href = "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + msg;
   }
 
