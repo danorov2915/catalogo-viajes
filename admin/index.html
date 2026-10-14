@@ -653,12 +653,12 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-        // Lista de endpoints oficiales verificados (priorizando el estándar 1.5-flash-latest)
+        // Modelos vigentes recomendados directamente por Google en la consola: gemini-2.5-flash y gemini-3.8-flash
         const modelos = [
-          { nombre: 'Gemini 1.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' },
-          { nombre: 'Gemini 2.0 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' },
-          { nombre: 'Gemini 1.5 Flash (v1)', url: 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' },
-          { nombre: 'Gemini 1.5 Pro', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=' }
+          { nombre: 'Gemini 2.5 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' },
+          { nombre: 'Gemini 3.8 Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' },
+          { nombre: 'Gemini 2.5 Pro', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=' },
+          { nombre: 'Gemini Flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=' }
         ];
 
         let res = null;
