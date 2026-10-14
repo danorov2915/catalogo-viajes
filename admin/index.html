@@ -302,6 +302,28 @@
 </head>
 <body>
 
+  <!-- Pantalla de Bloqueo de Seguridad -->
+  <div id="loginOverlay" style="position: fixed; inset: 0; background: #060d1a; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+    <div style="background: #0d1b2a; border: 1px solid rgba(255,255,255,0.12); padding: 2rem; border-radius: 16px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
+      <h2 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.35rem;">Acceso Administrativo</h2>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 1.5rem;">Beta Azul Viajes Turísticos</p>
+      
+      <form onsubmit="verificarClave(event)">
+        <input type="password" id="adminPin" placeholder="Introduce tu clave..." required autofocus
+          style="width: 100%; padding: 0.75rem 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 1rem; text-align: center; letter-spacing: 2px; outline: none; margin-bottom: 1rem;">
+        
+        <div id="loginError" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none;">
+          ❌ Clave incorrecta. Intenta de nuevo.
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 1rem;">
+          Ingresar al Panel
+        </button>
+      </form>
+    </div>
+  </div>
+
   <div class="admin-container">
     <header class="admin-header">
       <div class="admin-title">
@@ -403,6 +425,30 @@
   </div>
 
   <script>
+// Seguridad: Clave de acceso administrativa (Puedes cambiarla cuando quieras)
+const CLAVE_ADMIN = "$$VerDan1829$$";
+
+function verificarClave(e) {
+  e.preventDefault();
+  const pin = document.getElementById('adminPin').value.trim();
+  if (pin === CLAVE_ADMIN) {
+    sessionStorage.setItem('admin_autenticado', 'true');
+    document.getElementById('loginOverlay').style.display = 'none';
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('adminPin').value = '';
+    document.getElementById('adminPin').focus();
+  }
+}
+
+// Si ya ingresó la clave en esta sesión, no se la vuelve a pedir
+if (sessionStorage.getItem('admin_autenticado') === 'true') {
+  document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.getElementById('loginOverlay');
+    if (overlay) overlay.style.display = 'none';
+  });
+}
+
 let viajes = [];
 let cambiosPendientes = false;
 
