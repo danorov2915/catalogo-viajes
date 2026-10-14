@@ -42,10 +42,16 @@ function obtenerViajesFiltrados() {
   return todosLosViajes.filter(function(viaje) {
     if (!viaje.activo) return false;
 
-    const cumpleCat = categoriaActual === "Todos" ||
-      (viaje.categoria && viaje.categoria.toLowerCase() === categoriaActual.toLowerCase());
+    // Filtro seguro por categoria
+    let cumpleCat = false;
+    if (!categoriaActual || categoriaActual === "Todos") {
+      cumpleCat = true;
+    } else if (viaje.categoria && typeof viaje.categoria === "string") {
+      cumpleCat = (viaje.categoria.toLowerCase() === categoriaActual.toLowerCase());
+    }
 
-    const term = busquedaActual.toLowerCase().trim();
+    // Filtro seguro por termino de busqueda
+    const term = (busquedaActual || "").toLowerCase().trim();
     const cumpleTerm = !term ||
       (viaje.titulo && viaje.titulo.toLowerCase().includes(term)) ||
       (viaje.destino && viaje.destino.toLowerCase().includes(term)) ||
@@ -154,12 +160,13 @@ function cerrarLightbox() {
 document.addEventListener("DOMContentLoaded", function() {
   cargarViajes();
 
-  const filterBtns = document.querySelectorAll(".filter-btn");
+  // Seleccionar SOLO botones que tengan data-category (ignorar el enlace <a> de Administrar)
+  const filterBtns = document.querySelectorAll("button.filter-btn[data-category]");
   filterBtns.forEach(function(btn) {
     btn.addEventListener("click", function() {
       filterBtns.forEach(function(b) { b.classList.remove("active"); });
       btn.classList.add("active");
-      categoriaActual = btn.getAttribute("data-category");
+      categoriaActual = btn.getAttribute("data-category") || "Todos";
       renderizarViajes();
     });
   });
