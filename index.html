@@ -47,7 +47,7 @@
   <!-- Contenedor Principal -->
   <main class="main-container">
 
-    <!-- Filtros por Categoría -->
+    <!-- Filtros por Categoría con Botón de Administración integrado -->
     <nav class="filter-bar" aria-label="Filtros de viaje">
       <button class="filter-btn active" data-category="Todos">Todos</button>
       <button class="filter-btn" data-category="Playa">🏖️ Playa</button>
@@ -57,6 +57,7 @@
       <button class="filter-btn" data-category="Coloniales">🏰 Coloniales</button>
       <button class="filter-btn" data-category="Pueblos Magicos">✨ Pueblos Mágicos</button>
       <button class="filter-btn" data-category="Mixtos">🎒 Mixtos</button>
+      <a href="./admin/" class="filter-btn admin-filter-btn" title="Acceso al panel de administración" style="text-decoration: none; border-color: rgba(56, 189, 248, 0.35); background: rgba(14, 165, 233, 0.15); color: #38bdf8;">⚙️ Administrar</a>
     </nav>
 
     <!-- Conteo de resultados -->
@@ -103,11 +104,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Botón flotante para acceder al Panel de Administración -->
-  <a href="./admin/" class="admin-badge-btn" title="Acceso al panel de administración">
-    🔒 Panel Administrador
-  </a>
 
   <!-- Footer -->
   <footer class="footer">
