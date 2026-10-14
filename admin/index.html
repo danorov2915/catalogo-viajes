@@ -463,7 +463,11 @@ function renderizar() {
     item.className = 'viaje-item';
 
     const img = document.createElement('img');
-    img.src = v.flyer || '../logo.jpg';
+    let flyerUrl = v.flyer || '../logo.jpg';
+    if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../')) {
+      flyerUrl = '../' + flyerUrl;
+    }
+    img.src = flyerUrl;
     img.className = 'viaje-thumb';
     img.alt = v.titulo || 'Flyer';
     img.onerror = function() { this.src = '../logo.jpg'; };
