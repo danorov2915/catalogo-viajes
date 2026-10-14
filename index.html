@@ -1,124 +1,130 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang=es>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset=UTF-8>
+  <meta name=viewport content=width=device-width, initial-scale=1.0>
   <title>Beta Azul Viajes Turísticos | Catálogo Oficial de Viajes</title>
-  <meta name="description" content="Catálogo de viajes y promociones exclusivas de Beta Azul Viajes Turísticos con Verónica Hernández Echeverría. Playa, Aventura, Senderismo, Pueblos Mágicos y más. Cotiza al WhatsApp +52 244 447 0237.">
+  <meta name=description content=Catálogo de viajes de Beta Azul Viajes Turísticos con Verónica Hernández Echeverría. Playa, Aventura, Senderismo y más. WhatsApp: +52 244 447 0237.>
   
-  <!-- Tipografía Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel=preconnect href=https://fonts.googleapis.com>
+  <link rel=preconnect href=https://fonts.gstatic.com crossorigin>
+  <link href=https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap rel=stylesheet>
   
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css">
-  
-  <!-- Netlify Identity -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <link rel=stylesheet href=styles.css>
 </head>
 <body>
 
-  <!-- Encabezado / Hero con Logo Oficial -->
-  <header class="header">
-    <div class="logo-container" style="margin-bottom: 1rem; display: flex; justify-content: center;">
-      <img src="images/logo.jpg" alt="Beta Azul Viajes Turísticos" style="max-height: 120px; width: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.25);">
-    </div>
-    <div class="brand-badge">✨ Catálogo Oficial de Temporada</div>
-    <h1>Beta Azul Viajes Turísticos</h1>
-    <p>Atención personalizada con Verónica Hernández Echeverría. Toca cualquier flyer para ver el itinerario completo o cotizar al instante por WhatsApp.</p>
-    
-    <!-- Barra de Búsqueda -->
-    <div class="search-container">
-      <span class="search-icon">🔍</span>
-      <input 
-        type="text" 
-        id="searchInput" 
-        class="search-input" 
-        placeholder="Buscar por destino, tipo o nombre de viaje..."
-      >
+  <!-- Encabezado compacto y elegante: Logo a la izquierda, título y buscador -->
+  <header class=header>
+    <div class=header-inner>
+      
+      <!-- Lado Izquierdo: Logotipo Oficial -->
+      <div class=logo-brand-wrap>
+        <img src=logo.jpg alt=Logo Beta Azul Viajes Turísticos class=header-logo>
+      </div>
+
+      <!-- Centro: Título, info y contacto -->
+      <div class=header-info>
+        <div class=brand-badge>✨ Catálogo Oficial 2026</div>
+        <h1>Beta Azul Viajes Turísticos</h1>
+        <p class=header-sub>Atención personalizada: <strong>Verónica Hernández Echeverría</strong> · WhatsApp: <strong>+52 244 447 0237</strong></p>
+      </div>
+
+      <!-- Lado Derecho: Buscador rápido -->
+      <div class=header-search-wrap>
+        <div class=search-container>
+          <span class=search-icon>🔍</span>
+          <input 
+            type=text 
+            id=searchInput 
+            class=search-input 
+            placeholder=Buscar destino o tipo...
+          >
+        </div>
+      </div>
+
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <main class="main-container">
+  <!-- Contenedor Principal con Fondo Azul Cielo Nocturno -->
+  <main class=main-container>
     
-    <!-- Filtros por Categoría -->
-    <nav class="filter-bar" aria-label="Filtros de viaje">
-      <button class="filter-btn active" data-category="Todos">Todos</button>
-      <button class="filter-btn" data-category="Playa">🏖️ Playa</button>
-      <button class="filter-btn" data-category="Aventura">🧗 Aventura</button>
-      <button class="filter-btn" data-category="Senderismo">🥾 Senderismo</button>
-      <button class="filter-btn" data-category="Arqueologia">🏛️ Arqueología</button>
-      <button class="filter-btn" data-category="Coloniales">🏰 Coloniales</button>
-      <button class="filter-btn" data-category="Pueblos Magicos">✨ Pueblos Mágicos</button>
-      <button class="filter-btn" data-category="Mixtos">🎒 Mixtos</button>
+    <!-- Filtros por Categoría en barra flotante -->
+    <nav class=filter-bar aria-label=Filtros de viaje>
+      <button class=filter-btn active data-category=Todos>Todos</button>
+      <button class=filter-btn data-category=Playa>🏖️ Playa</button>
+      <button class=filter-btn data-category=Aventura>🧗 Aventura</button>
+      <button class=filter-btn data-category=Senderismo>🥾 Senderismo</button>
+      <button class=filter-btn data-category=Arqueologia>🏛️ Arqueología</button>
+      <button class=filter-btn data-category=Coloniales>🏰 Coloniales</button>
+      <button class=filter-btn data-category=Pueblos Magicos>✨ Pueblos Mágicos</button>
+      <button class=filter-btn data-category=Mixtos>🎒 Mixtos</button>
     </nav>
 
     <!-- Conteo de resultados -->
-    <div class="results-info">
-      <span id="resultsCount">Cargando catálogo...</span>
+    <div class=results-info>
+      <span id=resultsCount>Cargando catálogo...</span>
       <span>Actualizado en tiempo real</span>
     </div>
 
     <!-- Grid donde se insertan los flyers dinámicamente -->
-    <section class="flyers-grid" id="flyersGrid">
+    <section class=flyers-grid id=flyersGrid>
       <!-- Los flyers se cargan desde app.js -->
     </section>
 
   </main>
 
   <!-- Modal Lightbox (Visualizador en grande de Flyers) -->
-  <div class="lightbox-modal" id="lightboxModal" onclick="cerrarLightbox()">
-    <div class="lightbox-container" onclick="event.stopPropagation()">
-      <button class="lightbox-close" onclick="cerrarLightbox()" title="Cerrar flyer">✕</button>
+  <div class=lightbox-modal id=lightboxModal onclick=cerrarLightbox()>
+    <div class=lightbox-container onclick=event.stopPropagation()>
+      <button class=lightbox-close onclick=cerrarLightbox() title=Cerrar flyer>✕</button>
       
-      <div class="lightbox-body">
-        <div class="lightbox-img-wrap">
-          <img src="" alt="Flyer Ampliado" id="lightboxImg" class="lightbox-img">
-        </div>
-        
-        <div class="lightbox-details">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-            <div>
-              <span class="badge-category" id="lightboxCategory" style="position: static; display: inline-block; margin-bottom: 0.5rem;"></span>
-              <h2 id="lightboxTitle" style="font-size: 1.4rem; font-weight: 800; color: #0f172a;"></h2>
-            </div>
-            <div style="text-align: right;">
-              <span class="price-label">Tarifa</span>
-              <div id="lightboxPrice" style="font-size: 1.5rem; font-weight: 800; color: #0284c7;"></div>
-            </div>
-          </div>
-          
-          <p id="lightboxDesc" style="color: #475569; margin-bottom: 1.25rem; font-size: 0.95rem;"></p>
-          
-          <a href="#" id="lightboxWaBtn" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" style="width: 100%; padding: 0.85rem; font-size: 1.05rem;">
-            💬 Cotizar este viaje con Verónica por WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+      <div class=lightbox-body>
+        <div class=lightbox-img-wrap>
+          <img src=" alt=Flyer Ampliado id=lightboxImg class=lightbox-img>
+ </div>
+ 
+ <div class=lightbox-details>
+ <div style=display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;>
+ <div>
+ <span class=badge-category id=lightboxCategory style=position: static; display: inline-block; margin-bottom: 0.5rem;></span>
+ <h2 id=lightboxTitle style=font-size: 1.4rem; font-weight: 800; color: #f8fafc;></h2>
+ </div>
+ <div style=text-align: right;>
+ <span class=price-label>Tarifa</span>
+ <div id=lightboxPrice style=font-size: 1.5rem; font-weight: 800; color: #38bdf8;></div>
+ </div>
+ </div>
+ 
+ <p id=lightboxDesc style=color: #cbd5e1; margin-bottom: 1.25rem; font-size: 0.95rem;></p>
+ 
+ <a href=# id=lightboxWaBtn target=_blank rel=noopener noreferrer class=btn-whatsapp style=width: 100%; padding: 0.85rem; font-size: 1.05rem;>
+ 💬 Cotizar este viaje con Verónica por WhatsApp
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
 
-  <!-- Botón flotante para acceder al Panel de Administración -->
-  <a href="./admin/index.html" class="admin-badge-btn" title="Acceso al panel de administración">
-    🔒 Panel Administrador
-  </a>
+ <!-- Botón flotante para acceder al Panel de Administración -->
+ <a href=./admin/ class=admin-badge-btn title=Acceso al panel de administración>
+ 🔒 Panel Administrador
+ </a>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div style="margin-bottom: 0.75rem;">
-      <strong style="color: #0f172a; font-size: 1.1rem;">Beta Azul Viajes Turísticos</strong>
-    </div>
-    <p>Atención personalizada: Verónica Hernández Echeverría</p>
-    <p style="margin-top: 0.35rem; font-size: 0.95rem; color: #0284c7; font-weight: 700;">
-      📱 WhatsApp: +52 244 447 0237
-    </p>
-    <p style="margin-top: 0.6rem; font-size: 0.8rem; color: #94a3b8;">
-      © 2026 Beta Azul Viajes Turísticos. Todos los derechos reservados.
-    </p>
-  </footer>
+ <!-- Footer -->
+ <footer class=footer>
+ <div style=margin-bottom: 0.5rem;>
+ <strong style=color: #f8fafc; font-size: 1.1rem;>Beta Azul Viajes Turísticos</strong>
+ </div>
+ <p style=color: #94a3b8;>Atención personalizada: Verónica Hernández Echeverría</p>
+ <p style=margin-top: 0.35rem; font-size: 0.95rem; color: #38bdf8; font-weight: 700;>
+ 📱 WhatsApp: +52 244 447 0237
+ </p>
+ <p style=margin-top: 0.6rem; font-size: 0.8rem; color: #64748b;>
+ © 2026 Beta Azul Viajes Turísticos. Todos los derechos reservados.
+ </p>
+ </footer>
 
-  <script src="app.js"></script>
+ <script src=app.js></script>
 </body>
 </html>
