@@ -467,10 +467,20 @@ function renderizar() {
     if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../')) {
       flyerUrl = '../' + flyerUrl;
     }
-    img.src = flyerUrl;
     img.className = 'viaje-thumb';
     img.alt = v.titulo || 'Flyer';
-    img.onerror = function() { this.src = '../logo.jpg'; };
+    img.onerror = function() {
+      // Si falla en '../01.jpg', intenta en '../images/flyers/01.jpg' antes de poner el logo
+      if (!this.dataset.triedSubfolder && !this.src.includes('images/flyers/')) {
+        this.dataset.triedSubfolder = 'true';
+        let filename = (v.flyer || '').split('/').pop();
+        this.src = '../images/flyers/' + filename;
+      } else {
+        this.onerror = null;
+        this.src = '../logo.jpg';
+      }
+    };
+    img.src = flyerUrl;
 
     const info = document.createElement('div');
     info.className = 'viaje-info';
