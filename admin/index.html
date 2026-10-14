@@ -381,7 +381,7 @@
         <a href="../" class="btn btn-secondary">&larr; Ver Catálogo Web</a>
         <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesión</button>
         <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
-        <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar y Descargar viajes.json</button>
+        
       </div>
     </header>
 
@@ -414,10 +414,7 @@
     </div>
   </div>
 
-  <div class="unsaved-bar" id="unsavedBar">
-    <span>⚠️ Tienes cambios pendientes de guardar</span>
-    <button class="btn btn-success" onclick="descargarViajesJson()">Guardar viajes.json actualizado</button>
-  </div>
+
 
   <!-- Modal para Crear/Editar Viaje con IA -->
   <div class="modal" id="viajeModal">
@@ -521,8 +518,8 @@
         </div>
 
         <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-          <div style="font-size: 0.8rem; color: #38bdf8;">
-            💡 Al guardar, recuerda presionar el botón verde <strong>"Guardar viajes.json"</strong> para actualizar tu archivo.
+          <div style="font-size: 0.8rem; color: #4ade80;">
+            💾 Se guardará y descargará automáticamente en tu archivo <strong>viajes.json</strong>.
           </div>
           <div style="display: flex; gap: 0.75rem;">
             <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
@@ -903,19 +900,19 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       renderizar();
     }
 
-    function toggleActivo(index, activo) {
+    async function toggleActivo(index, activo) {
       if (viajes[index]) {
         viajes[index].activo = activo;
-        marcarCambio();
+        await descargarViajesJson();
       }
     }
 
-    function eliminarViaje(index) {
+    async function eliminarViaje(index) {
       if (!viajes[index]) return;
       if (confirm('Seguro que deseas eliminar el viaje: "' + viajes[index].titulo + '"?')) {
         viajes.splice(index, 1);
-        marcarCambio();
         renderizar();
+        await descargarViajesJson();
       }
     }
 
@@ -953,7 +950,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       document.getElementById('viajeModal').classList.remove('active');
     }
 
-    function guardarViaje(e) {
+    async function guardarViaje(e) {
       e.preventDefault();
       const index = parseInt(document.getElementById('editIndex').value, 10);
       
@@ -979,9 +976,9 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         viajes.unshift(nuevoViaje);
       }
 
-      marcarCambio();
       cerrarModal();
       renderizar();
+      await descargarViajesJson();
     }
 
     function marcarCambio() {
