@@ -17,17 +17,13 @@
     },
     {
       "id": "viaje-02",
-      "titulo": "Monta a Caballo y Cuatrimoto Ruta Plus",
+      "titulo": "Viaje & Promoción #02",
       "categoria": "Aventura",
-      "precio": "$1,800 MXN",
-      "tipoServicio": "Tour de 1 día / Pet Friendly",
-      "destino": "Chipilo, Puebla",
-      "lugaresVisita": "Rancho El Tamuin",
-      "incluye": "Casco de seguridad, chaleco, explicación de manejo, ruta guiada, fotografías, atención personalizada y 2 bebidas de cortesía",
-      "noIncluye": "Alimentos ni entradas no especificadas",
+      "precio": "Consultar tarifa",
+      "destino": "Destino Turístico",
       "activo": true,
       "destacado": true,
-      "descripcion": "Vive una aventura completa en tierra y naturaleza con recorridos a caballo y en cuatrimoto. ¡Reserva ahora y disfruta de esta experiencia pet friendly con Beta Azul Viajes Turísticos!",
+      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
       "flyer": "02.jpg"
     },
     {
@@ -524,6 +520,98 @@
       "destacado": false,
       "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
       "flyer": "48.jpg"
+    }
+  ],
+  "galeria": [
+    {
+      "id": "gal-01",
+      "titulo": "Excursión en Autobús Turístico",
+      "destino": "Zacatlán de las Manzanas",
+      "categoria": "Pueblos Magicos",
+      "foto": "images/viajeros/autobus-turistico.jpg",
+      "testimonio": "Excelente viaje en autobús de lujo, súper cómodo, seguro y con un ambiente familiar inmejorable.",
+      "autor": "Familia Sánchez"
+    },
+    {
+      "id": "gal-02",
+      "titulo": "Diversión y Sol en la Playa",
+      "destino": "Playa Acapulco / Costa",
+      "categoria": "Playa",
+      "foto": "images/viajeros/amigos-playa.jpg",
+      "testimonio": "El mejor fin de semana con amigos. Todo organizado a la perfección por Beta Azul.",
+      "autor": "Amigos de Viaje"
+    },
+    {
+      "id": "gal-03",
+      "titulo": "Cosecha en Huertos Tradicionales",
+      "destino": "Zacatlán de las Manzanas",
+      "categoria": "Familiar",
+      "foto": "images/viajeros/familia-manzanas.jpg",
+      "testimonio": "Nuestros hijos quedaron maravillados recolectando manzanas y conociendo la sierra.",
+      "autor": "Familia Morales"
+    },
+    {
+      "id": "gal-04",
+      "titulo": "Tirolesa en Bosque de Niebla",
+      "destino": "Zacatlán, Puebla",
+      "categoria": "Aventura",
+      "foto": "images/viajeros/aventura-tirolesa.jpg",
+      "testimonio": "Una descarga de adrenalina total a 2000 msnm con guías certificados y equipo seguro.",
+      "autor": "Carlos M."
+    },
+    {
+      "id": "gal-05",
+      "titulo": "Mirador de Cristal en la Sierra",
+      "destino": "Sierra Norte de Puebla",
+      "categoria": "Pueblos Magicos",
+      "foto": "images/viajeros/mirador-cristal.jpg",
+      "testimonio": "Vistas panorámicas increíbles entre la niebla. ¡Una experiencia que jamás olvidaremos!",
+      "autor": "Mariana y Amigas"
+    },
+    {
+      "id": "gal-06",
+      "titulo": "Aventura Salvaje en Africam Safari",
+      "destino": "Puebla",
+      "categoria": "Familiar",
+      "foto": "images/viajeros/africam-safari.jpg",
+      "testimonio": "Increíble recorrido viendo animales de cerca y conviviendo en pareja con un clima excelente.",
+      "autor": "Andrea y Roberto"
+    },
+    {
+      "id": "gal-07",
+      "titulo": "Senderismo y Cascadas Naturales",
+      "destino": "Cuetzalan / Sierra de Puebla",
+      "categoria": "Aventura",
+      "foto": "images/viajeros/cascada-aventura.jpg",
+      "testimonio": "Agua cristalina, naturaleza pura y la atención de Verónica siempre al pendiente de nuestra seguridad.",
+      "autor": "Viajeros Aventureros"
+    },
+    {
+      "id": "gal-08",
+      "titulo": "Paseo Nocturno en Calles Coloniales",
+      "destino": "Val'Quirico / Puebla",
+      "categoria": "Coloniales",
+      "foto": "images/viajeros/noche-colonial.jpg",
+      "testimonio": "Noche mágica con luces, arquitectura colonial y una cena espectacular.",
+      "autor": "Pareja Viajera"
+    },
+    {
+      "id": "gal-09",
+      "titulo": "Mural Vitromosaico Monumental",
+      "destino": "Zacatlán de las Manzanas",
+      "categoria": "Pueblos Magicos",
+      "foto": "images/viajeros/mural-zacatlan.jpg",
+      "testimonio": "Arte, tradición y colores hermosos. Una parada obligatoria en este gran Pueblo Mágico.",
+      "autor": "Viajeros Beta Azul"
+    },
+    {
+      "id": "gal-10",
+      "titulo": "Ruta 4x4 Cuatrimotos Nocturna",
+      "destino": "Chipilo / Atlixco",
+      "categoria": "Aventura",
+      "foto": "images/viajeros/cuatrimoto-nocturna.png",
+      "testimonio": "Aventura nocturna en cuatrimoto con luces led y casco de protección. ¡Adrenalina pura garantizada!",
+      "autor": "Clientes Felices"
     }
   ]
 }

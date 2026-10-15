@@ -235,6 +235,114 @@
     input:checked + .slider { background-color: var(--success); }
     input:checked + .slider:before { transform: translateX(20px); }
 
+    /* Pestañas de Navegación del Admin */
+    .admin-nav-tabs {
+      display: flex;
+      gap: 0.75rem;
+      border-bottom: 2px solid var(--card-border);
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-tab-btn:hover {
+      color: var(--accent);
+    }
+
+    .admin-tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--primary);
+    }
+
+    .admin-tab-count {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.78rem;
+    }
+
+    .admin-tab-btn.active .admin-tab-count {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Grid de Galería en Admin */
+    .galeria-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .galeria-admin-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s;
+    }
+
+    .galeria-admin-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .galeria-admin-thumb-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .galeria-admin-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .galeria-admin-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.4rem;
+    }
+
+    .galeria-admin-quote {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-style: italic;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.5rem 0.75rem;
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      margin: 0.4rem 0;
+    }
+
+    .galeria-admin-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: auto;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -415,31 +523,67 @@
   <div class="admin-container">
     <header class="admin-header">
       <div class="admin-title">
-        <h1>⚙️ Panel de Control de Viajes</h1>
+        <h1>⚙️ Panel de Control & Catálogo</h1>
         <p>Beta Azul Viajes Turísticos - Verónica Hernández Echeverría</p>
       </div>
       <div class="header-actions">
         <a href="../index.html" class="btn btn-secondary">&larr; Ver Catálogo Web</a>
         <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesión</button>
         <button class="btn btn-secondary" onclick="abrirModalAjustes()">⚙️ Claves y Conexión</button>
-        <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
-        
+        <button class="btn btn-primary" id="btnAccionPrincipal" onclick="ejecutarAccionPrincipal()">+ Agregar Nuevo Viaje</button>
       </div>
     </header>
 
+    <!-- Pestañas de Navegación del Panel: Catálogo vs Galería -->
+    <div class="admin-nav-tabs">
+      <button type="button" class="admin-tab-btn active" id="tabNavViajes" onclick="cambiarSeccionAdmin('viajes')">
+        🗺️ Catálogo de Viajes <span class="admin-tab-count" id="countTabViajes">0</span>
+      </button>
+      <button type="button" class="admin-tab-btn" id="tabNavGaleria" onclick="cambiarSeccionAdmin('galeria')">
+        📸 Galería de Experiencias & Fotos <span class="admin-tab-count" id="countTabGaleria">0</span>
+      </button>
+    </div>
 
-
-    <div class="controls-bar">
-      <div class="search-box">
-        <span>🔍</span>
-        <input type="text" id="busquedaInput" placeholder="Buscar por título, destino o categoría..." oninput="filtrarLista()">
+    <!-- SECCIÓN 1: Catálogo de Viajes (Flyers) -->
+    <div id="seccionViajes">
+      <div class="controls-bar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="busquedaInput" placeholder="Buscar por título, destino o categoría..." oninput="filtrarLista()">
+        </div>
+        <div id="conteoViajes" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
+          Cargando viajes...
+        </div>
       </div>
-      <div id="conteoViajes" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
-        Cargando viajes...
+
+      <div class="viajes-list" id="listaContenedor">
       </div>
     </div>
 
-    <div class="viajes-list" id="listaContenedor">
+    <!-- SECCIÓN 2: Galería de Experiencias y Testimonios -->
+    <div id="seccionGaleria" style="display: none;">
+      <div style="background: rgba(2, 132, 199, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h3 style="color: #f8fafc; font-size: 1.15rem; margin-bottom: 0.25rem;">📸 Galería de Salidas Grupales y Clientes</h3>
+          <p style="color: #cbd5e1; font-size: 0.85rem;">
+            Aquí Verónica puede agregar las mejores fotos de cada viaje en grupo y las imágenes que mandan los clientes con sus opiniones.
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="abrirModalNuevaFoto()">+ Agregar Foto a la Galería</button>
+      </div>
+
+      <div class="controls-bar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="busquedaGaleriaInput" placeholder="Buscar por destino, autor o testimonio..." oninput="filtrarGaleriaAdmin()">
+        </div>
+        <div id="conteoGaleria" style="align-self: center; color: var(--text-muted); font-size: 0.9rem;">
+          Cargando fotos de la galería...
+        </div>
+      </div>
+
+      <div class="galeria-admin-grid" id="listaGaleriaContenedor">
+      </div>
     </div>
   </div>
 
@@ -559,6 +703,86 @@
     </div>
   </div>
 
+  <!-- Modal para Agregar/Editar Foto y Testimonio de la Galería -->
+  <div class="modal" id="galeriaModalForm">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="galeriaModalTitulo">📸 Agregar Foto a la Galería</h3>
+        <button class="modal-close" onclick="cerrarModalGaleriaAdmin()">✕</button>
+      </div>
+
+      <form id="formGaleria" onsubmit="guardarFotoGaleriaForm(event)">
+        <div class="form-group">
+          <label>Título de la Foto o Experiencia</label>
+          <input type="text" id="galTitulo" required placeholder="Ej: Excursión en Autobús Turístico Zacatlán">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Destino</label>
+            <input type="text" id="galDestino" required placeholder="Ej: Zacatlán de las Manzanas">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="galCategoria">
+              <option value="Pueblos Magicos">✨ Pueblos Mágicos</option>
+              <option value="Aventura">🧗 Aventura & Naturaleza</option>
+              <option value="Familiar">👨‍👩‍👧‍👦 Familias & Parejas</option>
+              <option value="Playa">🏖️ Playa</option>
+              <option value="Coloniales">🏰 Coloniales</option>
+              <option value="Senderismo">🥾 Senderismo</option>
+              <option value="Arqueologia">🏛️ Arqueología</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ruta o Nombre de Archivo de la Foto</label>
+          <input type="text" id="galFoto" required placeholder="Ej: images/viajeros/autobus-turistico.jpg">
+          <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 0.25rem;">
+            Puedes usar imágenes existentes en la carpeta images/viajeros/ o seleccionar una a continuación.
+          </small>
+        </div>
+
+        <div class="form-group" style="background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); padding: 0.75rem; border-radius: 8px;">
+          <label style="font-size: 0.8rem; margin-bottom: 0.5rem; display: block; color: #cbd5e1;">
+            📁 Cargar foto desde teléfono o computadora
+          </label>
+          <input type="file" id="galFilePicker" accept="image/*" onchange="procesarFotoArchivo(this)" style="font-size: 0.8rem; border: none; padding: 0; background: transparent; color: #94a3b8;">
+          <div id="galPreviewWrap" style="display: none; margin-top: 0.75rem; text-align: center;">
+            <img id="galPreviewImg" src="" alt="Vista previa" style="max-height: 140px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Testimonio / Opinión de los Viajeros</label>
+          <textarea id="galTestimonio" rows="3" required placeholder="Ej: Un viaje inolvidable, todo súper coordinado, el autobús muy cómodo y la atención de Verónica excelente..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Cliente, Familia o Grupo</label>
+          <input type="text" id="galAutor" required placeholder="Ej: Familia Sánchez / Amigos de Puebla">
+        </div>
+
+        <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <div style="font-size: 0.8rem; color: #4ade80;">
+            💾 Se sincronizará con tu catálogo web.
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="cerrarModalGaleriaAdmin()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar en Galería</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Barra Flotante de Cambios Pendientes para Guardar -->
+  <div class="unsaved-bar" id="unsavedBar">
+    <span>⚠️ Tienes cambios pendientes en tu catálogo</span>
+    <button class="btn btn-success" onclick="descargarViajesJson()">💾 Guardar / Publicar Cambios</button>
+  </div>
+
   <script>
     const CLAVE_ADMIN = "$$VerDan1829$$";
     const memStore = {};
@@ -628,6 +852,9 @@
     }
 
     let viajes = [];
+    let galeria = [];
+    let seccionActual = 'viajes';
+    let editandoGaleriaIndex = -1;
     let cambiosPendientes = false;
     let fileHandle = null;
 
@@ -856,20 +1083,25 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         if (!res.ok) throw new Error("No cargo local");
         const data = await res.json();
         viajes = data.viajes || [];
+        galeria = data.galeria || [];
       } catch (err) {
         console.warn("Cargando desde GitHub raw:", err);
         try {
           const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
           const dataRaw = await resRaw.json();
           viajes = dataRaw.viajes || [];
+          galeria = dataRaw.galeria || [];
         } catch (err2) {
           console.error("Error al cargar viajes:", err2);
         }
       }
+      actualizarContadoresTabs();
       renderizar();
+      renderizarGaleriaAdmin();
     }
 
     function renderizar() {
+      actualizarContadoresTabs();
       const lista = document.getElementById('listaContenedor');
       const filtroInput = document.getElementById('busquedaInput');
       const filtro = filtroInput ? filtroInput.value.toLowerCase().trim() : '';
@@ -1130,14 +1362,243 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       }
     }
 
+    /* =========================================================
+       FUNCIONES DE GESTIÓN DE GALERÍA Y SECCIONES DEL PANEL
+       ========================================================= */
+
+    function cambiarSeccionAdmin(seccion) {
+      seccionActual = seccion;
+      const tabViajes = document.getElementById('tabNavViajes');
+      const tabGaleria = document.getElementById('tabNavGaleria');
+      const secViajes = document.getElementById('seccionViajes');
+      const secGaleria = document.getElementById('seccionGaleria');
+      const btnAccion = document.getElementById('btnAccionPrincipal');
+
+      if (seccion === 'viajes') {
+        if (tabViajes) tabViajes.classList.add('active');
+        if (tabGaleria) tabGaleria.classList.remove('active');
+        if (secViajes) secViajes.style.display = 'block';
+        if (secGaleria) secGaleria.style.display = 'none';
+        if (btnAccion) {
+          btnAccion.textContent = '+ Agregar Nuevo Viaje';
+        }
+      } else {
+        if (tabGaleria) tabGaleria.classList.add('active');
+        if (tabViajes) tabViajes.classList.remove('active');
+        if (secViajes) secViajes.style.display = 'none';
+        if (secGaleria) secGaleria.style.display = 'block';
+        if (btnAccion) {
+          btnAccion.textContent = '+ Agregar Foto a Galería';
+        }
+        renderizarGaleriaAdmin();
+      }
+    }
+
+    function ejecutarAccionPrincipal() {
+      if (seccionActual === 'viajes') {
+        abrirModalNuevo();
+      } else {
+        abrirModalNuevaFoto();
+      }
+    }
+
+    function actualizarContadoresTabs() {
+      const cViajes = document.getElementById('countTabViajes');
+      const cGaleria = document.getElementById('countTabGaleria');
+      if (cViajes) cViajes.textContent = viajes.length;
+      if (cGaleria) cGaleria.textContent = galeria.length;
+    }
+
+    function renderizarGaleriaAdmin() {
+      actualizarContadoresTabs();
+      const grid = document.getElementById('listaGaleriaContenedor');
+      const filtroInput = document.getElementById('busquedaGaleriaInput');
+      const filtro = filtroInput ? filtroInput.value.toLowerCase().trim() : '';
+      const conteo = document.getElementById('conteoGaleria');
+
+      const filtrados = galeria.filter(function(g) {
+        if (!g) return false;
+        if (!filtro) return true;
+        const t = (g.titulo || '').toLowerCase();
+        const d = (g.destino || '').toLowerCase();
+        const c = (g.categoria || '').toLowerCase();
+        const a = (g.autor || '').toLowerCase();
+        const q = (g.testimonio || '').toLowerCase();
+        return t.includes(filtro) || d.includes(filtro) || c.includes(filtro) || a.includes(filtro) || q.includes(filtro);
+      });
+
+      if (conteo) {
+        conteo.textContent = 'Mostrando ' + filtrados.length + ' de ' + galeria.length + ' fotos';
+      }
+
+      if (!grid) return;
+
+      if (filtrados.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: #94a3b8;">No hay fotos registradas con ese término.<br><br><button type="button" class="btn btn-primary" onclick="abrirModalNuevaFoto()">+ Agregar Primera Foto</button></div>';
+        return;
+      }
+
+      grid.innerHTML = '';
+      filtrados.forEach(function(item) {
+        let indexReal = -1;
+        for (let j = 0; j < galeria.length; j++) {
+          if (galeria[j] === item || (galeria[j].id && galeria[j].id === item.id)) {
+            indexReal = j;
+            break;
+          }
+        }
+
+        const card = document.createElement('div');
+        card.className = 'galeria-admin-card';
+
+        let fotoSrc = item.foto || '../logo.jpg';
+        if (fotoSrc && !fotoSrc.startsWith('http') && !fotoSrc.startsWith('../') && !fotoSrc.startsWith('data:')) {
+          fotoSrc = '../' + fotoSrc;
+        }
+
+        card.innerHTML = `
+          <div class="galeria-admin-thumb-wrap">
+            <img src="${fotoSrc}" class="galeria-admin-thumb" alt="${item.titulo || 'Foto'}" onerror="this.src='../logo.jpg'">
+            <span class="badge-cat" style="position: absolute; top: 8px; left: 8px; background: rgba(2, 132, 199, 0.85); color: #fff;">${item.categoria || 'Experiencia'}</span>
+          </div>
+          <div class="galeria-admin-body">
+            <h4 style="font-size: 1rem; font-weight: 700; color: #f8fafc;">${item.titulo || 'Sin título'}</h4>
+            <div style="font-size: 0.8rem; color: #38bdf8;">📍 ${item.destino || 'Destino'}</div>
+            <div style="color: #facc15; font-size: 0.85rem;">⭐⭐⭐⭐⭐</div>
+            <div class="galeria-admin-quote">“${item.testimonio || ''}”</div>
+            <div style="font-size: 0.78rem; color: #94a3b8; font-weight: 600; text-align: right;">— ${item.autor || 'Cliente'}</div>
+            <div class="galeria-admin-actions">
+              <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem;" onclick="editarFotoGaleria(${indexReal})">✏️ Editar</button>
+              <button type="button" class="btn btn-danger" style="padding: 0.4rem 0.75rem; font-size: 0.82rem;" onclick="eliminarFotoGaleria(${indexReal})">🗑️ Eliminar</button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function filtrarGaleriaAdmin() {
+      renderizarGaleriaAdmin();
+    }
+
+    function abrirModalNuevaFoto() {
+      editandoGaleriaIndex = -1;
+      const modal = document.getElementById('galeriaModalForm');
+      const titulo = document.getElementById('galeriaModalTitulo');
+      if (titulo) titulo.textContent = '📸 Agregar Foto a la Galería';
+      document.getElementById('formGaleria').reset();
+      document.getElementById('galPreviewWrap').style.display = 'none';
+      if (modal) modal.classList.add('active');
+    }
+
+    function editarFotoGaleria(idx) {
+      if (idx < 0 || idx >= galeria.length) return;
+      editandoGaleriaIndex = idx;
+      const item = galeria[idx];
+
+      const modal = document.getElementById('galeriaModalForm');
+      const titulo = document.getElementById('galeriaModalTitulo');
+      if (titulo) titulo.textContent = '✏️ Editar Foto de la Galería';
+
+      document.getElementById('galTitulo').value = item.titulo || '';
+      document.getElementById('galDestino').value = item.destino || '';
+      document.getElementById('galCategoria').value = item.categoria || 'Pueblos Magicos';
+      document.getElementById('galFoto').value = item.foto || '';
+      document.getElementById('galTestimonio').value = item.testimonio || '';
+      document.getElementById('galAutor').value = item.autor || '';
+
+      const previewWrap = document.getElementById('galPreviewWrap');
+      const previewImg = document.getElementById('galPreviewImg');
+      if (item.foto) {
+        let pSrc = item.foto;
+        if (!pSrc.startsWith('http') && !pSrc.startsWith('../') && !pSrc.startsWith('data:')) {
+          pSrc = '../' + pSrc;
+        }
+        previewImg.src = pSrc;
+        previewWrap.style.display = 'block';
+      } else {
+        previewWrap.style.display = 'none';
+      }
+
+      if (modal) modal.classList.add('active');
+    }
+
+    function cerrarModalGaleriaAdmin() {
+      const modal = document.getElementById('galeriaModalForm');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function procesarFotoArchivo(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('galPreviewImg').src = dataUrl;
+        document.getElementById('galPreviewWrap').style.display = 'block';
+        document.getElementById('galFoto').value = 'images/viajeros/' + file.name;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function guardarFotoGaleriaForm(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const titulo = document.getElementById('galTitulo').value.trim();
+      const destino = document.getElementById('galDestino').value.trim();
+      const categoria = document.getElementById('galCategoria').value;
+      const foto = document.getElementById('galFoto').value.trim();
+      const testimonio = document.getElementById('galTestimonio').value.trim();
+      const autor = document.getElementById('galAutor').value.trim();
+
+      const nuevoItem = {
+        id: (editandoGaleriaIndex >= 0 && galeria[editandoGaleriaIndex].id) ? galeria[editandoGaleriaIndex].id : ('gal-' + Date.now().toString(36)),
+        titulo: titulo,
+        destino: destino,
+        categoria: categoria,
+        foto: foto,
+        testimonio: testimonio,
+        autor: autor
+      };
+
+      if (editandoGaleriaIndex >= 0) {
+        galeria[editandoGaleriaIndex] = nuevoItem;
+      } else {
+        galeria.unshift(nuevoItem);
+      }
+
+      cerrarModalGaleriaAdmin();
+      renderizarGaleriaAdmin();
+      marcarCambio();
+    }
+
+    function eliminarFotoGaleria(idx) {
+      if (idx < 0 || idx >= galeria.length) return;
+      const nombre = galeria[idx].titulo || 'esta foto';
+      if (!confirm('¿Seguro que deseas eliminar "' + nombre + '" de la galería?')) return;
+
+      galeria.splice(idx, 1);
+      renderizarGaleriaAdmin();
+      marcarCambio();
+    }
+
+    /* =========================================================
+       DESCARGA / PUBLICACIÓN EN GITHUB
+       ========================================================= */
+
     async function descargarViajesJson() {
-      const jsonStr = JSON.stringify({ viajes: viajes }, null, 2);
+      const jsonStr = JSON.stringify({ viajes: viajes, galeria: galeria }, null, 2);
       const ghToken = safeGet('github_token');
 
       // Si tiene configurado el token de GitHub, guardar DIRECTAMENTE en la nube
       if (ghToken) {
         try {
           await guardarEnGitHubDirecto(jsonStr, ghToken);
+          cambiosPendientes = false;
+          const ub = document.getElementById('unsavedBar');
+          if (ub) ub.classList.remove('active');
           alert('🚀 ¡Publicado automáticamente en GitHub Pages en tiempo real!\n\nTus clientes ya pueden ver los cambios en internet.');
           return;
         } catch (err) {
@@ -1147,8 +1608,6 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       }
 
       // Fallback a disco duro si no hay token de GitHub configurado
-
-      // 1. Si el navegador soporta File System Access (Chrome/Edge en https o localhost)
       if ('showSaveFilePicker' in window) {
         try {
           if (!fileHandle) {
@@ -1164,10 +1623,14 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
           await writable.write(jsonStr);
           await writable.close();
 
+          cambiosPendientes = false;
+          const ub = document.getElementById('unsavedBar');
+          if (ub) ub.classList.remove('active');
+
           alert('✅ ¡viajes.json guardado con éxito!\n\nRecuerda subir este archivo viajes.json a GitHub para que los clientes vean los cambios.');
           return;
         } catch (err) {
-          if (err.name === 'AbortError') return; // El usuario canceló la ventana
+          if (err.name === 'AbortError') return;
           console.warn('showSaveFilePicker falló o fue bloqueado, usando descarga estándar:', err);
         }
       }
@@ -1182,6 +1645,10 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+
+      cambiosPendientes = false;
+      const ub = document.getElementById('unsavedBar');
+      if (ub) ub.classList.remove('active');
 
       alert('📥 viajes.json descargado.\n\nCópialo a tu carpeta C:\\_catalogo-viajes\\ y súbelo a GitHub para publicar los cambios.');
     }
