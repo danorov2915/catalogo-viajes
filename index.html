@@ -30,7 +30,7 @@
       <div class="header-info">
         <div class="brand-badge">✨ Catálogo Oficial 2026</div>
         <h1>Beta Azul Viajes Turísticos</h1>
-        <p class="header-sub">Atención personalizada: <strong>Verónica Hernández Echeverría</strong> · WhatsApp: <strong>+52 244 447 0237</strong></p>
+        <p class="header-sub">Atención: <strong>Verónica Hernández Echeverría</strong> · <a href="tel:+522444470237" class="header-phone-link" title="Llamar directo a Verónica">📞 <strong>+52 244 447 0237</strong></a> · <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Tengo%20una%20consulta%20sobre%20los%20viajes%20de%20Beta%20Azul%20Viajes%20Tur%C3%ADsticos." target="_blank" rel="noopener noreferrer" class="header-wa-link" title="Mandar WhatsApp a Verónica">💬 <strong>WhatsApp</strong></a> · <a href="#faqSection" class="header-faq-link" title="Ver Preguntas Frecuentes">❓ <strong>Preguntas Frecuentes</strong></a></p>
       </div>
 
       <!-- Derecha: Buscador -->
@@ -47,9 +47,66 @@
   <!-- Contenedor Principal -->
   <main class="main-container">
 
+    <!-- Barra de Acreditación Oficial SECTUR / RNT -->
+    <div class="trust-banner">
+      <div class="trust-banner-info">
+        <div class="trust-badge-icon">🛡️</div>
+        <div>
+          <div class="trust-title">
+            Agencia Registrada ante SECTUR
+            <span class="trust-tag">✓ RNT Oficial Verificado</span>
+          </div>
+          <div class="trust-subtitle">
+            No. de Registro Oficial: <strong>0421019199141</strong> · Prestador Certificado en Atlixco, Puebla
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="btn-certificados" onclick="abrirModalCertificados('rnt')">
+          📜 Ver Acreditaciones Oficiales
+        </button>
+        <a href="#faqSection" class="btn-certificados" style="text-decoration: none; background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.15); color: #cbd5e1;">
+          ❓ Preguntas Frecuentes
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 Pilares de Garantía y Confianza -->
+    <div class="guarantees-grid">
+      <div class="guarantee-card">
+        <div class="guarantee-icon">🛡️</div>
+        <div class="guarantee-text">
+          <h4>Registro Nacional de Turismo</h4>
+          <p>Agencia formalmente inscrita y avalada ante la Secretaría de Turismo (SECTUR).</p>
+        </div>
+      </div>
+      <div class="guarantee-card">
+        <div class="guarantee-icon">🚌</div>
+        <div class="guarantee-text">
+          <h4>Transporte Seguro & Reglamentado</h4>
+          <p>Unidades turísticas autorizadas con Seguro de Viajero de cobertura médica amplia.</p>
+        </div>
+      </div>
+      <div class="guarantee-card">
+        <div class="guarantee-icon">🐾</div>
+        <div class="guarantee-text">
+          <h4>Especialistas Pet Friendly</h4>
+          <p>Tours, senderos y cuatrimotos 100% adaptados para viajar con tus mascotas.</p>
+        </div>
+      </div>
+      <div class="guarantee-card">
+        <div class="guarantee-icon">💳</div>
+        <div class="guarantee-text">
+          <h4>Reserva Fácil y Transparente</h4>
+          <p>Aparta con anticipo accesible y liquida con total confianza antes de abordar.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Filtros por Categoría con Botón de Administración integrado -->
     <nav class="filter-bar" aria-label="Filtros de viaje">
       <button class="filter-btn active" data-category="Todos">Todos</button>
+      <button class="filter-btn" data-category="Pet Friendly">🐾 Con Mascota</button>
       <button class="filter-btn" data-category="Playa">🏖️ Playa</button>
       <button class="filter-btn" data-category="Aventura">🧗 Aventura</button>
       <button class="filter-btn" data-category="Senderismo">🥾 Senderismo</button>
@@ -57,7 +114,7 @@
       <button class="filter-btn" data-category="Coloniales">🏰 Coloniales</button>
       <button class="filter-btn" data-category="Pueblos Magicos">✨ Pueblos Mágicos</button>
       <button class="filter-btn" data-category="Mixtos">🎒 Mixtos</button>
-      <a href="./admin/" class="filter-btn admin-filter-btn" title="Administracion" style="text-decoration: none; border-color: rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 0.5rem 0.85rem;" aria-label="Administracion">⚙️</a>
+      <a href="./admin/index.html" class="filter-btn admin-filter-btn" title="Administracion" style="text-decoration: none; border-color: rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 0.5rem 0.85rem;" aria-label="Administracion">⚙️</a>
     </nav>
 
     <!-- Conteo de resultados -->
@@ -69,6 +126,51 @@
     <!-- Grid donde se insertan los flyers dinámicamente -->
     <section class="flyers-grid" id="flyersGrid">
       <!-- Los flyers se cargan desde app.js -->
+    </section>
+
+    <!-- Banner: Viajes a la Medida / Grupos -->
+    <section class="custom-trip-banner">
+      <div class="custom-trip-content">
+        <h3>🚐 ¿Viajas con tu familia, escuela o grupo de amigos?</h3>
+        <p>Organizamos viajes privados y tours exclusivos a la medida. Incluye transporte turístico autorizado, itinerario personalizado y seguro de viajero. Salidas desde Puebla y Atlixco.</p>
+      </div>
+      <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Me%20interesa%20cotizar%20un%20viaje%20privado%20a%20la%20medida%20para%20un%20grupo%20familiar/amigos%20con%20Beta%20Azul." target="_blank" rel="noopener noreferrer" class="btn-custom-wa">
+        💬 Cotizar Viaje a la Medida con Verónica
+      </a>
+    </section>
+
+    <!-- Preguntas Frecuentes (FAQ) -->
+    <section class="faq-section" id="faqSection">
+      <div class="faq-header">
+        <h3>Preguntas Frecuentes</h3>
+        <p>Resolvemos las dudas más habituales antes de viajar con nosotros</p>
+      </div>
+      <div class="faq-grid">
+        <details class="faq-item" open>
+          <summary class="faq-question">¿Cómo aparto mi lugar para un viaje?</summary>
+          <div class="faq-answer">
+            Apartas muy fácil con un anticipo accesible por persona mediante transferencia bancaria o depósito en OXXO. Te enviamos de inmediato tu confirmación oficial y liquidas el resto con total tranquilidad antes de abordar.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">¿De dónde son los puntos de salida?</summary>
+          <div class="faq-answer">
+            Nuestros puntos de salida habituales son céntricos y seguros en la ciudad de <strong>Puebla</strong> y en <strong>Atlixco</strong>. En tours privados podemos coordinar punto de salida exclusivo para tu grupo.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">¿Cómo funcionan los tours con mascotas (Pet Friendly)?</summary>
+          <div class="faq-answer">
+            ¡Amamos a los lomitos! En las experiencias marcadas como Pet Friendly contamos con rutas, hidratación y transportes preparados para ellos. Solo te pedimos llevar su correa, placa de identificación y cuidar su bienestar durante el recorrido.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">¿Cuentan con registro oficial ante SECTUR?</summary>
+          <div class="faq-answer">
+            Sí. Somos una agencia de viajes 100% formal inscrita en el <strong>Registro Nacional de Turismo (RNT No. 0421019199141)</strong> y contamos con el Reconocimiento oficial de <strong>Compromiso Turístico 2026</strong> emitido por la Secretaría de Turismo del Gobierno de México.
+          </div>
+        </details>
+      </div>
     </section>
 
   </main>
@@ -117,6 +219,40 @@
             💬 Cotizar este viaje con Verónica por WhatsApp
           </a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Certificados Oficiales (SECTUR / RNT) -->
+  <div class="cert-modal" id="certificadosModal" onclick="cerrarModalCertificados()">
+    <div class="cert-container" onclick="event.stopPropagation()">
+      <div class="cert-header">
+        <div class="cert-tabs">
+          <button type="button" class="cert-tab-btn active" id="tabBtnRnt" onclick="cambiarTabCertificado('rnt')">
+            🏛️ Certificado RNT Oficial
+          </button>
+          <button type="button" class="cert-tab-btn" id="tabBtnSectur" onclick="cambiarTabCertificado('sectur')">
+            ⭐ Reconocimiento SECTUR 2026
+          </button>
+        </div>
+        <button type="button" class="cert-close" onclick="cerrarModalCertificados()" title="Cerrar">✕</button>
+      </div>
+
+      <div class="cert-content" id="tabPanelRnt">
+        <img src="images/rnt-oficial.jpg" alt="Certificado RNT Oficial" class="cert-img" onerror="this.src='rnt-oficial.jpg'">
+        <p class="cert-caption">
+          <strong>Registro Nacional de Turismo: No. 0421019199141</strong><br>
+          Emitido a favor de: <strong>Beta Azul Viajes Turísticos / Verónica Hernández Echeverría</strong><br>
+          Domicilio registrado: San Diego Acapulco, Atlixco, Puebla · Vigencia Oficial con Código QR de Verificación.
+        </p>
+      </div>
+
+      <div class="cert-content" id="tabPanelSectur" style="display: none;">
+        <img src="images/reconocimiento-sectur-2026.png" alt="Reconocimiento SECTUR 2026" class="cert-img" onerror="this.src='reconocimiento-sectur-2026.png'">
+        <p class="cert-caption">
+          <strong>Reconocimiento Oficial de Compromiso Turístico 2026</strong><br>
+          Otorgado por la <strong>Secretaría de Turismo del Gobierno de México</strong> a Beta Azul Viajes Turísticos por cumplimiento de la Ley General de Turismo.
+        </p>
       </div>
     </div>
   </div>

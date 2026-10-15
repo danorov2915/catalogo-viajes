@@ -38,6 +38,29 @@ async function cargarViajes() {
   }
 }
 
+function esViajePetFriendly(v) {
+  if (!v) return false;
+  const texto = [
+    v.categoria,
+    v.titulo,
+    v.tipoServicio,
+    v.descripcion,
+    v.incluye,
+    v.lugaresVisita
+  ].join(" ").toLowerCase();
+  return texto.includes("pet") || texto.includes("mascota") || texto.includes("peludo") || texto.includes("kraken") || texto.includes("kaizer");
+}
+
+function esFechaAbierta(v) {
+  if (!v) return false;
+  const texto = [
+    v.tipoServicio,
+    v.titulo,
+    v.descripcion
+  ].join(" ").toLowerCase();
+  return texto.includes("privado") || texto.includes("abierta") || texto.includes("personaliz") || texto.includes("a tu medida");
+}
+
 function obtenerViajesFiltrados() {
   return todosLosViajes.filter(function(viaje) {
     if (!viaje.activo) return false;
@@ -46,6 +69,8 @@ function obtenerViajesFiltrados() {
     let cumpleCat = false;
     if (!categoriaActual || categoriaActual === "Todos") {
       cumpleCat = true;
+    } else if (categoriaActual === "Pet Friendly") {
+      cumpleCat = esViajePetFriendly(viaje);
     } else if (viaje.categoria && typeof viaje.categoria === "string") {
       cumpleCat = (viaje.categoria.toLowerCase() === categoriaActual.toLowerCase());
     }
@@ -59,6 +84,27 @@ function obtenerViajesFiltrados() {
 
     return cumpleCat && cumpleTerm;
   });
+}
+
+function fallbackFlyer(img) {
+  if (!img) return;
+  const original = img.getAttribute("src") || "";
+  const filename = original.split("/").pop().split("?")[0];
+  if (!filename) return;
+
+  if (!img.dataset.retryLevel) {
+    img.dataset.retryLevel = "1";
+    img.src = "_Flyers/" + filename;
+  } else if (img.dataset.retryLevel === "1") {
+    img.dataset.retryLevel = "2";
+    img.src = "images/flyers/" + filename;
+  } else if (img.dataset.retryLevel === "2") {
+    img.dataset.retryLevel = "3";
+    img.src = filename;
+  } else {
+    img.onerror = null;
+    img.src = "logo.jpg";
+  }
 }
 
 function renderizarViajes() {
@@ -83,9 +129,12 @@ function renderizarViajes() {
     const msg = encodeURIComponent("¡Hola Veronica! Me interesa informacion sobre el viaje: \"" + v.titulo + "\" de Beta Azul Viajes Turisticos que vi en su catalogo web.");
     const waLink = "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + msg;
 
+    const esPet = esViajePetFriendly(v);
+    const abierta = esFechaAbierta(v);
+
     html += '<article class="flyer-card">';
     html += '  <div class="flyer-img-wrap" onclick="abrirLightbox(\'' + v.id + '\')">';
-    html += '    <img src="' + v.flyer + '" alt="Flyer ' + v.titulo + '" class="flyer-img" loading="lazy">';
+    html += '    <img src="' + v.flyer + '" alt="Flyer ' + v.titulo + '" class="flyer-img" loading="lazy" onerror="fallbackFlyer(this)">';
     html += '    <span class="badge-category">' + (v.categoria || "Viaje") + '</span>';
     if (v.destacado) {
       html += '    <span class="badge-featured">★ Destacado</span>';
@@ -96,6 +145,10 @@ function renderizarViajes() {
     html += '    <div>';
     html += '      <h3 class="flyer-title">' + v.titulo + '</h3>';
     
+    if (esPet) {
+      html += '      <span class="pill-pet">🐾 Con Mascota / Pet Friendly</span>';
+    }
+
     // Si tiene ruta o lugares que visita, mostrarlo destacado
     if (v.lugaresVisita) {
       html += '      <p class="flyer-location" style="color: #38bdf8; font-weight: 600;">📍 Visita: ' + v.lugaresVisita + '</p>';
@@ -106,6 +159,8 @@ function renderizarViajes() {
     // Si tiene tipo o modalidad (ej. Tour de 1 día, Pet Friendly)
     if (v.tipoServicio) {
       html += '      <p style="font-size: 0.78rem; color: #a7f3d0; margin-top: 0.2rem;">⏱️ ' + v.tipoServicio + '</p>';
+    } else if (abierta) {
+      html += '      <p style="font-size: 0.78rem; color: #38bdf8; margin-top: 0.2rem;">🟢 Tour Privado / Fechas Abiertas</p>';
     }
 
     // Mini resumen de inclusiones si existen
@@ -150,7 +205,11 @@ function abrirLightbox(viajeId) {
   const descEl = document.getElementById("lightboxDesc");
   const waBtn = document.getElementById("lightboxWaBtn");
 
-  if (imgEl) imgEl.src = viaje.flyer;
+  if (imgEl) {
+    imgEl.dataset.retryLevel = "";
+    imgEl.onerror = function() { fallbackFlyer(this); };
+    imgEl.src = viaje.flyer;
+  }
   if (titleEl) titleEl.innerText = viaje.titulo;
   if (catEl) catEl.innerText = viaje.categoria;
   if (priceEl) priceEl.innerText = viaje.precio || "Consultar tarifa";
@@ -232,6 +291,42 @@ function cerrarLightbox() {
   }
 }
 
+function abrirModalCertificados(tab) {
+  const modal = document.getElementById("certificadosModal");
+  if (!modal) return;
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+  if (tab) {
+    cambiarTabCertificado(tab);
+  }
+}
+
+function cerrarModalCertificados() {
+  const modal = document.getElementById("certificadosModal");
+  if (!modal) return;
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function cambiarTabCertificado(tabId) {
+  const btnRnt = document.getElementById("tabBtnRnt");
+  const btnSectur = document.getElementById("tabBtnSectur");
+  const panelRnt = document.getElementById("tabPanelRnt");
+  const panelSectur = document.getElementById("tabPanelSectur");
+
+  if (tabId === "rnt") {
+    if (btnRnt) btnRnt.classList.add("active");
+    if (btnSectur) btnSectur.classList.remove("active");
+    if (panelRnt) panelRnt.style.display = "block";
+    if (panelSectur) panelSectur.style.display = "none";
+  } else {
+    if (btnSectur) btnSectur.classList.add("active");
+    if (btnRnt) btnRnt.classList.remove("active");
+    if (panelRnt) panelRnt.style.display = "none";
+    if (panelSectur) panelSectur.style.display = "block";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   cargarViajes();
 
@@ -255,6 +350,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") cerrarLightbox();
+    if (e.key === "Escape") {
+      cerrarLightbox();
+      cerrarModalCertificados();
+    }
   });
 });
