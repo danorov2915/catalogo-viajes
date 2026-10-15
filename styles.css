@@ -1425,3 +1425,494 @@ html, body {
   margin-top: 0.25rem;
   line-height: 1.3;
 }
+
+/* =========================================================
+   ESTILOS BASE DEL MENÚ HAMBURGUESA & DRAWER MÓVIL
+   ========================================================= */
+.btn-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.btn-hamburger:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #38bdf8;
+}
+
+.hamburger-bar {
+  width: 20px;
+  height: 2px;
+  background: #38bdf8;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hamburger.active .hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.btn-hamburger.active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.btn-hamburger.active .hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.header-search-mobile {
+  display: none;
+}
+
+.mobile-filter-strip {
+  display: none;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.75);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-menu-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 86%;
+  max-width: 340px;
+  background: #08111f;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 3001;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.25rem 1.1rem;
+  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.8);
+}
+
+.mobile-menu-drawer.active {
+  transform: translateX(0);
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.mobile-menu-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-close:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.mobile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.mobile-quick-btn {
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.mobile-wa-btn {
+  background: #25d366;
+  color: #042f0e;
+}
+
+.mobile-phone-btn {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.mobile-menu-section-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin: 0.75rem 0 0.5rem 0;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-menu-link {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.mobile-menu-link:hover {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.mobile-menu-link .m-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.mobile-categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.mobile-cat-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  width: 100%;
+}
+
+.mobile-cat-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #38bdf8;
+}
+
+.mobile-cat-item.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #38bdf8;
+  font-weight: 700;
+}
+
+/* =========================================================
+   ADAPTACIÓN RESPONSIVA PROFESIONAL PARA TELÉFONOS (MOBILE)
+   ========================================================= */
+@media (max-width: 768px) {
+  /* Encabezado limpio y organizado en celular */
+  .header {
+    padding: 0.65rem 0.85rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  .header-inner {
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .logo-brand-wrap img {
+    height: 44px !important;
+    width: 44px !important;
+    max-width: 44px !important;
+    border-radius: 8px;
+  }
+
+  .header-info h1 {
+    font-size: 1.05rem;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .brand-badge {
+    font-size: 0.65rem;
+    padding: 0.05rem 0.4rem;
+    margin-bottom: 0.1rem;
+  }
+
+  /* Ocultar textos largos del header en móvil para evitar desorden */
+  .header-sub {
+    display: none !important;
+  }
+
+  /* Ocultar el buscador dentro del header superior */
+  .header-search-wrap {
+    display: none !important;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .btn-hamburger {
+    display: flex !important;
+  }
+
+  /* Buscador móvil debajo del logo */
+  .header-search-mobile {
+    display: block !important;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .header-search-mobile .search-input {
+    width: 100%;
+    padding: 0.6rem 0.85rem 0.6rem 2.2rem;
+    font-size: 0.85rem;
+    border-radius: 20px;
+  }
+
+  /* Contenedor principal en celular */
+  .main-container {
+    margin: 0.85rem auto 2.5rem;
+    padding: 0 0.85rem;
+  }
+
+  /* Ocultar la barra horizontal de 12 botones que desordenaba la pantalla */
+  .filter-bar {
+    display: none !important;
+  }
+
+  /* Mostrar la barra compacta de filtro activo con disparador de menú */
+  .mobile-filter-strip {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #0d1b2a, #13273e);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 12px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    gap: 0.5rem;
+  }
+
+  .mobile-filter-left {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .mobile-filter-label {
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+
+  .mobile-active-cat-name {
+    font-size: 0.92rem;
+    color: #38bdf8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-filter-btns {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .btn-mobile-pill-galeria {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(56, 189, 248, 0.15));
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.35rem 0.65rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .btn-mobile-menu-trigger {
+    background: #0284c7;
+    color: #fff;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: inherit;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+  }
+
+  /* Barra de SECTUR / RNT en celular */
+  .trust-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .trust-banner-info {
+    gap: 0.65rem;
+  }
+
+  .trust-title {
+    font-size: 0.92rem;
+  }
+
+  .trust-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .btn-certificados {
+    width: 100%;
+    justify-content: center;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  /* 4 Pilares de Garantía en celular */
+  .guarantees-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .guarantee-card {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .guarantee-icon {
+    font-size: 1.3rem;
+  }
+
+  .guarantee-text h4 {
+    font-size: 0.85rem;
+  }
+
+  .guarantee-text p {
+    font-size: 0.76rem;
+  }
+
+  /* Cuadrícula de Flyers en celular: 1 columna grande, legible y cómoda */
+  .flyers-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .flyer-card {
+    border-radius: 14px;
+  }
+
+  /* Banner de viajes a la medida en celular */
+  .custom-trip-banner {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
+  .custom-trip-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .custom-trip-content p {
+    font-size: 0.82rem;
+  }
+
+  .btn-custom-wa {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* FAQ en celular */
+  .faq-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .faq-question {
+    font-size: 0.92rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .faq-answer {
+    font-size: 0.82rem;
+    padding: 0.85rem 1rem;
+  }
+
+  /* Modales en celular */
+  .modal-dialog {
+    padding: 1rem;
+  }
+
+  .lightbox-content {
+    grid-template-columns: 1fr;
+    max-height: 92vh;
+  }
+
+  .lightbox-img-wrap {
+    max-height: 45vh;
+  }
+
+  .lightbox-info {
+    padding: 1.1rem;
+    max-height: 45vh;
+    overflow-y: auto;
+  }
+}

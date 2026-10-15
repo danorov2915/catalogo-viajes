@@ -195,6 +195,8 @@ function toggleFavorito(viajeId, e) {
 function actualizarContadorFavoritos() {
   const el = document.getElementById('favCount');
   if (el) el.innerText = favoritos.length;
+  const elMobile = document.getElementById('mobileFavCount');
+  if (elMobile) elMobile.innerText = favoritos.length;
 }
 
 function cotizarFavoritosPorWhatsApp() {
@@ -733,6 +735,97 @@ function cambiarFotoGaleria(step) {
   abrirFotoGaleria(indexFotoGaleriaActual);
 }
 
+/* =========================================================
+   CONTROLADOR DEL MENÚ HAMBURGUESA Y FILTROS MÓVILES
+   ========================================================= */
+
+function toggleMenuMovil() {
+  const drawer = document.getElementById("mobileMenuDrawer");
+  const overlay = document.getElementById("mobileMenuOverlay");
+  const btn = document.getElementById("btnHamburger");
+  if (!drawer) return;
+
+  const estaActivo = drawer.classList.contains("active");
+  if (estaActivo) {
+    cerrarMenuMovil();
+  } else {
+    drawer.classList.add("active");
+    if (overlay) overlay.classList.add("active");
+    if (btn) btn.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function cerrarMenuMovil() {
+  const drawer = document.getElementById("mobileMenuDrawer");
+  const overlay = document.getElementById("mobileMenuOverlay");
+  const btn = document.getElementById("btnHamburger");
+  if (drawer) drawer.classList.remove("active");
+  if (overlay) overlay.classList.remove("active");
+  if (btn) btn.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function sincronizarBusquedaMovil(val) {
+  busquedaActual = val;
+  const desktopSearch = document.getElementById("searchInput");
+  if (desktopSearch && desktopSearch.value !== val) {
+    desktopSearch.value = val;
+  }
+  renderizarViajes();
+}
+
+function seleccionarCategoriaMovil(cat) {
+  categoriaActual = cat || "Todos";
+
+  // Actualizar estado visual en menú móvil
+  const mobileCatItems = document.querySelectorAll(".mobile-cat-item");
+  mobileCatItems.forEach(function(item) {
+    if (item.getAttribute("data-mobile-category") === cat) {
+      item.classList.add("active");
+    } else {
+      item.classList.remove("active");
+    }
+  });
+
+  // Mantener sincronizados los botones de desktop
+  const desktopBtns = document.querySelectorAll("button.filter-btn[data-category]");
+  desktopBtns.forEach(function(btn) {
+    if (btn.getAttribute("data-category") === cat) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Actualizar etiqueta del filtro activo en celular
+  const labelMobile = document.getElementById("mobileActiveCategoryName");
+  if (labelMobile) {
+    const nombres = {
+      "Todos": "Todos los Viajes",
+      "Favoritos": "Mis Favoritos ❤️",
+      "Pet Friendly": "Con Mascota 🐾",
+      "Playa": "Playas 🏖️",
+      "Aventura": "Aventura & Naturaleza 🧗",
+      "Senderismo": "Senderismo 🥾",
+      "Arqueologia": "Arqueología 🏛️",
+      "Coloniales": "Ciudades Coloniales 🏰",
+      "Pueblos Magicos": "Pueblos Mágicos ✨",
+      "Mixtos": "Viajes Mixtos 🎒"
+    };
+    labelMobile.textContent = nombres[cat] || cat;
+  }
+
+  cerrarMenuMovil();
+  renderizarViajes();
+
+  // Desplazar suavemente a los resultados en celular
+  const grid = document.getElementById("flyersGrid");
+  if (grid) {
+    grid.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   cargarViajes();
   actualizarContadorFavoritos();
@@ -744,6 +837,21 @@ document.addEventListener("DOMContentLoaded", function() {
       filterBtns.forEach(function(b) { b.classList.remove("active"); });
       btn.classList.add("active");
       categoriaActual = btn.getAttribute("data-category") || "Todos";
+
+      // Sincronizar etiqueta y selección móvil también
+      const labelMobile = document.getElementById("mobileActiveCategoryName");
+      if (labelMobile) {
+        labelMobile.textContent = categoriaActual === "Todos" ? "Todos los Viajes" : categoriaActual;
+      }
+      const mobileCatItems = document.querySelectorAll(".mobile-cat-item");
+      mobileCatItems.forEach(function(mItem) {
+        if (mItem.getAttribute("data-mobile-category") === categoriaActual) {
+          mItem.classList.add("active");
+        } else {
+          mItem.classList.remove("active");
+        }
+      });
+
       renderizarViajes();
     });
   });
@@ -752,6 +860,10 @@ document.addEventListener("DOMContentLoaded", function() {
   if (searchInput) {
     searchInput.addEventListener("input", function(e) {
       busquedaActual = e.target.value;
+      const mobSearch = document.getElementById("searchInputMobile");
+      if (mobSearch && mobSearch.value !== busquedaActual) {
+        mobSearch.value = busquedaActual;
+      }
       renderizarViajes();
     });
   }
@@ -767,6 +879,7 @@ document.addEventListener("DOMContentLoaded", function() {
         cerrarLightbox();
         cerrarModalGaleria();
         cerrarModalCertificados();
+        cerrarMenuMovil();
       }
     } else if (e.key === "ArrowLeft" && esGalLightboxActivo) {
       cambiarFotoGaleria(-1);

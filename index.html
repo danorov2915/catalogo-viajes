@@ -33,7 +33,7 @@
         <p class="header-sub">Atención: <strong>Verónica Hernández Echeverría</strong> · <a href="tel:+522444470237" class="header-phone-link" title="Llamar directo a Verónica">📞 <strong>+52 244 447 0237</strong></a> · <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Tengo%20una%20consulta%20sobre%20los%20viajes%20de%20Beta%20Azul%20Viajes%20Tur%C3%ADsticos." target="_blank" rel="noopener noreferrer" class="header-wa-link" title="Mandar WhatsApp a Verónica">💬 <strong>WhatsApp</strong></a> · <a href="javascript:void(0)" onclick="abrirModalGaleria()" class="header-faq-link" title="Ver Fotos Reales y Testimonios">📸 <strong>Galería Real</strong></a> · <a href="#faqSection" class="header-faq-link" title="Ver Preguntas Frecuentes">❓ <strong>Preguntas Frecuentes</strong></a></p>
       </div>
 
-      <!-- Derecha: Buscador -->
+      <!-- Derecha: Buscador (Desktop) -->
       <div class="header-search-wrap">
         <div class="search-container">
           <span class="search-icon">🔍</span>
@@ -41,8 +41,104 @@
         </div>
       </div>
 
+      <!-- Botón Menú Hamburguesa (Exclusivo para Teléfonos Móviles) -->
+      <button type="button" class="btn-hamburger" id="btnHamburger" onclick="toggleMenuMovil()" aria-label="Abrir Menú de Opciones y Filtros">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+
+    </div>
+
+    <!-- Buscador Integrado Móvil (Solo Visible en Celulares) -->
+    <div class="header-search-mobile">
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInputMobile" class="search-input" placeholder="Buscar destino, playa, pueblos mágicos..." oninput="sincronizarBusquedaMovil(this.value)">
+      </div>
     </div>
   </header>
+
+  <!-- Drawer / Menú Hamburguesa Móvil (Lateral Deslizable) -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="cerrarMenuMovil()"></div>
+  <aside class="mobile-menu-drawer" id="mobileMenuDrawer" aria-label="Menú Móvil">
+    <div class="mobile-menu-header">
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <img src="logo.jpg" alt="Beta Azul" style="width: 36px; height: 36px; border-radius: 8px; object-fit: contain;" onerror="this.src='images/logo.jpg'">
+        <div>
+          <h4 style="font-size: 1.05rem; color: #fff; font-weight: 800; margin: 0; line-height: 1.1;">Beta Azul</h4>
+          <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 600;">Viajes Turísticos</span>
+        </div>
+      </div>
+      <button type="button" class="mobile-menu-close" onclick="cerrarMenuMovil()" aria-label="Cerrar menú">✕</button>
+    </div>
+
+    <!-- Contacto Directo en Menú Móvil -->
+    <div class="mobile-menu-actions">
+      <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Tengo%20una%20consulta%20sobre%20los%20viajes%20de%20Beta%20Azul%20Viajes%20Tur%C3%ADsticos." target="_blank" rel="noopener noreferrer" class="mobile-quick-btn mobile-wa-btn">
+        💬 WhatsApp con Verónica
+      </a>
+      <a href="tel:+522444470237" class="mobile-quick-btn mobile-phone-btn">
+        📞 Llamar: 244 447 0237
+      </a>
+    </div>
+
+    <!-- Enlaces Principales y Experiencias -->
+    <div class="mobile-menu-section-title">⭐ Experiencias y Seguridad</div>
+    <div class="mobile-menu-links">
+      <button type="button" class="mobile-menu-link" onclick="cerrarMenuMovil(); abrirModalGaleria();">
+        <span class="m-icon">📸</span>
+        <span><strong>Galería de Fotos & Testimonios</strong><br><small style="color: #94a3b8; font-size: 0.74rem;">Fotos reales de clientes y grupos</small></span>
+      </button>
+      <button type="button" class="mobile-menu-link" onclick="cerrarMenuMovil(); abrirModalCertificados('rnt');">
+        <span class="m-icon">📜</span>
+        <span><strong>Acreditaciones Oficiales SECTUR</strong><br><small style="color: #94a3b8; font-size: 0.74rem;">RNT No. 0421019199141</small></span>
+      </button>
+      <a href="#faqSection" class="mobile-menu-link" onclick="cerrarMenuMovil();">
+        <span class="m-icon">❓</span>
+        <span><strong>Preguntas Frecuentes (FAQ)</strong><br><small style="color: #94a3b8; font-size: 0.74rem;">Salidas, anticipos y tarifas</small></span>
+      </a>
+      <a href="./admin/index.html" class="mobile-menu-link" style="color: #94a3b8;">
+        <span class="m-icon">⚙️</span>
+        <span><strong>Administración</strong><br><small style="color: #64748b; font-size: 0.74rem;">Panel privado de control</small></span>
+      </a>
+    </div>
+
+    <!-- Categorías de Viajes en Móvil -->
+    <div class="mobile-menu-section-title">🗺️ Categorías del Catálogo</div>
+    <div class="mobile-categories-list">
+      <button type="button" class="mobile-cat-item active" data-mobile-category="Todos" onclick="seleccionarCategoriaMovil('Todos')">
+        <span>🌟 Todos los Viajes</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Favoritos" onclick="seleccionarCategoriaMovil('Favoritos')">
+        <span>❤️ Mis Favoritos (<span id="mobileFavCount">0</span>)</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Pet Friendly" onclick="seleccionarCategoriaMovil('Pet Friendly')">
+        <span>🐾 Con Mascota (Pet Friendly)</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Playa" onclick="seleccionarCategoriaMovil('Playa')">
+        <span>🏖️ Playas</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Aventura" onclick="seleccionarCategoriaMovil('Aventura')">
+        <span>🧗 Aventura & Naturaleza</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Senderismo" onclick="seleccionarCategoriaMovil('Senderismo')">
+        <span>🥾 Senderismo</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Arqueologia" onclick="seleccionarCategoriaMovil('Arqueologia')">
+        <span>🏛️ Arqueología</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Coloniales" onclick="seleccionarCategoriaMovil('Coloniales')">
+        <span>🏰 Ciudades Coloniales</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Pueblos Magicos" onclick="seleccionarCategoriaMovil('Pueblos Magicos')">
+        <span>✨ Pueblos Mágicos</span>
+      </button>
+      <button type="button" class="mobile-cat-item" data-mobile-category="Mixtos" onclick="seleccionarCategoriaMovil('Mixtos')">
+        <span>🎒 Viajes Mixtos</span>
+      </button>
+    </div>
+  </aside>
 
   <!-- Contenedor Principal -->
   <main class="main-container">
@@ -106,7 +202,7 @@
       </div>
     </div>
 
-    <!-- Filtros por Categoría con Botón de Galería y Administración -->
+    <!-- Filtros por Categoría con Botón de Galería y Administración (Desktop) -->
     <nav class="filter-bar" aria-label="Filtros de viaje">
       <button type="button" class="filter-btn filter-btn-galeria" onclick="abrirModalGaleria()" id="btnAbrirGaleria">📸 Galería & Testimonios</button>
       <button class="filter-btn active" data-category="Todos">Todos</button>
@@ -121,6 +217,20 @@
       <button class="filter-btn" data-category="Mixtos">🎒 Mixtos</button>
       <a href="./admin/index.html" class="filter-btn admin-filter-btn" title="Administración" style="text-decoration: none; border-color: rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 0.5rem 0.85rem;" aria-label="Administración">⚙️</a>
     </nav>
+
+    <!-- Barra de Filtro Activo Móvil (Solo visible en teléfonos celulares) -->
+    <div class="mobile-filter-strip">
+      <div class="mobile-filter-left" onclick="toggleMenuMovil()">
+        <span class="mobile-filter-label">Mostrando:</span>
+        <strong id="mobileActiveCategoryName" class="mobile-active-cat-name">Todos los Viajes</strong>
+      </div>
+      <div class="mobile-filter-btns">
+        <button type="button" class="btn-mobile-pill-galeria" onclick="abrirModalGaleria()">📸 Galería</button>
+        <button type="button" class="btn-mobile-menu-trigger" onclick="toggleMenuMovil()">
+          <span>Filtros</span> ☰
+        </button>
+      </div>
+    </div>
 
     <!-- Conteo de resultados -->
     <div class="results-info">
