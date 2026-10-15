@@ -165,7 +165,7 @@
 
     .viaje-item {
       display: grid;
-      grid-template-columns: 70px 2fr 1fr 1fr 90px 140px;
+      grid-template-columns: 70px 2fr 1fr 1fr 90px 195px;
       align-items: center;
       gap: 1rem;
       background: var(--card-bg);
@@ -241,6 +241,7 @@
       gap: 0.75rem;
       border-bottom: 2px solid var(--card-border);
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .admin-tab-btn {
@@ -267,6 +268,11 @@
     .admin-tab-btn.active {
       color: #fff;
       border-bottom-color: var(--primary);
+    }
+
+    .admin-tab-btn#tabNavTaller.active {
+      border-bottom-color: #a855f7;
+      color: #f3e8ff;
     }
 
     .admin-tab-count {
@@ -304,9 +310,12 @@
 
     .galeria-admin-thumb-wrap {
       position: relative;
-      aspect-ratio: 16 / 9;
-      background: #000;
+      width: 100%;
+      height: 180px;
+      min-height: 180px;
+      background: #030712;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .galeria-admin-thumb {
@@ -341,6 +350,192 @@
       padding-top: 0.75rem;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       margin-top: auto;
+    }
+
+    /* =========================================================
+       ESTILOS DEL TALLER CREATIVO DE FLYERS CON IA
+       ========================================================= */
+    .taller-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .taller-header-banner {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(2, 132, 199, 0.18));
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .taller-selector-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .taller-selector-bar select {
+      flex: 1;
+      min-width: 280px;
+      padding: 0.65rem 0.85rem;
+      background: #060d1a;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .taller-selector-bar select:focus {
+      border-color: #a855f7;
+    }
+
+    .taller-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    .taller-col {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .taller-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .taller-col-header h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .taller-preview-container {
+      position: relative;
+      background: #060d1a;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 480px;
+      max-height: 580px;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+
+    .taller-preview-img {
+      max-width: 100%;
+      max-height: 560px;
+      object-fit: contain;
+      border-radius: 6px;
+      transition: transform 0.2s;
+    }
+
+    .taller-loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 13, 26, 0.94);
+      backdrop-filter: blur(8px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      z-index: 20;
+    }
+
+    .taller-loading-overlay.active {
+      display: flex;
+    }
+
+    .taller-spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid rgba(139, 92, 246, 0.2);
+      border-top-color: #a855f7;
+      border-right-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.25rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .taller-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .taller-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .taller-chip:hover {
+      background: rgba(139, 92, 246, 0.25);
+      border-color: #a855f7;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .taller-approval-box {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(2, 132, 199, 0.12));
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .taller-approval-box.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .modal {
@@ -444,6 +639,15 @@
 
     .unsaved-bar.active { display: flex; }
 
+    @media (max-width: 900px) {
+      .taller-workspace {
+        grid-template-columns: 1fr;
+      }
+      .taller-preview-container {
+        min-height: 380px;
+      }
+    }
+
     @media (max-width: 768px) {
       .viaje-item {
         grid-template-columns: 50px 1fr;
@@ -534,13 +738,16 @@
       </div>
     </header>
 
-    <!-- Pestañas de Navegación del Panel: Catálogo vs Galería -->
+    <!-- Pestañas de Navegación del Panel: Catálogo vs Galería vs Taller IA -->
     <div class="admin-nav-tabs">
       <button type="button" class="admin-tab-btn active" id="tabNavViajes" onclick="cambiarSeccionAdmin('viajes')">
         🗺️ Catálogo de Viajes <span class="admin-tab-count" id="countTabViajes">0</span>
       </button>
       <button type="button" class="admin-tab-btn" id="tabNavGaleria" onclick="cambiarSeccionAdmin('galeria')">
         📸 Galería de Experiencias & Fotos <span class="admin-tab-count" id="countTabGaleria">0</span>
+      </button>
+      <button type="button" class="admin-tab-btn" id="tabNavTaller" onclick="cambiarSeccionAdmin('taller')">
+        🎨 Taller de Flyers con IA ✨
       </button>
     </div>
 
@@ -583,6 +790,182 @@
       </div>
 
       <div class="galeria-admin-grid" id="listaGaleriaContenedor">
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: Taller Creativo de Flyers con IA -->
+    <div id="seccionTaller" style="display: none;">
+      <div class="taller-container">
+        
+        <!-- Banner de Encabezado -->
+        <div class="taller-header-banner">
+          <div>
+            <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              🎨 Taller Creativo de Flyers con Inteligencia Artificial ✨
+            </h3>
+            <p style="color: #cbd5e1; font-size: 0.88rem; max-width: 780px;">
+              Selecciona cualquier flyer de tu catálogo, dile a la IA qué cambios deseas (precios, letreros, fechas o estilo visual) y generará una nueva versión publicitaria en alta definición al instante.
+            </p>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="abrirModalAjustes()">⚙️ Ajustes de API Key</button>
+        </div>
+
+        <!-- Selector del Flyer a Modificar -->
+        <div class="taller-selector-bar">
+          <label style="font-weight: 700; color: #38bdf8; font-size: 0.9rem; white-space: nowrap;">
+            📂 Seleccionar Flyer del Catálogo:
+          </label>
+          <select id="tallerViajeSelect" onchange="seleccionarViajeEnTaller(this.value)">
+            <option value="">-- Elige un flyer del catálogo para modificar --</option>
+          </select>
+          <input type="file" id="tallerCustomFileInput" accept="image/*" style="display: none;" onchange="cargarFlyerPersonalizadoTaller(this)">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('tallerCustomFileInput').click()" style="font-size: 0.85rem;">
+            📁 Subir Flyer desde PC
+          </button>
+        </div>
+
+        <!-- Espacio de Trabajo Comparativo (Lado a Lado) -->
+        <div class="taller-workspace">
+          
+          <!-- Columna Izquierda: Flyer Actual / Original -->
+          <div class="taller-col">
+            <div class="taller-col-header">
+              <h4>🖼️ Flyer Actual (En la Web)</h4>
+              <span id="tallerOriginalBadge" class="badge-cat" style="background: rgba(2, 132, 199, 0.3); color: #38bdf8;">Sin seleccionar</span>
+            </div>
+            
+            <div class="taller-preview-container">
+              <img id="tallerImgOriginal" class="taller-preview-img" src="../logo.jpg" alt="Flyer actual">
+            </div>
+
+            <!-- Datos del Viaje Seleccionado -->
+            <div id="tallerInfoViaje" style="margin-top: 1rem; padding: 0.85rem; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 0.82rem; color: #94a3b8;">
+              <strong id="tallerInfoTitulo" style="color: #fff; font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Selecciona un flyer arriba</strong>
+              <div id="tallerInfoDetalles" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <span>Tarifa actual: <b style="color: #38bdf8;" id="tallerInfoPrecio">--</b></span>
+                <span>Destino: <b style="color: #cbd5e1;" id="tallerInfoDestino">--</b></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Nueva Versión con IA -->
+          <div class="taller-col" style="border-color: rgba(139, 92, 246, 0.4);">
+            <div class="taller-col-header">
+              <h4 style="color: #c084fc;">✨ Nueva Versión Generada con IA</h4>
+              <span id="tallerEstadoGenerado" class="badge-cat" style="background: rgba(139, 92, 246, 0.2); color: #c084fc;">En espera de instrucciones</span>
+            </div>
+            
+            <div class="taller-preview-container">
+              <!-- Overlay de Carga -->
+              <div class="taller-loading-overlay" id="tallerLoadingOverlay">
+                <div class="taller-spinner"></div>
+                <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;" id="tallerLoadingTitulo">
+                  Creando nuevo flyer con IA...
+                </h4>
+                <p style="color: #cbd5e1; font-size: 0.85rem; max-width: 320px;" id="tallerLoadingSub">
+                  Gemini e Imagen 3 están componiendo el nuevo diseño publicitario.
+                </p>
+              </div>
+
+              <!-- Imagen Generada -->
+              <img id="tallerImgGenerada" class="taller-preview-img" style="display: none;" src="" alt="Flyer generado con IA">
+
+              <!-- Placeholder cuando aún no se ha generado -->
+              <div id="tallerPlaceholderDerecha" style="padding: 2rem 1.25rem; text-align: center; color: #94a3b8; width: 100%;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem; opacity: 0.8;">✨🎨</div>
+                <h4 style="color: #e2e8f0; font-size: 1.05rem; margin-bottom: 0.4rem;">Aquí aparecerá la nueva versión</h4>
+                <p style="font-size: 0.82rem; max-width: 340px; margin: 0 auto 1rem; color: #94a3b8;">
+                  Escribe los cambios que deseas y presiona <strong>"Generar Directo con IA"</strong>, o usa tu pestaña de <strong>Gemini Omni</strong>:
+                </p>
+
+                <!-- Zona de pegado directo / arrastrar y soltar -->
+                <div style="background: rgba(168, 85, 247, 0.08); border: 2px dashed rgba(168, 85, 247, 0.4); border-radius: 10px; padding: 1rem; max-width: 360px; margin: 0 auto;">
+                  <div style="font-size: 0.85rem; color: #c084fc; font-weight: 700; margin-bottom: 0.35rem;">
+                    📥 ¿Creas tus imágenes en Gemini Omni?
+                  </div>
+                  <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 0.75rem;">
+                    ¡Solo presiona <strong>Ctrl + V</strong> para pegarla aquí o súbela desde tu compu!
+                  </p>
+                  <input type="file" id="tallerNuevaVersionPicker" accept="image/*" style="display: none;" onchange="cargarNuevaVersionDesdeArchivo(this)">
+                  <button type="button" class="btn btn-secondary" style="font-size: 0.82rem; padding: 0.4rem 0.85rem; border-color: rgba(168, 85, 247, 0.5); color: #e9d5ff;" onclick="document.getElementById('tallerNuevaVersionPicker').click()">
+                    📁 Seleccionar imagen de mi PC
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mini botón de zoom de la nueva imagen -->
+            <div id="tallerAccionesRapidasGen" style="display: none; justify-content: flex-end; margin-top: 0.75rem; gap: 0.5rem;">
+              <button type="button" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.35rem 0.7rem;" onclick="abrirImagenGeneradaZoom()">🔍 Ver en tamaño grande</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Panel de Instrucciones y Control Creativo -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <label style="display: block; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem;">
+            💬 ¿Qué cambios deseas hacerle a este flyer?
+          </label>
+          <p style="color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.75rem;">
+            Escribe en tus propias palabras los cambios requeridos. Por ejemplo: <em>"Cambia el precio a $1,800 MXN, actualiza la fecha al 15 de Noviembre saliendo desde Puebla, agrega 2 menores gratis por habitación y ponle letras doradas elegantes."</em>
+          </p>
+
+          <textarea id="tallerPromptInput" rows="3" style="width: 100%; padding: 0.85rem 1rem; background: #060d1a; border: 1px solid var(--card-border); border-radius: 8px; color: #fff; font-family: inherit; font-size: 0.95rem; resize: vertical;" placeholder="Describe aquí los cambios deseados para este flyer..."></textarea>
+
+          <!-- Chips de Ayuda Rápida -->
+          <div style="margin-top: 0.75rem;">
+            <span style="font-size: 0.78rem; color: #94a3b8; font-weight: 600;">Sugerencias rápidas (da clic para agregar):</span>
+            <div class="taller-chips-wrap">
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Actualizar la tarifa y precio a $')">💰 Cambiar Precio</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Cambiar fecha de salida para el próximo mes saliendo desde Puebla y Atlixco.')">📅 Nueva Fecha y Salida</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Promoción especial: 2 personas y 2 menores gratis por habitación.')">👨‍👩‍👧‍👦 2 Menores Gratis</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Agregar la palabra DESDE en el precio de manera visible y destacada.')">🏷️ Agregar palabra 'DESDE'</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Estilo publicitario ultra lujoso con letras doradas, brillo y diseño moderno.')">✨ Letras Doradas & Lujo</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Fondo paradisíaco tropical con mar turquesa muy vivo y llamativo.')">🌴 Mar Turquesa Llamativo</button>
+              <button type="button" class="taller-chip" onclick="agregarSugerenciaPrompt('Incluye: Autobús turístico de lujo con aire acondicionado y seguro de viajero.')">🚍 Autobús & Seguro</button>
+            </div>
+          </div>
+
+          <!-- Botón de Generar y Copiar Prompt -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+            <div id="tallerStatusMsg" style="font-size: 0.85rem; color: #38bdf8;"></div>
+            <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" onclick="limpiarTallerPrompt()">🧹 Borrar</button>
+              <button type="button" class="btn btn-secondary" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;" onclick="copiarPromptParaGeminiOmni()" title="Copia el prompt redactado profesionalmente para pegarlo en tu pestaña de Google Gemini">
+                📋 Copiar Prompt para Gemini Omni
+              </button>
+              <button type="button" id="btnGenerarTaller" class="btn btn-ai" style="padding: 0.75rem 1.6rem; font-size: 0.95rem;" onclick="generarFlyerConIA()">
+                ✨ Generar Directo con IA
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Aprobación y Acciones Dobles (Aparece cuando la imagen ya está lista) -->
+        <div class="taller-approval-box" id="tallerApprovalBox">
+          <div style="flex: 1; min-width: 260px;">
+            <div style="color: #4ade80; font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              🎉 ¡Nueva versión lista! ¿Te gusta cómo quedó?
+            </div>
+            <p style="color: #cbd5e1; font-size: 0.85rem;">
+              Si estás satisfecha, con el botón verde puedes sustituir el flyer en tu catálogo web y descargarlo a tu computadora automáticamente. Si quieres cambiar algún detalle, puedes reintentar arriba cuantas veces quieras.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('tallerPromptInput').focus()" style="border-color: rgba(255,255,255,0.2);">
+              🔄 Seguir Ajustando Detalles
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="descargarSoloImagenGenerada()" style="background: #1e293b; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);">
+              💾 Solo Guardar en PC
+            </button>
+            <button type="button" class="btn btn-success" onclick="aprobarYSustituirFlyer()" style="padding: 0.75rem 1.5rem; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);">
+              ⭐ Sustituir en la Página y Guardar en PC
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -777,6 +1160,23 @@
     </div>
   </div>
 
+  <!-- Modal para Visualizar Flyer Generado en Pantalla Completa / Zoom -->
+  <div class="modal" id="tallerZoomModal">
+    <div class="modal-content" style="max-width: 820px; text-align: center; padding: 1.25rem;">
+      <div class="modal-header" style="margin-bottom: 0.75rem;">
+        <h3 id="tallerZoomTitulo">🔍 Vista Detallada del Nuevo Flyer</h3>
+        <button class="modal-close" onclick="cerrarImagenGeneradaZoom()">✕</button>
+      </div>
+      <div style="max-height: 75vh; overflow: auto; display: flex; justify-content: center; align-items: center; background: #060d1a; border-radius: 8px; padding: 0.5rem;">
+        <img id="tallerZoomImg" src="" alt="Flyer ampliado" style="max-width: 100%; max-height: 72vh; border-radius: 6px; object-fit: contain;">
+      </div>
+      <div class="modal-actions" style="margin-top: 1rem; justify-content: space-between;">
+        <button type="button" class="btn btn-secondary" onclick="descargarSoloImagenGenerada()">💾 Descargar a PC</button>
+        <button type="button" class="btn btn-primary" onclick="cerrarImagenGeneradaZoom()">Cerrar Vista</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Barra Flotante de Cambios Pendientes para Guardar -->
   <div class="unsaved-bar" id="unsavedBar">
     <span>⚠️ Tienes cambios pendientes en tu catálogo</span>
@@ -857,6 +1257,12 @@
     let editandoGaleriaIndex = -1;
     let cambiosPendientes = false;
     let fileHandle = null;
+
+    // Variables de estado del Taller de Flyers con IA
+    let tallerViajeIndex = -1;
+    let tallerImagenOriginalUrl = '';
+    let tallerUltimaImagenGeneradaBase64 = null;
+    let tallerUltimoMimeType = 'image/jpeg';
 
     // Guardar / Cargar API Key
         function abrirModalAjustes() {
@@ -1098,6 +1504,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       actualizarContadoresTabs();
       renderizar();
       renderizarGaleriaAdmin();
+      poblarSelectorTaller();
     }
 
     function renderizar() {
@@ -1194,6 +1601,18 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         actionsDiv.style.gap = '0.5rem';
         actionsDiv.style.justifyContent = 'flex-end';
 
+        const btnTaller = document.createElement('button');
+        btnTaller.className = 'btn btn-secondary';
+        btnTaller.style.padding = '0.35rem 0.65rem';
+        btnTaller.style.background = 'linear-gradient(135deg, rgba(124,58,237,0.25), rgba(2,132,199,0.25))';
+        btnTaller.style.borderColor = 'rgba(139,92,246,0.4)';
+        btnTaller.style.color = '#c084fc';
+        btnTaller.title = 'Modificar flyer con IA en el Taller';
+        btnTaller.textContent = '🎨 IA';
+        btnTaller.addEventListener('click', (function(idx) {
+          return function() { abrirTallerConViaje(idx); };
+        })(indexReal));
+
         const btnEdit = document.createElement('button');
         btnEdit.className = 'btn btn-secondary';
         btnEdit.style.padding = '0.35rem 0.65rem';
@@ -1210,6 +1629,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
           return function() { eliminarViaje(idx); };
         })(indexReal));
 
+        actionsDiv.appendChild(btnTaller);
         actionsDiv.appendChild(btnEdit);
         actionsDiv.appendChild(btnDel);
 
@@ -1370,35 +1790,47 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       seccionActual = seccion;
       const tabViajes = document.getElementById('tabNavViajes');
       const tabGaleria = document.getElementById('tabNavGaleria');
+      const tabTaller = document.getElementById('tabNavTaller');
       const secViajes = document.getElementById('seccionViajes');
       const secGaleria = document.getElementById('seccionGaleria');
+      const secTaller = document.getElementById('seccionTaller');
       const btnAccion = document.getElementById('btnAccionPrincipal');
 
+      if (tabViajes) tabViajes.classList.toggle('active', seccion === 'viajes');
+      if (tabGaleria) tabGaleria.classList.toggle('active', seccion === 'galeria');
+      if (tabTaller) tabTaller.classList.toggle('active', seccion === 'taller');
+
+      if (secViajes) secViajes.style.display = (seccion === 'viajes') ? 'block' : 'none';
+      if (secGaleria) secGaleria.style.display = (seccion === 'galeria') ? 'block' : 'none';
+      if (secTaller) secTaller.style.display = (seccion === 'taller') ? 'block' : 'none';
+
       if (seccion === 'viajes') {
-        if (tabViajes) tabViajes.classList.add('active');
-        if (tabGaleria) tabGaleria.classList.remove('active');
-        if (secViajes) secViajes.style.display = 'block';
-        if (secGaleria) secGaleria.style.display = 'none';
         if (btnAccion) {
+          btnAccion.style.display = 'inline-flex';
           btnAccion.textContent = '+ Agregar Nuevo Viaje';
         }
-      } else {
-        if (tabGaleria) tabGaleria.classList.add('active');
-        if (tabViajes) tabViajes.classList.remove('active');
-        if (secViajes) secViajes.style.display = 'none';
-        if (secGaleria) secGaleria.style.display = 'block';
+      } else if (seccion === 'galeria') {
         if (btnAccion) {
+          btnAccion.style.display = 'inline-flex';
           btnAccion.textContent = '+ Agregar Foto a Galería';
         }
         renderizarGaleriaAdmin();
+      } else if (seccion === 'taller') {
+        if (btnAccion) {
+          btnAccion.style.display = 'inline-flex';
+          btnAccion.textContent = '✨ Generar con IA';
+        }
+        poblarSelectorTaller();
       }
     }
 
     function ejecutarAccionPrincipal() {
       if (seccionActual === 'viajes') {
         abrirModalNuevo();
-      } else {
+      } else if (seccionActual === 'galeria') {
         abrirModalNuevaFoto();
+      } else if (seccionActual === 'taller') {
+        generarFlyerConIA();
       }
     }
 
@@ -1651,6 +2083,694 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       if (ub) ub.classList.remove('active');
 
       alert('📥 viajes.json descargado.\n\nCópialo a tu carpeta C:\\_catalogo-viajes\\ y súbelo a GitHub para publicar los cambios.');
+    }
+
+    /* =========================================================
+       FUNCIONES DEL TALLER CREATIVO DE FLYERS CON IA
+       ========================================================= */
+
+    function abrirTallerConViaje(index) {
+      tallerViajeIndex = index;
+      cambiarSeccionAdmin('taller');
+      const sel = document.getElementById('tallerViajeSelect');
+      if (sel) sel.value = String(index);
+      cargarFlyerEnTaller(index);
+      const secTaller = document.getElementById('seccionTaller');
+      if (secTaller) secTaller.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function poblarSelectorTaller() {
+      const sel = document.getElementById('tallerViajeSelect');
+      if (!sel) return;
+      const prevVal = sel.value;
+      sel.innerHTML = '<option value="">-- Elige un flyer del catálogo para modificar --</option>';
+
+      viajes.forEach(function(v, idx) {
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        const tit = v.titulo || ('Viaje #' + (idx + 1));
+        const prec = v.precio ? (' (' + v.precio + ')') : '';
+        opt.textContent = `${idx + 1}. ${tit}${prec}`;
+        sel.appendChild(opt);
+      });
+
+      if (tallerViajeIndex >= 0 && tallerViajeIndex < viajes.length) {
+        sel.value = String(tallerViajeIndex);
+      } else if (prevVal && viajes[parseInt(prevVal, 10)]) {
+        sel.value = prevVal;
+        tallerViajeIndex = parseInt(prevVal, 10);
+      } else if (viajes.length > 0) {
+        sel.value = "0";
+        tallerViajeIndex = 0;
+      }
+
+      if (sel.value !== '') {
+        cargarFlyerEnTaller(parseInt(sel.value, 10));
+      }
+    }
+
+    function seleccionarViajeEnTaller(val) {
+      if (val === '') {
+        tallerViajeIndex = -1;
+        document.getElementById('tallerImgOriginal').src = '../logo.jpg';
+        document.getElementById('tallerOriginalBadge').textContent = 'Sin seleccionar';
+        document.getElementById('tallerInfoTitulo').textContent = 'Selecciona un flyer arriba';
+        document.getElementById('tallerInfoPrecio').textContent = '--';
+        document.getElementById('tallerInfoDestino').textContent = '--';
+        return;
+      }
+      const idx = parseInt(val, 10);
+      tallerViajeIndex = idx;
+      cargarFlyerEnTaller(idx);
+    }
+
+    function cargarFlyerEnTaller(idx) {
+      const v = viajes[idx];
+      if (!v) return;
+
+      let flyerUrl = v.flyer || '../logo.jpg';
+      if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../') && !flyerUrl.startsWith('data:')) {
+        flyerUrl = '../' + flyerUrl;
+      }
+
+      const imgOriginal = document.getElementById('tallerImgOriginal');
+      imgOriginal.src = flyerUrl;
+      imgOriginal.onerror = function() {
+        const filename = (v.flyer || '').split('/').pop().split('?')[0];
+        if (!this.dataset.t1) {
+          this.dataset.t1 = '1';
+          this.src = '../_Flyers/' + filename;
+        } else if (!this.dataset.t2) {
+          this.dataset.t2 = '1';
+          this.src = '../images/flyers/' + filename;
+        } else {
+          this.onerror = null;
+          this.src = '../logo.jpg';
+        }
+      };
+      tallerImagenOriginalUrl = flyerUrl;
+
+      document.getElementById('tallerOriginalBadge').textContent = v.categoria || 'Catálogo';
+      document.getElementById('tallerInfoTitulo').textContent = v.titulo || 'Sin título';
+      document.getElementById('tallerInfoPrecio').textContent = v.precio || 'Consultar tarifa';
+      document.getElementById('tallerInfoDestino').textContent = v.destino || v.lugaresVisita || 'México';
+
+      const promptInput = document.getElementById('tallerPromptInput');
+      if (promptInput && !promptInput.value.trim()) {
+        promptInput.placeholder = `Describe aquí qué cambiar para "${v.titulo}". Ej: "Cambiar precio a $1,800 MXN, actualizar fecha al 15 de Noviembre y resaltar el título en dorado..."`;
+      }
+    }
+
+    function cargarFlyerPersonalizadoTaller(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('tallerImgOriginal').src = dataUrl;
+        document.getElementById('tallerOriginalBadge').textContent = 'Flyer de PC: ' + file.name;
+        document.getElementById('tallerInfoTitulo').textContent = 'Flyer cargado desde PC: ' + file.name;
+        document.getElementById('tallerInfoPrecio').textContent = 'Personalizado';
+        document.getElementById('tallerInfoDestino').textContent = 'Personalizado';
+        tallerImagenOriginalUrl = dataUrl;
+        tallerViajeIndex = -1;
+        document.getElementById('tallerViajeSelect').value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function agregarSugerenciaPrompt(texto) {
+      const inp = document.getElementById('tallerPromptInput');
+      if (!inp) return;
+      const actual = inp.value.trim();
+      if (actual) {
+        inp.value = actual + ' ' + texto;
+      } else {
+        inp.value = texto;
+      }
+      inp.focus();
+    }
+
+    function limpiarTallerPrompt() {
+      const inp = document.getElementById('tallerPromptInput');
+      if (inp) inp.value = '';
+    }
+
+    function copiarPromptParaGeminiOmni() {
+      const promptInput = document.getElementById('tallerPromptInput');
+      const userTxt = (promptInput ? promptInput.value : '').trim();
+
+      const tripContext = (tallerViajeIndex >= 0 && viajes[tallerViajeIndex]) ? viajes[tallerViajeIndex] : null;
+      let promptFinal = '';
+
+      if (tripContext) {
+        promptFinal = `Crea un nuevo flyer publicitario turístico en formato vertical (3:4) para la agencia "Beta Azul Viajes Turísticos".
+Destino: ${tripContext.destino || tripContext.titulo}.
+Título: "${tripContext.titulo}".
+Inclusiones: ${tripContext.incluye || 'Transporte, seguro de viajero y coordinador'}.
+Tarifa: ${tripContext.precio || 'Consultar precio'}.
+
+MODIFICACIONES SOLICITADAS:
+${userTxt || 'Mejora el diseño con estilo moderno, letras doradas elegantes y fotografía llamativa de alta definición.'}
+
+ESTILO Y COMPOSICIÓN:
+Póster comercial de lujo para agencia de viajes, colores vibrantes, tipografía nítida y destacada con letreros claros, fotografía profesional 4k, diseño llamativo de catálogo.`;
+      } else {
+        promptFinal = `Crea un nuevo flyer publicitario turístico en formato vertical (3:4) para la agencia "Beta Azul Viajes Turísticos".
+${userTxt || 'Diseño publicitario moderno con letras doradas y fotografía turística en alta definición.'}`;
+      }
+
+      navigator.clipboard.writeText(promptFinal).then(function() {
+        alert('📋 ¡Prompt maestro copiado al portapapeles!\n\n1. Ve a tu pestaña de Google Gemini Omni.\n2. Presiona Ctrl + V para pegarlo y generar la imagen.\n3. Cuando te entregue el flyer, dale clic derecho "Copiar imagen" y regresa aquí para pegarlo con Ctrl + V.');
+      }).catch(function() {
+        prompt('Copia este texto para pegarlo en Gemini Omni:', promptFinal);
+      });
+    }
+
+    function establecerImagenNuevaGenerada(dataUrl) {
+      if (!dataUrl) return;
+      const parts = dataUrl.split(',');
+      if (parts.length < 2) return;
+
+      const mimeMatch = parts[0].match(/:(.*?);/);
+      tallerUltimoMimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+      tallerUltimaImagenGeneradaBase64 = parts[1];
+
+      const imgEl = document.getElementById('tallerImgGenerada');
+      const placeholderEl = document.getElementById('tallerPlaceholderDerecha');
+      const approvalBox = document.getElementById('tallerApprovalBox');
+      const zoomBtnWrap = document.getElementById('tallerAccionesRapidasGen');
+      const estadoBadge = document.getElementById('tallerEstadoGenerado');
+      const statusMsg = document.getElementById('tallerStatusMsg');
+
+      if (imgEl) {
+        imgEl.src = dataUrl;
+        imgEl.style.display = 'block';
+      }
+      if (placeholderEl) placeholderEl.style.display = 'none';
+      if (zoomBtnWrap) zoomBtnWrap.style.display = 'flex';
+      if (approvalBox) approvalBox.classList.add('active');
+      if (estadoBadge) {
+        estadoBadge.textContent = '🎉 ¡Nueva versión lista!';
+        estadoBadge.style.background = 'rgba(34, 197, 94, 0.2)';
+        estadoBadge.style.color = '#4ade80';
+      }
+      if (statusMsg) {
+        statusMsg.style.color = '#4ade80';
+        statusMsg.textContent = '✅ ¡Imagen cargada y lista para aprobar!';
+      }
+
+      setTimeout(() => {
+        if (approvalBox) approvalBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 250);
+    }
+
+    function cargarNuevaVersionDesdeArchivo(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        establecerImagenNuevaGenerada(e.target.result);
+      };
+      reader.readAsDataURL(file);
+      input.value = '';
+    }
+
+    window.addEventListener('paste', function(e) {
+      if (seccionActual !== 'taller') return;
+      const clipboard = e.clipboardData || window.clipboardData;
+      if (!clipboard || !clipboard.items) return;
+      const items = clipboard.items;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            establecerImagenNuevaGenerada(ev.target.result);
+          };
+          reader.readAsDataURL(blob);
+          e.preventDefault();
+          break;
+        }
+      }
+    });
+
+    function obtenerBase64FlyerOriginal() {
+      try {
+        const img = document.getElementById('tallerImgOriginal');
+        if (!img || !img.complete || !img.naturalWidth) return null;
+        if (img.src.startsWith('data:image/')) {
+          return img.src.split(',')[1];
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.min(img.naturalWidth, 800);
+        canvas.height = Math.round((canvas.width * img.naturalHeight) / img.naturalWidth);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        return dataUrl.split(',')[1];
+      } catch (e) {
+        console.warn('Imagen original sin base64 (CORS o vacia):', e);
+        return null;
+      }
+    }
+
+    function abrirImagenGeneradaZoom() {
+      if (!tallerUltimaImagenGeneradaBase64) return;
+      const modal = document.getElementById('tallerZoomModal');
+      const img = document.getElementById('tallerZoomImg');
+      if (img) img.src = 'data:' + (tallerUltimoMimeType || 'image/jpeg') + ';base64,' + tallerUltimaImagenGeneradaBase64;
+      if (modal) modal.classList.add('active');
+    }
+
+    function cerrarImagenGeneradaZoom() {
+      const modal = document.getElementById('tallerZoomModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function descargarSoloImagenGenerada() {
+      if (!tallerUltimaImagenGeneradaBase64) {
+        alert('⚠️ Primero genera una imagen con IA antes de descargar.');
+        return;
+      }
+      const v = (tallerViajeIndex >= 0 && viajes[tallerViajeIndex]) ? viajes[tallerViajeIndex] : null;
+      const ext = (tallerUltimoMimeType && tallerUltimoMimeType.includes('png')) ? 'png' : 'jpg';
+      let filename = `flyer-beta-azul-ia.${ext}`;
+      if (v) {
+        const slug = (v.titulo || 'viaje').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30);
+        filename = `flyer-${slug}-${Date.now().toString().slice(-4)}.${ext}`;
+      }
+
+      const a = document.createElement('a');
+      a.href = 'data:' + (tallerUltimoMimeType || 'image/jpeg') + ';base64,' + tallerUltimaImagenGeneradaBase64;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      alert(`💾 ¡Flyer "${filename}" descargado con éxito en tu computadora!`);
+    }
+
+    async function aprobarYSustituirFlyer() {
+      if (!tallerUltimaImagenGeneradaBase64) {
+        alert('⚠️ Primero genera una imagen con IA antes de sustituir.');
+        return;
+      }
+
+      const ext = (tallerUltimoMimeType && tallerUltimoMimeType.includes('png')) ? 'png' : 'jpg';
+      const v = (tallerViajeIndex >= 0 && viajes[tallerViajeIndex]) ? viajes[tallerViajeIndex] : null;
+      let filename = `flyer-beta-azul-ia.${ext}`;
+      if (v) {
+        const slug = (v.titulo || 'viaje').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30);
+        filename = `flyer-${slug}.${ext}`;
+      }
+
+      // 1. Descarga automática a la computadora
+      const a = document.createElement('a');
+      a.href = 'data:' + (tallerUltimoMimeType || 'image/jpeg') + ';base64,' + tallerUltimaImagenGeneradaBase64;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // 2. Sustituir en catálogo web
+      if (tallerViajeIndex >= 0 && viajes[tallerViajeIndex]) {
+        const dataUrl = 'data:' + (tallerUltimoMimeType || 'image/jpeg') + ';base64,' + tallerUltimaImagenGeneradaBase64;
+        viajes[tallerViajeIndex].flyer = dataUrl;
+
+        const promptTxt = document.getElementById('tallerPromptInput').value;
+        const matchPrecio = promptTxt.match(/\$\s*[\d,]+(\s*MXN)?/i);
+        if (matchPrecio) {
+          const precioSugerido = matchPrecio[0].trim();
+          if (confirm(`Detectamos el precio "${precioSugerido}" en tus indicaciones.\n¿Deseas actualizar también el campo de tarifa del catálogo a "${precioSugerido}"?`)) {
+            viajes[tallerViajeIndex].precio = precioSugerido;
+          }
+        }
+
+        document.getElementById('tallerImgOriginal').src = dataUrl;
+        document.getElementById('tallerInfoPrecio').textContent = viajes[tallerViajeIndex].precio || '--';
+
+        renderizar();
+        await descargarViajesJson();
+
+        alert(`🎉 ¡ÉXITO TOTAL!\n\n1. El flyer fue sustituido en tu catálogo web.\n2. La imagen se descargó en tu computadora como "${filename}".`);
+      } else {
+        alert(`💾 Flyer descargado en tu computadora como "${filename}".`);
+      }
+    }
+
+    async function generarFlyerConIA() {
+      let rawKey = safeGet('gemini_api_key') || (document.getElementById('cfgGeminiKey') ? document.getElementById('cfgGeminiKey').value : '');
+      const apiKey = typeof sanitizarApiKey === 'function' ? sanitizarApiKey(rawKey) : rawKey.trim();
+
+      if (!apiKey) {
+        alert('⚠️ Para generar flyers con IA necesitas ingresar tu API Key de Gemini / Imagen.\n\nPor favor haz clic en "⚙️ Claves y Conexión" para guardarla.');
+        abrirModalAjustes();
+        return;
+      }
+
+      const promptInput = document.getElementById('tallerPromptInput');
+      const userPrompt = (promptInput ? promptInput.value : '').trim();
+
+      if (!userPrompt) {
+        alert('⚠️ Por favor escribe en el recuadro qué cambios deseas hacerle al flyer (por ejemplo: nuevo precio, cambio de fecha, letreros dorados o estilo).');
+        if (promptInput) promptInput.focus();
+        return;
+      }
+
+      const overlay = document.getElementById('tallerLoadingOverlay');
+      const tituloLoading = document.getElementById('tallerLoadingTitulo');
+      const subLoading = document.getElementById('tallerLoadingSub');
+      const statusMsg = document.getElementById('tallerStatusMsg');
+      const btnGenerar = document.getElementById('btnGenerarTaller');
+
+      if (overlay) overlay.classList.add('active');
+      if (btnGenerar) {
+        btnGenerar.disabled = true;
+        btnGenerar.innerText = '⏳ Creando con IA...';
+      }
+      if (statusMsg) statusMsg.textContent = '🧠 Analizando instrucciones...';
+
+      try {
+        // Paso 1: Interpretar instrucciones del viaje con Gemini
+        if (tituloLoading) tituloLoading.textContent = '🧠 Paso 1/2: Diseñando composición con Gemini...';
+        if (subLoading) subLoading.textContent = 'Interpretando precios, fechas, inclusiones y estilo comercial.';
+
+        const tripContext = (tallerViajeIndex >= 0 && viajes[tallerViajeIndex]) ? viajes[tallerViajeIndex] : null;
+        const infoBase = tripContext ? `
+Título original del viaje: "${tripContext.titulo || ''}"
+Destino: "${tripContext.destino || ''}"
+Puntos que visita: "${tripContext.lugaresVisita || ''}"
+Tarifa actual: "${tripContext.precio || ''}"
+Inclusiones: "${tripContext.incluye || ''}"
+Tipo: "${tripContext.tipoServicio || ''}"
+` : 'Agencia de viajes turísticos Beta Azul en México.';
+
+        const systemRefine = `You are a world-class advertising graphic designer for 'Beta Azul Viajes Turísticos' (luxury travel agency).
+Craft an ULTRA-DETAILED, highly effective English prompt to generate a stunning promotional travel poster/flyer.
+
+BASE TRIP DETAILS:
+${infoBase}
+
+REQUESTED USER MODIFICATIONS FROM VERÓNICA:
+"${userPrompt}"
+
+IMPORTANT DESIGN DIRECTIVES:
+1. Format: Vertical commercial travel flyer / poster (3:4 ratio).
+2. Prominently display any new prices, discounts, or promotional text requested by the user in bold, clean, metallic gold or illuminated typography (e.g., 'DESDE $...', '2 MENORES GRATIS').
+3. Include the travel brand name 'Beta Azul Viajes Turísticos' in elegant typography.
+4. Feature breathtaking professional photography of the destination (crystal turquoise water for beaches, misty colonial towns, luxury motorcoach bus, lush landscapes).
+5. Add crisp, modern advertising layout badges, promotional banners, sharp lighting, 8k resolution, award-winning travel brochure aesthetic.
+6. Output ONLY the raw English prompt without preamble, quotes, or markdown.`;
+
+        const refinePayload = {
+          contents: [{
+            parts: [{ text: systemRefine }]
+          }]
+        };
+
+        const geminiModels = [
+          'gemini-2.5-flash',
+          'gemini-3.5-flash-lite',
+          'gemini-3.5-flash',
+          'gemini-1.5-flash'
+        ];
+
+        let refinedPrompt = '';
+        for (const m of geminiModels) {
+          try {
+            const urlGem = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+            const resGem = await fetch(urlGem, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(refinePayload)
+            });
+            if (resGem.ok) {
+              const dGem = await resGem.json();
+              if (dGem.candidates && dGem.candidates[0] && dGem.candidates[0].content && dGem.candidates[0].content.parts[0]) {
+                refinedPrompt = dGem.candidates[0].content.parts[0].text.trim();
+                break;
+              }
+            }
+          } catch (e) {
+            console.warn(`Error llamando a ${m} para refinar prompt:`, e);
+          }
+        }
+
+        if (!refinedPrompt) {
+          refinedPrompt = `A professional luxury commercial travel promotional poster for 'Beta Azul Viajes Turísticos' featuring ${tripContext ? tripContext.titulo : 'scenic Mexican vacation'} with bold advertising typography, beautiful tourism photography, high-end travel agency layout, vibrant colors, 4k ultra-detailed. Modifications: ${userPrompt}`;
+        }
+
+        // Paso 2: Generar la imagen publicitaria con IA
+        if (tituloLoading) tituloLoading.textContent = '🎨 Paso 2/2: Generando imagen publicitaria con IA...';
+        if (subLoading) subLoading.textContent = 'Conectando con los motores de imagen de Google...';
+        if (statusMsg) statusMsg.textContent = '🎨 Generando flyer con modelo de imagen...';
+
+        let base64Output = null;
+        let mimeTypeOutput = 'image/jpeg';
+        let modelosProbados = [];
+
+        // 1. Descubrimiento dinámico de modelos disponibles en la API Key
+        let modelosDetectados = [];
+        try {
+          const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+          if (listRes.ok) {
+            const listData = await listRes.json();
+            const todos = listData.models || [];
+            modelosDetectados = todos
+              .filter(m => {
+                const n = (m.name || '').toLowerCase();
+                const methods = m.supportedGenerationMethods || [];
+                return n.includes('image') || n.includes('imagen') || n.includes('banana') || methods.includes('predict') || methods.includes('generateImages');
+              })
+              .map(m => m.name.replace('models/', ''));
+            console.log('Modelos de imagen detectados en tu cuenta:', modelosDetectados);
+          }
+        } catch (e) {
+          console.warn('Error en ListModels:', e);
+        }
+
+        // Lista de candidatos ordenada por prioridad moderna
+        const candidatos = [
+          ...modelosDetectados,
+          'gemini-2.5-flash-image',
+          'gemini-3.1-flash-image',
+          'gemini-3-pro-image',
+          'gemini-2.0-flash-exp',
+          'imagen-3.0-generate-002',
+          'imagen-3.0-generate-001',
+          'imagen-3.0-fast-generate-001'
+        ];
+
+        const modelosUnicos = Array.from(new Set(candidatos));
+
+        // Preparar partes para generateContent (con imagen de referencia si está disponible)
+        const partsGenerate = [];
+        const base64Original = obtenerBase64FlyerOriginal();
+        if (base64Original) {
+          partsGenerate.push({
+            inlineData: {
+              mimeType: 'image/jpeg',
+              data: base64Original
+            }
+          });
+          partsGenerate.push({
+            text: `Modifica este flyer publicitario según las siguientes indicaciones comerciales: ${refinedPrompt}`
+          });
+        } else {
+          partsGenerate.push({
+            text: refinedPrompt
+          });
+        }
+
+        const payloadGenerateContent = {
+          contents: [{ parts: partsGenerate }],
+          generationConfig: {
+            responseModalities: ["IMAGE"],
+            imageConfig: {
+              aspectRatio: "3:4"
+            }
+          }
+        };
+
+        const payloadPredict = {
+          instances: [{ prompt: refinedPrompt }],
+          parameters: {
+            sampleCount: 1,
+            aspectRatio: "3:4",
+            outputMimeType: "image/jpeg"
+          }
+        };
+
+        for (const mod of modelosUnicos) {
+          // Intentar con generateContent (método estándar vigente de Google AI para modelos de imagen)
+          try {
+            if (tituloLoading) tituloLoading.textContent = `🎨 Probando modelo ${mod}...`;
+            const urlGen = `https://generativelanguage.googleapis.com/v1beta/models/${mod}:generateContent?key=${apiKey}`;
+            const resGen = await fetch(urlGen, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+              },
+              body: JSON.stringify(payloadGenerateContent)
+            });
+
+            if (resGen.ok) {
+              const dataGen = await resGen.json();
+              const pList = (dataGen.candidates && dataGen.candidates[0] && dataGen.candidates[0].content && dataGen.candidates[0].content.parts) || [];
+              for (const p of pList) {
+                if (p.inlineData && p.inlineData.data) {
+                  base64Output = p.inlineData.data;
+                  mimeTypeOutput = p.inlineData.mimeType || 'image/png';
+                  console.log(`✅ Imagen generada con éxito usando: ${mod} (:generateContent)`);
+                  break;
+                }
+              }
+              if (base64Output) break;
+            } else {
+              const errBody = await resGen.json().catch(() => ({}));
+              const msg = (errBody.error && errBody.error.message) ? errBody.error.message : ('HTTP ' + resGen.status);
+              modelosProbados.push(`${mod} (generateContent): ${msg}`);
+            }
+          } catch (e) {
+            modelosProbados.push(`${mod} (generateContent): ${e.message}`);
+          }
+
+          // Si el nombre contiene imagen, probar también con :predict
+          if (!base64Output && mod.includes('imagen')) {
+            try {
+              const urlPred = `https://generativelanguage.googleapis.com/v1beta/models/${mod}:predict?key=${apiKey}`;
+              const resPred = await fetch(urlPred, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-goog-api-key': apiKey
+                },
+                body: JSON.stringify(payloadPredict)
+              });
+
+              if (resPred.ok) {
+                const dataPred = await resPred.json();
+                if (dataPred.predictions && dataPred.predictions[0] && dataPred.predictions[0].bytesBase64Encoded) {
+                  base64Output = dataPred.predictions[0].bytesBase64Encoded;
+                  mimeTypeOutput = dataPred.predictions[0].mimeType || 'image/jpeg';
+                  console.log(`✅ Imagen generada con éxito usando: ${mod} (:predict)`);
+                  break;
+                }
+              } else {
+                const errBody = await resPred.json().catch(() => ({}));
+                const msg = (errBody.error && errBody.error.message) ? errBody.error.message : ('HTTP ' + resPred.status);
+                modelosProbados.push(`${mod} (predict): ${msg}`);
+              }
+            } catch (e) {
+              modelosProbados.push(`${mod} (predict): ${e.message}`);
+            }
+          }
+
+          if (base64Output) break;
+        }
+
+        // Si aún no hay imagen, probar endpoint Interactions
+        if (!base64Output) {
+          const interactionModels = ['gemini-nano-banana-2.1', 'gemini-3.1-flash-image'];
+          for (const iMod of interactionModels) {
+            try {
+              const urlInter = `https://generativelanguage.googleapis.com/v1beta/interactions?key=${apiKey}`;
+              const payloadInter = {
+                model: iMod,
+                input: [{ type: "text", text: refinedPrompt }]
+              };
+              const resInter = await fetch(urlInter, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-goog-api-key': apiKey
+                },
+                body: JSON.stringify(payloadInter)
+              });
+              if (resInter.ok) {
+                const dataInter = await resInter.json();
+                if (dataInter.outputs) {
+                  for (const out of dataInter.outputs) {
+                    if (out.type === 'image' && out.data) {
+                      base64Output = out.data;
+                      mimeTypeOutput = out.mimeType || 'image/png';
+                      console.log(`✅ Imagen generada con éxito usando Interactions: ${iMod}`);
+                      break;
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              // ignore
+            }
+            if (base64Output) break;
+          }
+        }
+
+        if (!base64Output) {
+          const resumenErrores = modelosProbados.slice(0, 3).join('\n• ');
+          throw new Error(
+            `No se pudo generar la imagen con los modelos de tu API Key.\n\nDetalles reportados por Google:\n• ${resumenErrores}\n\nModelos de imagen detectados en tu cuenta: ${modelosDetectados.length ? modelosDetectados.join(', ') : 'Ninguno activo para esta clave'}`
+          );
+        }
+
+        // Éxito: Mostrar imagen en la columna derecha
+        tallerUltimaImagenGeneradaBase64 = base64Output;
+        tallerUltimoMimeType = mimeTypeOutput;
+        const imgEl = document.getElementById('tallerImgGenerada');
+        const placeholderEl = document.getElementById('tallerPlaceholderDerecha');
+        const approvalBox = document.getElementById('tallerApprovalBox');
+        const zoomBtnWrap = document.getElementById('tallerAccionesRapidasGen');
+        const estadoBadge = document.getElementById('tallerEstadoGenerado');
+
+        if (imgEl) {
+          imgEl.src = `data:${mimeTypeOutput};base64,${base64Output}`;
+          imgEl.style.display = 'block';
+        }
+        if (placeholderEl) placeholderEl.style.display = 'none';
+        if (zoomBtnWrap) zoomBtnWrap.style.display = 'flex';
+        if (approvalBox) approvalBox.classList.add('active');
+        if (estadoBadge) {
+          estadoBadge.textContent = '🎉 ¡Nueva versión lista!';
+          estadoBadge.style.background = 'rgba(34, 197, 94, 0.2)';
+          estadoBadge.style.color = '#4ade80';
+        }
+        if (statusMsg) {
+          statusMsg.style.color = '#4ade80';
+          statusMsg.textContent = '✅ ¡Nueva versión publicitaria generada con éxito!';
+        }
+
+        // Desplazarse suavemente a la barra de aprobación
+        if (approvalBox) {
+          setTimeout(() => {
+            approvalBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        }
+
+      } catch (err) {
+        console.error('Error generando flyer con IA:', err);
+        if (statusMsg) {
+          statusMsg.style.color = '#f87171';
+          statusMsg.textContent = '❌ ' + (err.message || 'Error al generar flyer');
+        }
+        
+        const errMsg = err.message || '';
+        if (errMsg.includes('quota') || errMsg.includes('limit: 0') || errMsg.includes('429')) {
+          alert(`⚠️ AVISO DE GOOGLE AI STUDIO:\n\nGoogle requiere habilitar facturación en aistudio.google.com para generar imágenes directamente por API (límite actual: 0 en cuenta gratuita de desarrollador).\n\n💡 ¡USA TU CUENTA ACTUAL DE GEMINI OMNI SIN COSTO EXTRA!\n\n1. Da clic en el botón "📋 Copiar Prompt para Gemini Omni".\n2. Ve a tu pestaña abierta de Gemini Omni y pega el texto.\n3. Cuando Gemini cree tu flyer, dale clic derecho "Copiar imagen" y regresa aquí para presionar Ctrl + V.\n\n¡Podrás sustituirlo en la web y descargarlo a tu computadora de inmediato!`);
+        } else {
+          alert('❌ Error al generar imagen con IA:\n\n' + (err.message || 'Error desconocido'));
+        }
+      } finally {
+        if (overlay) overlay.classList.remove('active');
+        if (btnGenerar) {
+          btnGenerar.disabled = false;
+          btnGenerar.innerText = '✨ Generar Nueva Versión con IA';
+        }
+      }
     }
 
     window.addEventListener('DOMContentLoaded', inicializar);
