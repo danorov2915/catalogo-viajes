@@ -1458,7 +1458,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
 
         card.innerHTML = `
           <div class="galeria-admin-thumb-wrap">
-            <img src="${fotoSrc}" class="galeria-admin-thumb" alt="${item.titulo || 'Foto'}" onerror="this.src='../logo.jpg'">
+            <img src="${fotoSrc}" class="galeria-admin-thumb" alt="${item.titulo || 'Foto'}" onerror="const f = (this.src||'').split('/').pop().split('?')[0]; if(!this.dataset.t1){ this.dataset.t1='1'; this.src='../images/viajeros/'+f; } else if(!this.dataset.t2){ this.dataset.t2='1'; this.src='../viajeros/'+f; } else if(!this.dataset.t3){ this.dataset.t3='1'; this.src='../images/'+f; } else { this.onerror=null; this.src='../logo.jpg'; }">
             <span class="badge-cat" style="position: absolute; top: 8px; left: 8px; background: rgba(2, 132, 199, 0.85); color: #fff;">${item.categoria || 'Experiencia'}</span>
           </div>
           <div class="galeria-admin-body">
