@@ -19,7 +19,7 @@ const GALERIA_DEFAULT = [
     titulo: "Excursión en Autobús Turístico",
     destino: "Zacatlán de las Manzanas",
     categoria: "Pueblos Magicos",
-    foto: "images/viajeros/autobus-turistico.jpg",
+    foto: "viajeros/autobus-turistico.jpg",
     testimonio: "Excelente viaje en autobús de lujo, súper cómodo, seguro y con un ambiente familiar inmejorable.",
     autor: "Familia Sánchez"
   },
@@ -28,7 +28,7 @@ const GALERIA_DEFAULT = [
     titulo: "Diversión y Sol en la Playa",
     destino: "Playa Acapulco / Costa",
     categoria: "Playa",
-    foto: "images/viajeros/amigos-playa.jpg",
+    foto: "viajeros/amigos-playa.jpg",
     testimonio: "El mejor fin de semana con amigos. Todo organizado a la perfección por Beta Azul.",
     autor: "Amigos de Viaje"
   },
@@ -37,7 +37,7 @@ const GALERIA_DEFAULT = [
     titulo: "Cosecha en Huertos Tradicionales",
     destino: "Zacatlán de las Manzanas",
     categoria: "Familiar",
-    foto: "images/viajeros/familia-manzanas.jpg",
+    foto: "viajeros/familia-manzanas.jpg",
     testimonio: "Nuestros hijos quedaron maravillados recolectando manzanas y conociendo la sierra.",
     autor: "Familia Morales"
   },
@@ -46,7 +46,7 @@ const GALERIA_DEFAULT = [
     titulo: "Tirolesa en Bosque de Niebla",
     destino: "Zacatlán, Puebla",
     categoria: "Aventura",
-    foto: "images/viajeros/aventura-tirolesa.jpg",
+    foto: "viajeros/aventura-tirolesa.jpg",
     testimonio: "Una descarga de adrenalina total a 2000 msnm con guías certificados y equipo seguro.",
     autor: "Carlos M."
   },
@@ -55,7 +55,7 @@ const GALERIA_DEFAULT = [
     titulo: "Mirador de Cristal en la Sierra",
     destino: "Sierra Norte de Puebla",
     categoria: "Pueblos Magicos",
-    foto: "images/viajeros/mirador-cristal.jpg",
+    foto: "viajeros/mirador-cristal.jpg",
     testimonio: "Vistas panorámicas increíbles entre la niebla. ¡Una experiencia que jamás olvidaremos!",
     autor: "Mariana y Amigas"
   },
@@ -64,7 +64,7 @@ const GALERIA_DEFAULT = [
     titulo: "Aventura Salvaje en Africam Safari",
     destino: "Puebla",
     categoria: "Familiar",
-    foto: "images/viajeros/africam-safari.jpg",
+    foto: "viajeros/africam-safari.jpg",
     testimonio: "Increíble recorrido viendo animales de cerca y conviviendo en pareja con un clima excelente.",
     autor: "Andrea y Roberto"
   },
@@ -73,7 +73,7 @@ const GALERIA_DEFAULT = [
     titulo: "Senderismo y Cascadas Naturales",
     destino: "Cuetzalan / Sierra de Puebla",
     categoria: "Aventura",
-    foto: "images/viajeros/cascada-aventura.jpg",
+    foto: "viajeros/cascada-aventura.jpg",
     testimonio: "Agua cristalina, naturaleza pura y la atención de Verónica siempre al pendiente de nuestra seguridad.",
     autor: "Viajeros Aventureros"
   },
@@ -82,7 +82,7 @@ const GALERIA_DEFAULT = [
     titulo: "Paseo Nocturno en Calles Coloniales",
     destino: "Val'Quirico / Puebla",
     categoria: "Coloniales",
-    foto: "images/viajeros/noche-colonial.jpg",
+    foto: "viajeros/noche-colonial.jpg",
     testimonio: "Noche mágica con luces, arquitectura colonial y una cena espectacular.",
     autor: "Pareja Viajera"
   },
@@ -91,7 +91,7 @@ const GALERIA_DEFAULT = [
     titulo: "Mural Vitromosaico Monumental",
     destino: "Zacatlán de las Manzanas",
     categoria: "Pueblos Magicos",
-    foto: "images/viajeros/mural-zacatlan.jpg",
+    foto: "viajeros/mural-zacatlan.jpg",
     testimonio: "Arte, tradición y colores hermosos. Una parada obligatoria en este gran Pueblo Mágico.",
     autor: "Viajeros Beta Azul"
   },
@@ -100,7 +100,7 @@ const GALERIA_DEFAULT = [
     titulo: "Ruta 4x4 Cuatrimotos Nocturna",
     destino: "Chipilo / Atlixco",
     categoria: "Aventura",
-    foto: "images/viajeros/cuatrimoto-nocturna.png",
+    foto: "viajeros/cuatrimoto-nocturna.png",
     testimonio: "Aventura nocturna en cuatrimoto con luces led y casco de protección. ¡Adrenalina pura garantizada!",
     autor: "Clientes Felices"
   }
@@ -602,6 +602,16 @@ function renderizarGaleriaGrid() {
     card.className = "galeria-card";
     card.onclick = function() { abrirFotoGaleria(idx); };
 
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("title", "Clic para ampliar foto y ver detalles");
+    card.onkeydown = function(e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        abrirFotoGaleria(idx);
+      }
+    };
+
     // Contenedor de Imagen
     const imgWrap = document.createElement("div");
     imgWrap.className = "galeria-card-img-wrap";
@@ -609,21 +619,19 @@ function renderizarGaleriaGrid() {
     const img = document.createElement("img");
     img.className = "galeria-card-img";
     img.alt = item.titulo || "Foto de viajero Beta Azul";
-    img.loading = "lazy";
+    img.loading = "eager";
     
-    // Normalizar ruta y fallbacks
-    let fotoSrc = item.foto || "logo.jpg";
+    // Normalizar ruta: en GitHub y local la carpeta directa es 'viajeros/'
+    let filename = (item.foto || "").split("/").pop().split("?")[0];
+    let fotoSrc = filename ? ("viajeros/" + filename) : (item.foto || "logo.jpg");
+    
     img.onerror = function() {
-      const filename = (item.foto || "").split("/").pop().split("?")[0];
-      if (!this.dataset.triedViajerosRoot) {
-        this.dataset.triedViajerosRoot = "true";
-        this.src = "viajeros/" + filename;
+      if (!this.dataset.triedImagesViajeros) {
+        this.dataset.triedImagesViajeros = "true";
+        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedSubfolder) {
         this.dataset.triedSubfolder = "true";
         this.src = "images/" + filename;
-      } else if (!this.dataset.triedImagesViajeros) {
-        this.dataset.triedImagesViajeros = "true";
-        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedRoot) {
         this.dataset.triedRoot = "true";
         this.src = filename;
@@ -638,8 +646,13 @@ function renderizarGaleriaGrid() {
     badge.className = "galeria-card-badge";
     badge.textContent = item.categoria || "Experiencia";
 
+    const zoomHint = document.createElement("span");
+    zoomHint.className = "galeria-card-zoom-hint";
+    zoomHint.textContent = "🔍 Ampliar";
+
     imgWrap.appendChild(img);
     imgWrap.appendChild(badge);
+    imgWrap.appendChild(zoomHint);
 
     // Cuerpo de la tarjeta
     const body = document.createElement("div");
@@ -695,15 +708,12 @@ function abrirFotoGaleria(idx) {
   if (img) {
     img.onerror = function() {
       const filename = (item.foto || "").split("/").pop().split("?")[0];
-      if (!this.dataset.triedViajerosRoot) {
-        this.dataset.triedViajerosRoot = "true";
-        this.src = "viajeros/" + filename;
+      if (!this.dataset.triedImagesViajeros) {
+        this.dataset.triedImagesViajeros = "true";
+        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedSubfolder) {
         this.dataset.triedSubfolder = "true";
         this.src = "images/" + filename;
-      } else if (!this.dataset.triedImagesViajeros) {
-        this.dataset.triedImagesViajeros = "true";
-        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedRoot) {
         this.dataset.triedRoot = "true";
         this.src = filename;
@@ -712,7 +722,8 @@ function abrirFotoGaleria(idx) {
         this.src = "logo.jpg";
       }
     };
-    img.src = item.foto || "logo.jpg";
+    const filenameLightbox = (item.foto || "").split("/").pop().split("?")[0];
+    img.src = filenameLightbox ? ("viajeros/" + filenameLightbox) : (item.foto || "logo.jpg");
   }
 
   if (badge) badge.textContent = item.categoria || "Experiencia";

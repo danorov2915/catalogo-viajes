@@ -193,17 +193,13 @@
     },
     {
       "id": "viaje-18",
-      "titulo": "COMBO 4 en 1: Cholula, Atlixco Valle de Catrinas, Val'Quirico y Ex-Hacienda de Chautla",
-      "categoria": "Pueblos Magicos",
-      "precio": "$650 p/p",
-      "tipoServicio": "Tour de un día (Salida grupal), Pet Friendly",
-      "destino": "Puebla",
-      "lugaresVisita": "Cholula, Atlixco, Valle de Catrinas, Val'Quirico y Ex-Hacienda de Chautla",
-      "incluye": "Transporte privado, Entradas, Guía especializado, Fotos profesionales, Viveros Cabrera, Escalera Ancha, Zócalo y Arcos",
-      "noIncluye": "Alimentos ni entradas no especificadas",
+      "titulo": "Viaje & Promoción #18",
+      "categoria": "Senderismo",
+      "precio": "Consultar tarifa",
+      "destino": "Destino Turístico",
       "activo": true,
       "destacado": false,
-      "descripcion": "Disfruta de una experiencia mágica e inolvidable visitando cuatro destinos increíbles en un solo día con la compañía de tu mascota. ¡Reserva ya!",
+      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
       "flyer": "18.jpg"
     },
     {
@@ -532,7 +528,7 @@
       "titulo": "Excursión en Autobús Turístico",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Pueblos Magicos",
-      "foto": "images/viajeros/autobus-turistico.jpg",
+      "foto": "viajeros/autobus-turistico.jpg",
       "testimonio": "Excelente viaje en autobús de lujo, súper cómodo, seguro y con un ambiente familiar inmejorable.",
       "autor": "Familia Sánchez"
     },
@@ -541,7 +537,7 @@
       "titulo": "Diversión y Sol en la Playa",
       "destino": "Playa Acapulco / Costa",
       "categoria": "Playa",
-      "foto": "images/viajeros/amigos-playa.jpg",
+      "foto": "viajeros/amigos-playa.jpg",
       "testimonio": "El mejor fin de semana con amigos. Todo organizado a la perfección por Beta Azul.",
       "autor": "Amigos de Viaje"
     },
@@ -550,7 +546,7 @@
       "titulo": "Cosecha en Huertos Tradicionales",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Familiar",
-      "foto": "images/viajeros/familia-manzanas.jpg",
+      "foto": "viajeros/familia-manzanas.jpg",
       "testimonio": "Nuestros hijos quedaron maravillados recolectando manzanas y conociendo la sierra.",
       "autor": "Familia Morales"
     },
@@ -559,7 +555,7 @@
       "titulo": "Tirolesa en Bosque de Niebla",
       "destino": "Zacatlán, Puebla",
       "categoria": "Aventura",
-      "foto": "images/viajeros/aventura-tirolesa.jpg",
+      "foto": "viajeros/aventura-tirolesa.jpg",
       "testimonio": "Una descarga de adrenalina total a 2000 msnm con guías certificados y equipo seguro.",
       "autor": "Carlos M."
     },
@@ -568,7 +564,7 @@
       "titulo": "Mirador de Cristal en la Sierra",
       "destino": "Sierra Norte de Puebla",
       "categoria": "Pueblos Magicos",
-      "foto": "images/viajeros/mirador-cristal.jpg",
+      "foto": "viajeros/mirador-cristal.jpg",
       "testimonio": "Vistas panorámicas increíbles entre la niebla. ¡Una experiencia que jamás olvidaremos!",
       "autor": "Mariana y Amigas"
     },
@@ -577,7 +573,7 @@
       "titulo": "Aventura Salvaje en Africam Safari",
       "destino": "Puebla",
       "categoria": "Familiar",
-      "foto": "images/viajeros/africam-safari.jpg",
+      "foto": "viajeros/africam-safari.jpg",
       "testimonio": "Increíble recorrido viendo animales de cerca y conviviendo en pareja con un clima excelente.",
       "autor": "Andrea y Roberto"
     },
@@ -586,7 +582,7 @@
       "titulo": "Senderismo y Cascadas Naturales",
       "destino": "Cuetzalan / Sierra de Puebla",
       "categoria": "Aventura",
-      "foto": "images/viajeros/cascada-aventura.jpg",
+      "foto": "viajeros/cascada-aventura.jpg",
       "testimonio": "Agua cristalina, naturaleza pura y la atención de Verónica siempre al pendiente de nuestra seguridad.",
       "autor": "Viajeros Aventureros"
     },
@@ -595,7 +591,7 @@
       "titulo": "Paseo Nocturno en Calles Coloniales",
       "destino": "Val'Quirico / Puebla",
       "categoria": "Coloniales",
-      "foto": "images/viajeros/noche-colonial.jpg",
+      "foto": "viajeros/noche-colonial.jpg",
       "testimonio": "Noche mágica con luces, arquitectura colonial y una cena espectacular.",
       "autor": "Pareja Viajera"
     },
@@ -604,7 +600,7 @@
       "titulo": "Mural Vitromosaico Monumental",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Pueblos Magicos",
-      "foto": "images/viajeros/mural-zacatlan.jpg",
+      "foto": "viajeros/mural-zacatlan.jpg",
       "testimonio": "Arte, tradición y colores hermosos. Una parada obligatoria en este gran Pueblo Mágico.",
       "autor": "Viajeros Beta Azul"
     },
@@ -613,7 +609,7 @@
       "titulo": "Ruta 4x4 Cuatrimotos Nocturna",
       "destino": "Chipilo / Atlixco",
       "categoria": "Aventura",
-      "foto": "images/viajeros/cuatrimoto-nocturna.png",
+      "foto": "viajeros/cuatrimoto-nocturna.png",
       "testimonio": "Aventura nocturna en cuatrimoto con luces led y casco de protección. ¡Adrenalina pura garantizada!",
       "autor": "Clientes Felices"
     }
