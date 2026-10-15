@@ -193,13 +193,17 @@
     },
     {
       "id": "viaje-18",
-      "titulo": "Viaje & Promoción #18",
-      "categoria": "Senderismo",
-      "precio": "Consultar tarifa",
-      "destino": "Destino Turístico",
+      "titulo": "Combo 4 en 1: Cholula, Atlixco Valle de Catrinas, Val'Quírico y Ex-Hacienda de Chautla",
+      "categoria": "Pueblos Magicos",
+      "precio": "$650 MXN",
+      "tipoServicio": "Tour de 1 día (Pet Friendly)",
+      "destino": "Puebla",
+      "lugaresVisita": "Cholula, Atlixco (Valle de Catrinas), Val'Quírico y Ex-Hacienda de Chautla",
+      "incluye": "Transporte privado, entradas, guía especializado, fotos profesionales, Viveros Cabrera, Escalera Ancha, Zócalo y Arcos",
+      "noIncluye": "Alimentos ni entradas no especificadas",
       "activo": true,
       "destacado": false,
-      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
+      "descripcion": "Embárcate en una experiencia mágica e inolvidable de 10 horas visitando cuatro increíbles destinos en Puebla y Tlaxcala. ¡Disfruta de la 6a Edición del Valle de Catrinas y trae a tu mascota en este tour totalmente Pet Friendly!",
       "flyer": "18.jpg"
     },
     {
