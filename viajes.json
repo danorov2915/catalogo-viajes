@@ -528,6 +528,7 @@
       "titulo": "Excursión en Autobús Turístico",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Pueblos Magicos",
+      "etiqueta": "🚌 Autobús a Zacatlán",
       "foto": "viajeros/autobus-turistico.jpg",
       "testimonio": "Excelente viaje en autobús de lujo, súper cómodo, seguro y con un ambiente familiar inmejorable.",
       "autor": "Familia Sánchez"
@@ -537,6 +538,7 @@
       "titulo": "Diversión y Sol en la Playa",
       "destino": "Playa Acapulco / Costa",
       "categoria": "Playa",
+      "etiqueta": "🏖️ Playa Acapulco",
       "foto": "viajeros/amigos-playa.jpg",
       "testimonio": "El mejor fin de semana con amigos. Todo organizado a la perfección por Beta Azul.",
       "autor": "Amigos de Viaje"
@@ -546,6 +548,7 @@
       "titulo": "Cosecha en Huertos Tradicionales",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Familiar",
+      "etiqueta": "🍎 Huerto de Manzanas",
       "foto": "viajeros/familia-manzanas.jpg",
       "testimonio": "Nuestros hijos quedaron maravillados recolectando manzanas y conociendo la sierra.",
       "autor": "Familia Morales"
@@ -555,6 +558,7 @@
       "titulo": "Tirolesa en Bosque de Niebla",
       "destino": "Zacatlán, Puebla",
       "categoria": "Aventura",
+      "etiqueta": "🌲 Tirolesa en la Sierra",
       "foto": "viajeros/aventura-tirolesa.jpg",
       "testimonio": "Una descarga de adrenalina total a 2000 msnm con guías certificados y equipo seguro.",
       "autor": "Carlos M."
@@ -564,6 +568,7 @@
       "titulo": "Mirador de Cristal en la Sierra",
       "destino": "Sierra Norte de Puebla",
       "categoria": "Pueblos Magicos",
+      "etiqueta": "🌁 Mirador de Cristal",
       "foto": "viajeros/mirador-cristal.jpg",
       "testimonio": "Vistas panorámicas increíbles entre la niebla. ¡Una experiencia que jamás olvidaremos!",
       "autor": "Mariana y Amigas"
@@ -573,6 +578,7 @@
       "titulo": "Aventura Salvaje en Africam Safari",
       "destino": "Puebla",
       "categoria": "Familiar",
+      "etiqueta": "🦁 Africam Safari",
       "foto": "viajeros/africam-safari.jpg",
       "testimonio": "Increíble recorrido viendo animales de cerca y conviviendo en pareja con un clima excelente.",
       "autor": "Andrea y Roberto"
@@ -582,6 +588,7 @@
       "titulo": "Senderismo y Cascadas Naturales",
       "destino": "Cuetzalan / Sierra de Puebla",
       "categoria": "Aventura",
+      "etiqueta": "💧 Cascadas Cuetzalan",
       "foto": "viajeros/cascada-aventura.jpg",
       "testimonio": "Agua cristalina, naturaleza pura y la atención de Verónica siempre al pendiente de nuestra seguridad.",
       "autor": "Viajeros Aventureros"
@@ -591,6 +598,7 @@
       "titulo": "Paseo Nocturno en Calles Coloniales",
       "destino": "Val'Quirico / Puebla",
       "categoria": "Coloniales",
+      "etiqueta": "🏰 Val'Quirico Colonial",
       "foto": "viajeros/noche-colonial.jpg",
       "testimonio": "Noche mágica con luces, arquitectura colonial y una cena espectacular.",
       "autor": "Pareja Viajera"
@@ -600,6 +608,7 @@
       "titulo": "Mural Vitromosaico Monumental",
       "destino": "Zacatlán de las Manzanas",
       "categoria": "Pueblos Magicos",
+      "etiqueta": "🎨 Mural Vitromosaico",
       "foto": "viajeros/mural-zacatlan.jpg",
       "testimonio": "Arte, tradición y colores hermosos. Una parada obligatoria en este gran Pueblo Mágico.",
       "autor": "Viajeros Beta Azul"
@@ -609,6 +618,7 @@
       "titulo": "Ruta 4x4 Cuatrimotos Nocturna",
       "destino": "Chipilo / Atlixco",
       "categoria": "Aventura",
+      "etiqueta": "🏍️ Cuatrimotos 4x4",
       "foto": "viajeros/cuatrimoto-nocturna.png",
       "testimonio": "Aventura nocturna en cuatrimoto con luces led y casco de protección. ¡Adrenalina pura garantizada!",
       "autor": "Clientes Felices"
