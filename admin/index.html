@@ -419,7 +419,7 @@
         <p>Beta Azul Viajes Turísticos - Verónica Hernández Echeverría</p>
       </div>
       <div class="header-actions">
-        <a href="../" class="btn btn-secondary">&larr; Ver Catálogo Web</a>
+        <a href="../index.html" class="btn btn-secondary">&larr; Ver Catálogo Web</a>
         <button class="btn btn-danger" onclick="cerrarSesion()">🔒 Cerrar Sesión</button>
         <button class="btn btn-secondary" onclick="abrirModalAjustes()">⚙️ Claves y Conexión</button>
         <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Agregar Nuevo Viaje</button>
@@ -915,9 +915,12 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         img.className = 'viaje-thumb';
         img.alt = v.titulo || 'Flyer';
         img.onerror = function() {
-          if (!this.dataset.triedSubfolder && !this.src.includes('images/flyers/')) {
+          const filename = (v.flyer || '').split('/').pop().split('?')[0];
+          if (!this.dataset.triedFlyers) {
+            this.dataset.triedFlyers = 'true';
+            this.src = '../_Flyers/' + filename;
+          } else if (!this.dataset.triedSubfolder) {
             this.dataset.triedSubfolder = 'true';
-            let filename = (v.flyer || '').split('/').pop();
             this.src = '../images/flyers/' + filename;
           } else {
             this.onerror = null;
