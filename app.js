@@ -613,9 +613,15 @@ function renderizarGaleriaGrid() {
     let fotoSrc = item.foto || "logo.jpg";
     img.onerror = function() {
       const filename = (item.foto || "").split("/").pop().split("?")[0];
-      if (!this.dataset.triedSubfolder) {
+      if (!this.dataset.triedViajerosRoot) {
+        this.dataset.triedViajerosRoot = "true";
+        this.src = "viajeros/" + filename;
+      } else if (!this.dataset.triedSubfolder) {
         this.dataset.triedSubfolder = "true";
         this.src = "images/" + filename;
+      } else if (!this.dataset.triedImagesViajeros) {
+        this.dataset.triedImagesViajeros = "true";
+        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedRoot) {
         this.dataset.triedRoot = "true";
         this.src = filename;
@@ -687,9 +693,15 @@ function abrirFotoGaleria(idx) {
   if (img) {
     img.onerror = function() {
       const filename = (item.foto || "").split("/").pop().split("?")[0];
-      if (!this.dataset.triedSubfolder) {
+      if (!this.dataset.triedViajerosRoot) {
+        this.dataset.triedViajerosRoot = "true";
+        this.src = "viajeros/" + filename;
+      } else if (!this.dataset.triedSubfolder) {
         this.dataset.triedSubfolder = "true";
         this.src = "images/" + filename;
+      } else if (!this.dataset.triedImagesViajeros) {
+        this.dataset.triedImagesViajeros = "true";
+        this.src = "images/viajeros/" + filename;
       } else if (!this.dataset.triedRoot) {
         this.dataset.triedRoot = "true";
         this.src = filename;
