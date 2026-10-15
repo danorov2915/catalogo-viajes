@@ -30,7 +30,7 @@
       <div class="header-info">
         <div class="brand-badge">✨ Catálogo Oficial 2026</div>
         <h1>Beta Azul Viajes Turísticos</h1>
-        <p class="header-sub">Atención: <strong>Verónica Hernández Echeverría</strong> · <a href="tel:+522444470237" class="header-phone-link" title="Llamar directo a Verónica">📞 <strong>+52 244 447 0237</strong></a> · <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Tengo%20una%20consulta%20sobre%20los%20viajes%20de%20Beta%20Azul%20Viajes%20Tur%C3%ADsticos." target="_blank" rel="noopener noreferrer" class="header-wa-link" title="Mandar WhatsApp a Verónica">💬 <strong>WhatsApp</strong></a> · <a href="#faqSection" class="header-faq-link" title="Ver Preguntas Frecuentes">❓ <strong>Preguntas Frecuentes</strong></a></p>
+        <p class="header-sub">Atención: <strong>Verónica Hernández Echeverría</strong> · <a href="tel:+522444470237" class="header-phone-link" title="Llamar directo a Verónica">📞 <strong>+52 244 447 0237</strong></a> · <a href="https://wa.me/522444470237?text=%C2%A1Hola%20Ver%C3%B3nica!%20Tengo%20una%20consulta%20sobre%20los%20viajes%20de%20Beta%20Azul%20Viajes%20Tur%C3%ADsticos." target="_blank" rel="noopener noreferrer" class="header-wa-link" title="Mandar WhatsApp a Verónica">💬 <strong>WhatsApp</strong></a> · <a href="javascript:void(0)" onclick="abrirModalGaleria()" class="header-faq-link" title="Ver Fotos Reales y Testimonios">📸 <strong>Galería Real</strong></a> · <a href="#faqSection" class="header-faq-link" title="Ver Preguntas Frecuentes">❓ <strong>Preguntas Frecuentes</strong></a></p>
       </div>
 
       <!-- Derecha: Buscador -->
@@ -62,6 +62,9 @@
         </div>
       </div>
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="btn-certificados btn-galeria-cta" onclick="abrirModalGaleria()">
+          📸 Galería & Testimonios
+        </button>
         <button type="button" class="btn-certificados" onclick="abrirModalCertificados('rnt')">
           📜 Ver Acreditaciones Oficiales
         </button>
@@ -103,9 +106,11 @@
       </div>
     </div>
 
-    <!-- Filtros por Categoría con Botón de Administración integrado -->
+    <!-- Filtros por Categoría con Botón de Galería y Administración -->
     <nav class="filter-bar" aria-label="Filtros de viaje">
+      <button type="button" class="filter-btn filter-btn-galeria" onclick="abrirModalGaleria()" id="btnAbrirGaleria">📸 Galería & Testimonios</button>
       <button class="filter-btn active" data-category="Todos">Todos</button>
+      <button class="filter-btn filter-btn-fav" data-category="Favoritos">❤️ Favoritos (<span id="favCount">0</span>)</button>
       <button class="filter-btn" data-category="Pet Friendly">🐾 Con Mascota</button>
       <button class="filter-btn" data-category="Playa">🏖️ Playa</button>
       <button class="filter-btn" data-category="Aventura">🧗 Aventura</button>
@@ -114,7 +119,7 @@
       <button class="filter-btn" data-category="Coloniales">🏰 Coloniales</button>
       <button class="filter-btn" data-category="Pueblos Magicos">✨ Pueblos Mágicos</button>
       <button class="filter-btn" data-category="Mixtos">🎒 Mixtos</button>
-      <a href="./admin/index.html" class="filter-btn admin-filter-btn" title="Administracion" style="text-decoration: none; border-color: rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 0.5rem 0.85rem;" aria-label="Administracion">⚙️</a>
+      <a href="./admin/index.html" class="filter-btn admin-filter-btn" title="Administración" style="text-decoration: none; border-color: rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 0.5rem 0.85rem;" aria-label="Administración">⚙️</a>
     </nav>
 
     <!-- Conteo de resultados -->
@@ -170,6 +175,14 @@
             Sí. Somos una agencia de viajes 100% formal inscrita en el <strong>Registro Nacional de Turismo (RNT No. 0421019199141)</strong> y contamos con el Reconocimiento oficial de <strong>Compromiso Turístico 2026</strong> emitido por la Secretaría de Turismo del Gobierno de México.
           </div>
         </details>
+        <details class="faq-item">
+          <summary class="faq-question">¿Por qué las tarifas dicen "Desde" y cómo se cotizan los paquetes?</summary>
+          <div class="faq-answer">
+            Nuestras tarifas se indican con la palabra <strong>"Desde"</strong> porque los costos en hotelería y boletos de avión fluctúan dinámicamente según la temporada, día de la semana y disponibilidad de las aerolíneas (los vuelos pueden cambiar de precio incluso en cuestión de horas).<br><br>
+            • <strong>En viajes grupales:</strong> Te brindamos siempre el precio total y el desglose transparente por persona.<br>
+            • <strong>En paquetes familiares o de pareja:</strong> Cotizamos en base habitación (habitualmente para 2 adultos y <strong>hasta 2 niños gratis por habitación</strong> según las promociones vigentes de cada hotel).
+          </div>
+        </details>
       </div>
     </section>
 
@@ -218,6 +231,10 @@
           <a href="#" id="lightboxWaBtn" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" style="width: 100%; padding: 0.85rem; font-size: 1.05rem;">
             💬 Cotizar este viaje con Verónica por WhatsApp
           </a>
+
+          <button type="button" id="lightboxShareBtn" class="btn-share" onclick="compartirViajeActual()" style="width: 100%; padding: 0.75rem; margin-top: 0.6rem; font-size: 0.92rem; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15);">
+            📤 Compartir este viaje con amigos o familia
+          </button>
         </div>
       </div>
     </div>
@@ -253,6 +270,58 @@
           <strong>Reconocimiento Oficial de Compromiso Turístico 2026</strong><br>
           Otorgado por la <strong>Secretaría de Turismo del Gobierno de México</strong> a Beta Azul Viajes Turísticos por cumplimiento de la Ley General de Turismo.
         </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Galería de Fotos Reales & Testimonios -->
+  <div class="galeria-modal" id="galeriaModal" onclick="cerrarModalGaleria()">
+    <div class="galeria-modal-container" onclick="event.stopPropagation()">
+      <div class="galeria-modal-header">
+        <div>
+          <span class="galeria-header-tag">📸 Experiencias Reales 100% Verificadas</span>
+          <h3>Galería de Viajeros & Testimonios</h3>
+          <p>Los mejores momentos de nuestras salidas grupales y las fotos que nos envían nuestros clientes.</p>
+        </div>
+        <button type="button" class="galeria-close" onclick="cerrarModalGaleria()" title="Cerrar Galería">✕</button>
+      </div>
+
+      <!-- Filtros de categoría dentro de la Galería -->
+      <div class="galeria-filter-bar" id="galeriaFilterBar">
+        <button type="button" class="galeria-tab active" data-gal-cat="Todos" onclick="filtrarGaleria('Todos', this)">Todas las Fotos</button>
+        <button type="button" class="galeria-tab" data-gal-cat="Pueblos Magicos" onclick="filtrarGaleria('Pueblos Magicos', this)">✨ Pueblos Mágicos</button>
+        <button type="button" class="galeria-tab" data-gal-cat="Aventura" onclick="filtrarGaleria('Aventura', this)">🧗 Aventura & Naturaleza</button>
+        <button type="button" class="galeria-tab" data-gal-cat="Familiar" onclick="filtrarGaleria('Familiar', this)">👨‍👩‍👧‍👦 Familias & Parejas</button>
+        <button type="button" class="galeria-tab" data-gal-cat="Playa" onclick="filtrarGaleria('Playa', this)">🏖️ Playa</button>
+        <button type="button" class="galeria-tab" data-gal-cat="Coloniales" onclick="filtrarGaleria('Coloniales', this)">🏰 Coloniales</button>
+      </div>
+
+      <!-- Grid dinámico de fotos y testimonios -->
+      <div class="galeria-grid" id="galeriaGrid">
+        <!-- Renderizado dinámicamente desde app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Visor de Foto Ampliada de la Galería (Lightbox) -->
+  <div class="galeria-lightbox" id="galeriaLightboxModal" onclick="cerrarFotoGaleria()">
+    <button type="button" class="galeria-lightbox-close" onclick="cerrarFotoGaleria()" title="Cerrar foto">✕</button>
+    <button type="button" class="galeria-nav-btn prev" onclick="event.stopPropagation(); cambiarFotoGaleria(-1)" title="Foto anterior">❮</button>
+    <button type="button" class="galeria-nav-btn next" onclick="event.stopPropagation(); cambiarFotoGaleria(1)" title="Foto siguiente">❯</button>
+    
+    <div class="galeria-lightbox-box" onclick="event.stopPropagation()">
+      <div class="galeria-lightbox-img-wrap">
+        <img src="" id="galeriaLightboxImg" alt="Foto de viaje Beta Azul">
+      </div>
+      <div class="galeria-lightbox-info">
+        <span class="galeria-badge" id="galeriaLightboxBadge">Pueblos Mágicos</span>
+        <h4 id="galeriaLightboxTitle">Título de la Experiencia</h4>
+        <div class="galeria-lightbox-dest" id="galeriaLightboxDest">📍 Destino</div>
+        <div class="galeria-stars" title="Calificación 5 estrellas">⭐⭐⭐⭐⭐ <span>(Experiencia Verificada)</span></div>
+        <blockquote class="galeria-lightbox-quote" id="galeriaLightboxQuote">
+          "Testimonio del cliente."
+        </blockquote>
+        <div class="galeria-lightbox-author" id="galeriaLightboxAuthor">— Nombre del Cliente</div>
       </div>
     </div>
   </div>
