@@ -1000,35 +1000,70 @@ html, body {
 .galeria-filter-bar {
   padding: 0.75rem 1.5rem;
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.65rem;
   overflow-x: auto;
+  overflow-y: hidden;
   background: #070e19;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 58px;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.35) transparent;
+  flex-shrink: 0;
+}
+
+.galeria-filter-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.galeria-filter-bar::-webkit-scrollbar-track {
+  background: rgba(3, 7, 18, 0.6);
+}
+
+.galeria-filter-bar::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.4);
+  border-radius: 4px;
+}
+
+.galeria-filter-bar::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
 }
 
 .galeria-tab {
   background: #132235;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #94a3b8;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  font-size: 0.82rem;
+  padding: 0 1.15rem;
+  height: 38px;
+  border-radius: 22px;
+  font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  line-height: 1;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .galeria-tab:hover {
   background: #1e3553;
   color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 .galeria-tab.active {
   background: #0284c7;
   color: #ffffff;
   border-color: #38bdf8;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45);
 }
 
 .galeria-grid {
@@ -1090,8 +1125,13 @@ html, body {
   color: #ffffff;
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 0.25rem 0.65rem;
+  height: 26px;
+  padding: 0 0.75rem;
   border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
