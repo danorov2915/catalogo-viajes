@@ -656,6 +656,10 @@
       .viaje-item > *:nth-child(n+3) {
         grid-column: 2;
       }
+    /* Ocultar el icono nativo de revelar clave de Edge/Windows para evitar colisiones */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear {
+      display: none !important;
     }
   </style>
 </head>
@@ -672,10 +676,12 @@
       </div>
       
       <form onsubmit="verificarClave(event); return false;">
-        <div style="position: relative; margin-bottom: 1rem;">
+        <div style="position: relative; margin-bottom: 1rem; display: flex; align-items: center;">
           <input type="password" id="adminPin" placeholder="Introduce tu clave..." autofocus
-            style="width: 100%; padding: 0.75rem 2.8rem 0.75rem 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 1rem; text-align: center; letter-spacing: 1px; outline: none;">
-          <button type="button" onclick="toggleVerClave()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; font-size: 1.2rem; color: #94a3b8;" title="Ver/Ocultar clave">👁️</button>
+            style="width: 100%; padding: 0.75rem 3rem 0.75rem 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 1rem; text-align: center; letter-spacing: 1px; outline: none;">
+          <button type="button" id="btnToggleClave" onclick="toggleVerClave(event)"
+            style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; font-size: 1.35rem; color: #94a3b8; z-index: 25; padding: 6px; display: flex; align-items: center; justify-content: center; line-height: 1; user-select: none;"
+            title="Mostrar / Ocultar clave">👁️</button>
         </div>
         
         <div id="loginError" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none;">
@@ -685,8 +691,6 @@
         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 1rem;">
           Ingresar al Panel
         </button>
-
-
       </form>
     </div>
   </div>
@@ -699,6 +703,24 @@
         if (_ov) _ov.style.display = 'none';
       }
     } catch (e) {}
+
+    function toggleVerClave(e) {
+      if (e) {
+        if (e.preventDefault) e.preventDefault();
+        if (e.stopPropagation) e.stopPropagation();
+      }
+      var inp = document.getElementById('adminPin');
+      var btn = document.getElementById('btnToggleClave');
+      if (!inp) return;
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        if (btn) btn.textContent = '🙈';
+      } else {
+        inp.type = 'password';
+        if (btn) btn.textContent = '👁️';
+      }
+      inp.focus();
+    }
   </script>
 
   <!-- Modal Oculto de Configuración de Claves (Solo visible si das clic en Ajustes) -->
@@ -1223,10 +1245,22 @@
     }
 
     // Control de Sesión y Clave Fija de Administrador
-    function toggleVerClave() {
-      const input = document.getElementById('adminPin');
-      if (!input) return;
-      input.type = input.type === 'password' ? 'text' : 'password';
+    function toggleVerClave(e) {
+      if (e) {
+        if (e.preventDefault) e.preventDefault();
+        if (e.stopPropagation) e.stopPropagation();
+      }
+      const inp = document.getElementById('adminPin');
+      const btn = document.getElementById('btnToggleClave');
+      if (!inp) return;
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        if (btn) btn.textContent = '🙈';
+      } else {
+        inp.type = 'password';
+        if (btn) btn.textContent = '👁️';
+      }
+      inp.focus();
     }
 
     function cerrarSesion() {
