@@ -730,29 +730,143 @@
       line-height: 1.4;
     }
 
-    .video-workspace {
-      display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
-      gap: 1.5rem;
-      align-items: start;
+    /* ESTUDIO DE VIDEO PRO - ARQUITECTURA MODERNA */
+    .studio-pro-container {
+      background: #060d1a;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      margin-top: 1rem;
     }
 
-    @media (max-width: 950px) {
-      .video-workspace {
+    .studio-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      background: #0b1526;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .studio-main-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr 370px;
+      min-height: 680px;
+      background: #030712;
+    }
+
+    @media (max-width: 1240px) {
+      .studio-main-grid {
+        grid-template-columns: 180px 1fr 340px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .studio-main-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Marco de Celular / Mockup Smartphone Vertical 9:16 */
+    .studio-sidebar-dock {
+      background: #081120;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.85rem 0.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .studio-sidebar-dock {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0.5rem;
+      }
+    }
+
+    .studio-dock-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.7rem 0.85rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      width: 100%;
+      white-space: nowrap;
+    }
+
+    .studio-dock-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .studio-dock-btn.active {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(236, 72, 153, 0.45);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.18);
+    }
+
+    .studio-dock-btn .dock-icon {
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+    }
+
+    .studio-tool-content {
+      padding: 1.25rem;
+      overflow-y: auto;
+      max-height: 850px;
+      background: #060d1a;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .studio-tab-pane {
+      display: none;
+      animation: fadeInStudio 0.2s ease forwards;
+    }
+
+    .studio-tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeInStudio {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .studio-stage-column {
+      background: #081120;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      overflow-y: auto;
+      max-height: 850px;
+    }
+
     .phone-mockup-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #08111e;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius);
-      padding: 1.5rem;
+      width: 100%;
     }
 
     .phone-frame {
@@ -1334,413 +1448,232 @@
           </div>
         </div>
 
-        <!-- Botones de Creación Rápida en 1 Clic (Presets) -->
-        <div style="background: rgba(13, 27, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius); padding: 1rem 1.25rem;">
-          <div style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;">
-            ⚡ Creación Exprés en 1 Clic:
-          </div>
-          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('playas')" title="Carga todas las salidas de playa con música alegre y ritmo">
-              🏖️ Reel de Playas en 1 Clic
-            </button>
-            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('pueblos')" title="Carga todos los Pueblos Mágicos con música tradicional de México">
-              ✨ Reel Pueblos Mágicos
-            </button>
-            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('aventura')" title="Carga salidas de aventura y senderismo con beat energético">
-              🧗 Reel Aventura & Senderismo
-            </button>
-            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('viajeros')" title="Carga fotos reales de clientes de la galería con golpes rítmicos estilo Rocky">
-              📸 Reel de Viajeros (Fotos Reales)
-            </button>
-            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('todos')" title="Carga todos los viajes activos del catálogo">
-              🎒 Gran Catálogo Completo
-            </button>
-          </div>
-        </div>
-
-        <!-- Selector de Modos de Creación (3 Tarjetas) -->
-        <div class="video-modes-grid">
-          <div class="video-mode-card active" id="cardModoShowcase" onclick="seleccionarModoVideo('showcase')">
-            <div class="video-mode-icon">🏖️⚡</div>
-            <div class="video-mode-title">1. Showcase de Salidas por Categoría</div>
-            <div class="video-mode-desc">
-              Promociona varias salidas del catálogo (Playas, Pueblos Mágicos, etc.) en un solo video sincronizado al compás de la música.
-            </div>
-            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #ec4899; font-weight: 700;">★ Más usado para ventas</div>
-          </div>
-
-          <div class="video-mode-card" id="cardModoViajeros" onclick="seleccionarModoVideo('viajeros')">
-            <div class="video-mode-icon">📸🥊</div>
-            <div class="video-mode-title">2. Álbum Rítmico de Viajeros</div>
-            <div class="video-mode-desc">
-              Montaje ultra dinámico con fotos de clientes reales. Cada foto cambia al golpe de los acordes de guitarra o batería (estilo "Ojo de Tigre").
-            </div>
-            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #38bdf8; font-weight: 700;">★ Máxima confianza y testimonios</div>
-          </div>
-
-          <div class="video-mode-card" id="cardModoIA" onclick="seleccionarModoVideo('ia')">
-            <div class="video-mode-icon">🎥✨</div>
-            <div class="video-mode-title">3. Híbrido Cinematográfico con IA</div>
-            <div class="video-mode-desc">
-              Integra 1 video aéreo/paneo tipo dron generado en Gemini Omni o tu celular + fotos de apoyo + placa final de venta. Ahorra tu cuota diaria de IA.
-            </div>
-            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #c084fc; font-weight: 700;">★ Calidad cine y dron (Clic para abrir generador)</div>
-          </div>
-        </div>
-
-        <!-- PANEL ESPECIAL: GENERADOR DE PROMPTS DE VIDEO PARA GEMINI OMNI / VEO -->
-        <div id="panelGeneradorVideoIA" style="background: linear-gradient(135deg, rgba(30, 27, 75, 0.94) 0%, rgba(15, 23, 42, 0.98) 100%); border: 2px solid rgba(192, 132, 252, 0.5); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);">
+        <!-- CONTENEDOR PRINCIPAL DEL ESTUDIO PRO -->
+        <div class="studio-pro-container">
           
-          <!-- Encabezado con título e instrucciones -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(192, 132, 252, 0.2); padding-bottom: 0.85rem;">
-            <div>
-              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <span style="font-size: 1.5rem;">🎥✨</span>
-                <h3 style="margin: 0; color: #f3e8ff; font-size: 1.15rem; font-weight: 800;">
-                  Generador de Prompts de Video para Gemini Omni & Google Veo
-                </h3>
-                <span style="background: rgba(168, 85, 247, 0.25); border: 1px solid #c084fc; color: #e9d5ff; font-size: 0.72rem; padding: 0.15rem 0.55rem; border-radius: 20px; font-weight: 700;">
-                  IA Cinematográfica
+          <!-- BARRA SUPERIOR DE CONTROL DEL ESTUDIO -->
+          <div class="studio-top-bar">
+            <!-- Izquierda: Marca y Estado -->
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 1.4rem;">🎬</span>
+              <div>
+                <strong style="color: #fff; font-size: 0.98rem; display: block; line-height: 1.2;">
+                  BetaAzul Studio Pro
+                </strong>
+                <span style="font-size: 0.72rem; color: #94a3b8;">
+                  Editor de Video Publicitario & Reels
                 </span>
               </div>
-              <p style="margin: 0.35rem 0 0 0; color: #cbd5e1; font-size: 0.84rem;">
-                Crea tomas aéreas de dron, olas cristalinas o autobuses en carretera. Genera aquí el prompt maestro en inglés optimizado, cópialo a Gemini Omni para que genere el video, y arrastra el archivo MP4 resultante a tu línea de tiempo para unirlo con tus fotos, música rítmica y gancho publicitario.
-              </p>
             </div>
-          </div>
 
-          <!-- Grid de Configuración del Video IA -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-            
-            <!-- Columna 1: Entrada de Contenido (Foto o Texto) -->
-            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 10px; padding: 0.85rem;">
-              <label style="font-size: 0.82rem; color: #c084fc; font-weight: 700; display: block; margin-bottom: 0.4rem;">
-                1️⃣ ¿De qué quieres el video? (Destino o Foto de referencia):
-              </label>
+            <!-- Centro: Presets Exprés en 1 Clic -->
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; margin-right: 0.2rem;">⚡ Carga Exprés:</span>
+              <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('playas')">🏖️ Playas</button>
+              <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('pueblos')">✨ Pueblos</button>
+              <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('aventura')">🧗 Aventura</button>
+              <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('viajeros')">📸 Viajeros</button>
+              <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('todos')">🎒 Catálogo</button>
+            </div>
 
-              <!-- Opción A: Escribir texto libre -->
-              <input type="text" id="videoIADestinoInput" value="Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras" 
-                placeholder="Ej: Acapulco con olas doradas al atardecer..." 
-                oninput="generarPromptVideoIA()"
-                style="width: 100%; font-size: 0.82rem; padding: 0.55rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff; margin-bottom: 0.5rem;">
-
-              <!-- Selector de Tours del Catálogo para auto-llenar -->
-              <select id="videoIASelTour" onchange="seleccionarTourParaPromptIA(this)" 
-                style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.2); color: #94a3b8; margin-bottom: 0.5rem;">
-                <option value="">-- O elige uno de tus viajes registrados --</option>
-              </select>
-
-              <!-- Opción B: Subir foto propia de referencia -->
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
-                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.65rem; border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff;"
-                  onclick="document.getElementById('videoIAFotoInput').click()">
-                  📸 Subir Foto de Referencia
+            <!-- Derecha: Selector de Formato & Empezar de Cero -->
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <div style="display: flex; background: #030712; padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);">
+                <button type="button" id="btnFormatToggle_916" onclick="cambiarFormatoVideo('9:16')" 
+                  style="padding: 0.3rem 0.65rem; font-size: 0.76rem; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; background: #38bdf8; color: #000; transition: all 0.2s;">
+                  📱 9:16 Vertical
                 </button>
-                <input type="file" id="videoIAFotoInput" accept="image/*" style="display: none;" onchange="cargarFotoParaPromptIA(this)">
-                <span style="font-size: 0.72rem; color: #94a3b8;">(Gemini Omni puede animar una foto fija)</span>
+                <button type="button" id="btnFormatToggle_11" onclick="cambiarFormatoVideo('1:1')" 
+                  style="padding: 0.3rem 0.65rem; font-size: 0.76rem; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.2s;">
+                  🟦 1:1 Cuadrado
+                </button>
               </div>
-
-              <!-- Vista previa de la foto seleccionada -->
-              <div id="videoIAFotoPreviewWrap" style="display: none; margin-top: 0.35rem; align-items: center; gap: 0.5rem;">
-                <img id="videoIAFotoPreview" src="" alt="Foto referencia" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #c084fc;">
-                <span id="videoIAFotoNombre" style="font-size: 0.72rem; color: #34d399; font-weight: 600;">✓ Foto de referencia cargada</span>
-              </div>
-
-              <!-- Chips de ideas rápidas -->
-              <div style="margin-top: 0.5rem;">
-                <span style="font-size: 0.7rem; color: #cbd5e1; display: block; margin-bottom: 0.25rem;">⚡ Ideas rápidas con 1 clic:</span>
-                <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
-                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras al viento')">🏖️ Huatulco Turquesa</button>
-                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Atardecer dorado en Acapulco con el sol ocultándose en el mar y reflejos brillantes')">🌅 Atardecer Acapulco</button>
-                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Autobús turístico blanco de lujo viajando en autopista hacia la costa al amanecer')">🚍 Autobús de Lujo</button>
-                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Cascadas de agua cristalina turquesa en Chiapas rodeadas de selva verde exuberante')">🏞️ Cascadas de Chiapas</button>
-                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Pueblo Mágico colonial iluminado de noche con calles empedradas y arquitectura tradicional')">✨ Pueblo Mágico</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Columna 2: Parámetros Cinematográficos -->
-            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem;">
-              <label style="font-size: 0.82rem; color: #c084fc; font-weight: 700;">
-                2️⃣ Movimiento de Cámara y Estilo Visual:
-              </label>
-
-              <div>
-                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Movimiento de Cámara:</label>
-                <select id="videoIACamara" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
-                  <option value="drone" selected>🦅 Dron FPV aéreo sobrevolando suavemente hacia adelante</option>
-                  <option value="pan">🌅 Paneo cinematográfico horizontal lento y majestuoso</option>
-                  <option value="waves">🌊 Olas en cámara lenta a 60fps con espuma y brisa marina</option>
-                  <option value="bus">🚍 Plano secuencia de seguimiento al autobús en carretera</option>
-                  <option value="zoom">🔍 Zoom in lento y envolvente hacia el paisaje</option>
-                </select>
-              </div>
-
-              <div>
-                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Iluminación y Ambiente:</label>
-                <select id="videoIAIluminacion" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
-                  <option value="golden" selected>🌅 Hora Dorada / Atardecer cálido y radiante</option>
-                  <option value="sunny">☀️ Sol radiante de mediodía con mar turquesa vivo</option>
-                  <option value="twilight">🌌 Crepúsculo / Atardecer azul con luces cálidas acogedoras</option>
-                </select>
-              </div>
-
-              <div>
-                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Formato de Salida:</label>
-                <select id="videoIAFormato" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
-                  <option value="9:16" selected>📱 Vertical 9:16 (Reels, TikTok, WhatsApp)</option>
-                  <option value="1:1">🟦 Cuadrado 1:1 (Post clásico)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Área del Prompt Generado Maestro -->
-          <div style="background: #020617; border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 8px; padding: 0.85rem; margin-bottom: 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
-              <span style="font-size: 0.78rem; color: #facc15; font-weight: 700;">
-                📋 Prompt Maestro en Inglés (Optimizado para Gemini Omni, Veo, Runway, Luma y Pika):
-              </span>
-              <button type="button" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; border-color: rgba(250, 204, 21, 0.4); color: #facc15;" onclick="generarPromptVideoIA()">
-                🔄 Regenerar Prompt
+              <button type="button" class="btn btn-secondary" onclick="limpiarEstudioVideos()" style="padding: 0.35rem 0.7rem; font-size: 0.76rem;" title="Reiniciar todas las diapositivas y ajustes">
+                🧹 Reiniciar
               </button>
             </div>
-            
-            <textarea id="videoIAPromptOutput" rows="3" readonly style="width: 100%; font-family: monospace; font-size: 0.8rem; background: #0b1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.5rem; resize: vertical;"></textarea>
+          </div>
 
-            <div id="videoIAPromptDescEs" style="margin-top: 0.4rem; font-size: 0.74rem; color: #94a3b8; line-height: 1.4;">
-              <strong>🇪🇸 Explicación del prompt:</strong> Toma cinematográfica de dron aéreo sobrevolando Huatulco al atardecer en 4K y 60fps vertical para Reels/TikTok.
+          <!-- CUERPO PRINCIPAL DEL ESTUDIO (3 COLUMNAS: DOCK LATERAL + HERRAMIENTA ACTIVA + CELULAR STAGE) -->
+          <div class="studio-main-grid">
+            
+            <!-- 1. BARRA LATERAL IZQUIERDA (DOCK DE HERRAMIENTAS) -->
+            <div class="studio-sidebar-dock">
+              <button type="button" class="studio-dock-btn active" id="studioDockBtn_medios" onclick="cambiarTabEstudioVideo('medios')">
+                <span class="dock-icon">📂</span>
+                <span>Diapositivas</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_musica" onclick="cambiarTabEstudioVideo('musica')">
+                <span class="dock-icon">🎵</span>
+                <span>Música & Ritmo</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_ganchos" onclick="cambiarTabEstudioVideo('ganchos')">
+                <span class="dock-icon">🪝</span>
+                <span>Gancho & Textos</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_placa" onclick="cambiarTabEstudioVideo('placa')">
+                <span class="dock-icon">🏆</span>
+                <span>Placa Final</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_estilo" onclick="cambiarTabEstudioVideo('estilo')">
+                <span class="dock-icon">✨</span>
+                <span>Estilo & Efectos</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_promptia" onclick="cambiarTabEstudioVideo('promptia')" style="border-left: 2px solid #c084fc;">
+                <span class="dock-icon">🎥</span>
+                <span style="color: #e9d5ff;">Prompt IA (Gemini)</span>
+              </button>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_copys" onclick="cambiarTabEstudioVideo('copys')">
+                <span class="dock-icon">📢</span>
+                <span>Copys Redes</span>
+              </button>
             </div>
-          </div>
 
-          <!-- Botones de Acción Inmediata -->
-          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
-            <button type="button" class="btn btn-primary" onclick="copiarPromptVideoIA()" 
-              style="background: linear-gradient(135deg, #9333ea, #c084fc); border: none; font-weight: 800; font-size: 0.88rem; padding: 0.65rem 1.25rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);">
-              📋 Copiar Prompt para Gemini Omni
-            </button>
-            
-            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
-              style="border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff; font-size: 0.82rem; padding: 0.65rem 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
-              🌐 Abrir Google Gemini
-            </a>
-
-            <a href="https://aistudio.google.com/live" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
-              style="border-color: rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 0.82rem; padding: 0.65rem 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
-              🚀 Google AI Studio (Veo)
-            </a>
-          </div>
-
-          <!-- Guía Visual de 3 Pasos: Cómo unirlo con tus fotos aquí -->
-          <div style="background: rgba(15, 23, 42, 0.7); border: 1px dashed rgba(192, 132, 252, 0.35); border-radius: 8px; padding: 0.75rem 1rem;">
-            <strong style="color: #38bdf8; font-size: 0.78rem; display: block; margin-bottom: 0.35rem;">
-              🔄 Pasos para unir tu video de IA con tus fotos en el reel:
-            </strong>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; font-size: 0.74rem; color: #cbd5e1;">
-              <div>
-                <strong style="color: #c084fc;">Paso 1:</strong> Dale clic a <em>"Copiar Prompt para Gemini Omni"</em> y pégalo en Gemini con <kbd style="background: #1e1b4b; padding: 0.1rem 0.3rem; border-radius: 4px;">Ctrl + V</kbd>.
-              </div>
-              <div>
-                <strong style="color: #c084fc;">Paso 2:</strong> Cuando Gemini o Veo te dé el video, descárgalo a tu computadora (archivo <code>.mp4</code>).
-              </div>
-              <div>
-                <strong style="color: #c084fc;">Paso 3:</strong> Arrastra el archivo <code>.mp4</code> a la caja de abajo. ¡El sistema lo unirá automáticamente con tu música, tu gancho editable y tu placa final de venta con WhatsApp!
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Espacio de Trabajo Principal (2 Columnas) -->
-        <div class="video-workspace">
-          
-          <!-- Columna Izquierda: Contenido, Controles y Configuración -->
-          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-            
-            <!-- Zona de Carga Rápida de Fotos & Archivos -->
-            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
-                <label style="font-weight: 700; color: #38bdf8; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
-                  📂 Agregar Diapositivas al Video:
-                </label>
-                <div style="font-size: 0.8rem; color: #94a3b8;">
-                  Puedes arrastrar múltiples fotos o videos a la vez
+            <!-- 2. ÁREA CENTRAL: PANEL DE LA HERRAMIENTA ACTIVA -->
+            <div class="studio-tool-content">
+              
+              <!-- PANE 1: DIAPOSITIVAS Y MEDIOS -->
+              <div class="studio-tab-pane active" id="studioPane_medios">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <div>
+                    <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+                      📂 Diapositivas & Fotos del Video
+                    </h4>
+                    <span style="font-size: 0.78rem; color: #94a3b8;">
+                      Agrega fotos de tus salidas turísticas o videos MP4 (descargados de Gemini o celular)
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Filtros de Categorías para carga rápida -->
-              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
-                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Playa')">🏖️ + Salidas Playa</button>
-                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Pueblos Magicos')">✨ + Pueblos Mágicos</button>
-                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Aventura')">🧗 + Aventura</button>
-                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Senderismo')">🥾 + Senderismo</button>
-                <button type="button" class="pill-filter-btn" onclick="cargarFotosGaleriaEnVideo()">📸 + Fotos de Galería Real</button>
-                <button type="button" class="pill-filter-btn" style="border-color: rgba(192, 132, 252, 0.6); color: #c084fc; font-weight: 700;" onclick="seleccionarModoVideo('ia')">🎥✨ Generar Prompt Video IA</button>
-              </div>
-
-              <!-- Dropzone para arrastrar 8, 12, 15+ fotos o videos MP4 -->
-              <div class="video-dropzone" id="videoDropzone" onclick="document.getElementById('videoMultiFileInput').click()">
-                <div style="font-size: 1.8rem;">📁📥</div>
-                <strong style="color: #fff; font-size: 0.95rem;">
-                  Arrastra aquí tus fotos o videos MP4 (incluidos los de Gemini) o da clic para seleccionarlos
-                </strong>
-                <p style="color: #94a3b8; font-size: 0.8rem; margin: 0;">
-                  Puedes combinar fotos y clips de video en la misma secuencia (JPG, PNG, WebP o videos MP4 de IA o celular).
-                </p>
-                <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this)">
-              </div>
-            </div>
-
-            <!-- Tira de Línea de Tiempo (Timeline Strip) -->
-            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
-                <div>
-                  <strong style="color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
-                    🎞️ Secuencia de Diapositivas (<span id="videoTimelineCount" style="color: #ec4899;">0</span>)
-                  </strong>
-                  <span style="font-size: 0.78rem; color: #94a3b8;">
-                    Tiempo por foto: <b id="videoTimePerSlide" style="color: #38bdf8;">2.0s</b> · Duración Total: <b id="videoTimelineTotal" style="color: #4ade80;">20s</b>
+                <!-- Filtros de Categorías para carga rápida -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 0.85rem; margin-bottom: 1rem;">
+                  <span style="font-size: 0.76rem; color: #38bdf8; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+                    ⚡ Cargar Salidas de tu Catálogo por Categoría:
                   </span>
+                  <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Playa')">🏖️ + Salidas Playa</button>
+                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Pueblos Magicos')">✨ + Pueblos Mágicos</button>
+                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Aventura')">🧗 + Aventura</button>
+                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Senderismo')">🥾 + Senderismo</button>
+                    <button type="button" class="pill-filter-btn" onclick="cargarFotosGaleriaEnVideo()">📸 + Fotos de Galería Real</button>
+                  </div>
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
-                  🧹 Vaciar Timeline
+
+                <!-- Dropzone para arrastrar fotos o videos MP4 -->
+                <div class="video-dropzone" id="videoDropzone" onclick="document.getElementById('videoMultiFileInput').click()" style="margin-bottom: 1rem;">
+                  <div style="font-size: 2rem;">📁📥</div>
+                  <strong style="color: #fff; font-size: 0.95rem;">
+                    Arrastra aquí tus fotos o videos MP4 (o da clic para seleccionarlos)
+                  </strong>
+                  <p style="color: #94a3b8; font-size: 0.8rem; margin: 0.25rem 0 0 0;">
+                    Puedes seleccionar 8, 11, 15 o las fotos y videos que quieras juntos (JPG, PNG, WebP o videos MP4).
+                  </p>
+                  <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this)">
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('musica')" style="width: 100%; justify-content: center; font-weight: 700; padding: 0.75rem;">
+                  Continuar a Música & Ritmo 🎵 ➔
                 </button>
               </div>
 
-              <!-- Contenedor scrolleable de diapositivas -->
-              <div class="timeline-strip" id="videoTimelineStrip">
-                <div id="timelineEmptyNotice" style="color: #64748b; font-size: 0.85rem; width: 100%; text-align: center; padding: 1.5rem;">
-                  Tu secuencia está vacía. Selecciona una categoría arriba o arrastra fotos para comenzar.
-                </div>
-              </div>
-            </div>
+              <!-- PANE 2: MÚSICA Y RITMO -->
+              <div class="studio-tab-pane" id="studioPane_musica">
+                <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  🎵 Música de Fondo & Sincronización Rítmica
+                </h4>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 1rem;">
+                  Elige la pista musical para el video o sube tu propia canción, y ajusta cómo se cortan las fotos.
+                </p>
 
-            <!-- Panel de Controles: Duración, Efecto Visual y Música -->
-            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
-              <h4 style="color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
-                ⚙️ Ajustes del Video & Ritmo Musical:
-              </h4>
+                <!-- Selector de Pistas -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                  <div class="form-group" style="margin-bottom: 0.85rem;">
+                    <label style="font-size: 0.85rem; display: flex; justify-content: space-between;">
+                      <span>Pista Musical:</span>
+                      <span id="audioPlayingIndicator" style="display: none; color: #38bdf8; font-size: 0.75rem;">
+                        Reproduciendo <span class="video-audio-wave"><span></span><span></span><span></span><span></span></span>
+                      </span>
+                    </label>
+                    <select id="videoSelectMusica" onchange="cambiarMusicaVideo(this.value)" style="padding: 0.6rem; font-size: 0.85rem;">
+                      <option value="rocky" selected>🎸 Rock Épico / "Ojo de Tigre" (Rítmico con guitarra y batería)</option>
+                      <option value="tropical">🌴 Tropical House / Playa & Sol (Vibra veraniega alegre)</option>
+                      <option value="pop">⚡ Pop Energético / Aventura (Moderno y acelerado)</option>
+                      <option value="mexico">🎺 Folclor Mexicano / Pueblos Mágicos (Guitarras festivas)</option>
+                      <option value="chill">🌿 Naturaleza & Senderismo (Armónico y relajante)</option>
+                      <option value="custom">📁 Subir mi propio MP3 desde la PC...</option>
+                    </select>
+                  </div>
 
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
-                
-                <!-- Formato de Pantalla -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;">
-                    📐 Formato de Pantalla:
-                  </label>
-                  <select id="videoSelectFormato" onchange="cambiarFormatoVideo(this.value)" style="padding: 0.6rem; border-color: rgba(56, 189, 248, 0.4);">
-                    <option value="9:16" selected>📱 Vertical 9:16 (Reels, TikTok, WhatsApp)</option>
-                    <option value="1:1">🟦 Cuadrado 1:1 (Post Feed Facebook e Instagram)</option>
-                  </select>
-                </div>
-
-                <!-- Duración -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">⏱️ Duración del Clip:</label>
-                  <select id="videoSelectDuracion" onchange="cambiarDuracionVideo(this.value)" style="padding: 0.6rem;">
-                    <option value="15">15 Segundos (WhatsApp Status & Stories)</option>
-                    <option value="20" selected>20 Segundos (Reels & TikTok Óptimo)</option>
-                    <option value="25">25 Segundos (Completo y Detallado)</option>
-                  </select>
-                </div>
-
-                <!-- Efecto Visual -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">✨ Transición entre Fotos:</label>
-                  <select id="videoSelectEstilo" onchange="cambiarEstiloVideo(this.value)" style="padding: 0.6rem;">
-                    <option value="beatsync" selected>🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
-                    <option value="kenburns">🎥 Ken Burns Cinematográfico (Paneo suave)</option>
-                    <option value="fade">✨ Disolución Cruzada Suave (Crossfade)</option>
-                  </select>
+                  <!-- Botones de Audio -->
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                      <button type="button" class="btn btn-secondary" id="btnProbarAudio" onclick="toggleProbarAudio()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;">
+                        ▶ Probar Música
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="document.getElementById('videoCustomAudioInput').click()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; color: #c084fc; border-color: rgba(192,132,252,0.35);">
+                        📁 Cargar Otro MP3
+                      </button>
+                      <input type="file" id="videoCustomAudioInput" accept="audio/*" style="display: none;" onchange="procesarAudioPersonalizado(this)">
+                    </div>
+                    <div id="videoAudioStatus" style="font-size: 0.8rem; color: #94a3b8;">
+                      Pista: Rock Épico rítmico seleccionado
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Efecto de Partículas / Luz -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; color: #facc15; font-weight: 700;">
-                    ☀️ Filtro de Luz Cinemático:
-                  </label>
-                  <select id="videoSelectOverlay" onchange="videoStudioState.overlay = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(250, 204, 21, 0.4);">
-                    <option value="sunflare" selected>☀️ Rayos de Sol Veraniegos (Playas y Sol)</option>
-                    <option value="golddust">✨ Destellos y Polvo Dorado (Elegante)</option>
-                    <option value="nature">🍃 Brisa Fresca de Montaña (Senderismo)</option>
-                    <option value="none">Sin partículas (Limpio)</option>
-                  </select>
+                <!-- Modo de Sincronización Rítmica -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.85rem; color: #ec4899; font-weight: 700;">
+                      🥁 Sincronización de Cambio de Fotos:
+                    </label>
+                    <select id="videoSelectModoCorte" onchange="cambiarModoCorte(this.value)" style="padding: 0.6rem; border-color: rgba(236, 72, 153, 0.5); font-size: 0.85rem;">
+                      <option value="beat" selected>🥊 Al Golpe Musical (Corta con cada acorde y bajo)</option>
+                      <option value="doble">⚡ Doble Ritmo / Acelerado (Cortes rápidos para Reels)</option>
+                      <option value="tap">🥁 Marcar Ritmo Manual (Pulsar Espacio al compás)</option>
+                      <option value="regular">⏱️ Tiempo Regular (Misma duración por foto)</option>
+                    </select>
+                  </div>
+
+                  <!-- Marcador de Ritmo en Vivo (Tap to Beat) -->
+                  <div id="videoTapTempoBox" style="display: none; background: rgba(236, 72, 153, 0.12); border: 1px dashed #ec4899; border-radius: 8px; padding: 0.85rem 1rem; margin-top: 0.85rem; text-align: center;">
+                    <div style="font-size: 0.82rem; color: #fff; margin-bottom: 0.45rem;">
+                      <strong>🥁 Marcador de Ritmo:</strong> Presiona <b>▶ Reproducir</b> en la vista previa y pulsa la <b>barra espaciadora</b> (o el botón) en cada golpe donde quieras que cambie la foto.
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                      <button type="button" class="btn btn-primary" id="btnTapGolpe" onclick="registrarTapGolpe()" style="background: #ec4899; border: none; padding: 0.45rem 1.25rem; font-weight: 800; font-size: 0.9rem;">
+                        🥁 ¡CAMBIAR FOTO AQUÍ! (ESPACIO)
+                      </button>
+                      <button type="button" class="btn btn-secondary" onclick="reiniciarTaps()" style="font-size: 0.8rem;">
+                        🔄 Borrar Marcas
+                      </button>
+                      <span id="tapGolpesStatus" style="font-size: 0.82rem; color: #38bdf8; font-weight: 700;">Marcas: 0 / 0 fotos</span>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Música de Fondo -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; display: flex; justify-content: space-between;">
-                    <span>🎵 Música de Fondo:</span>
-                    <span id="audioPlayingIndicator" style="display: none; color: #38bdf8; font-size: 0.75rem;">
-                      Reproduciendo <span class="video-audio-wave"><span></span><span></span><span></span><span></span></span>
-                    </span>
-                  </label>
-                  <select id="videoSelectMusica" onchange="cambiarMusicaVideo(this.value)" style="padding: 0.6rem;">
-                    <option value="rocky" selected>🎸 Rock Épico / "Ojo de Tigre" (Rítmico con guitarra y batería)</option>
-                    <option value="tropical">🌴 Tropical House / Playa & Sol (Vibra veraniega)</option>
-                    <option value="pop">⚡ Pop Energético / Aventura (Moderno y acelerado)</option>
-                    <option value="mexico">🎺 Folclor Mexicano / Pueblos Mágicos (Guitarras festivas)</option>
-                    <option value="chill">🌿 Naturaleza & Senderismo (Armónico y relajante)</option>
-                    <option value="custom">📁 Subir mi propio MP3 desde la PC...</option>
-                  </select>
-                </div>
-
-                <!-- Sincronización Rítmica de Fotos -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; color: #ec4899; font-weight: 700;">
-                    🥁 Cambio de Fotos al Ritmo:
-                  </label>
-                  <select id="videoSelectModoCorte" onchange="cambiarModoCorte(this.value)" style="padding: 0.6rem; border-color: rgba(236, 72, 153, 0.5);">
-                    <option value="beat" selected>🥊 Al Golpe Musical (Corta con cada acorde y bajo)</option>
-                    <option value="doble">⚡ Doble Ritmo / Acelerado (Cortes rápidos para Reels)</option>
-                    <option value="tap">🥁 Marcar Ritmo Manual (Pulsar Espacio al compás)</option>
-                    <option value="regular">⏱️ Tiempo Regular (Misma duración por foto)</option>
-                  </select>
-                </div>
-
-              </div>
-
-              <!-- Fila de Controles de Audio (Probar pista / Subir MP3) -->
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 0.5rem;">
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <button type="button" class="btn btn-secondary" id="btnProbarAudio" onclick="toggleProbarAudio()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;">
-                    ▶ Probar Música
-                  </button>
-                  <button type="button" class="btn btn-secondary" onclick="document.getElementById('videoCustomAudioInput').click()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; color: #c084fc; border-color: rgba(192,132,252,0.35);">
-                    📁 Cargar Otro MP3
-                  </button>
-                  <input type="file" id="videoCustomAudioInput" accept="audio/*" style="display: none;" onchange="procesarAudioPersonalizado(this)">
-                </div>
-                <div id="videoAudioStatus" style="font-size: 0.8rem; color: #94a3b8;">
-                  Pista: Rock Épico rítmico seleccionado
+                <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1.25rem;">
+                  <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('medios')">◀ Volver a Diapositivas</button>
+                  <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('ganchos')">Continuar a Ganchos 🪝 ➔</button>
                 </div>
               </div>
 
-              <!-- Marcador de Ritmo en Vivo (Tap to Beat) -->
-              <div id="videoTapTempoBox" style="display: none; background: rgba(236, 72, 153, 0.12); border: 1px dashed #ec4899; border-radius: 8px; padding: 0.85rem 1rem; margin-top: 0.85rem; text-align: center;">
-                <div style="font-size: 0.85rem; color: #fff; margin-bottom: 0.45rem;">
-                  <strong>🥁 Marcador de Ritmo en Vivo:</strong> Presiona <b>▶ Reproducir</b> en el celular y pulsa la <b>barra espaciadora</b> (o el botón rosa) exactamente en cada acorde o golpe donde quieras que cambie la foto.
-                </div>
-                <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-                  <button type="button" class="btn btn-primary" id="btnTapGolpe" onclick="registrarTapGolpe()" style="background: #ec4899; border: none; padding: 0.5rem 1.4rem; font-weight: 800; font-size: 0.95rem; box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);">
-                    🥁 ¡CAMBIAR FOTO AQUÍ! (ESPACIO)
-                  </button>
-                  <button type="button" class="btn btn-secondary" onclick="reiniciarTaps()" style="font-size: 0.82rem;">
-                    🔄 Borrar Marcas
-                  </button>
-                  <span id="tapGolpesStatus" style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Marcas: 0 / 0 fotos</span>
-                </div>
-              </div>
+              <!-- PANE 3: GANCHOS Y TEXTOS -->
+              <div class="studio-tab-pane" id="studioPane_ganchos">
+                <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  🪝 Gancho de Entrada (Primeros 2.8s) & Textos
+                </h4>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 1rem;">
+                  Detén el scroll en TikTok o Reels con un llamado impactante en los primeros 2.8 segundos.
+                </p>
 
-              <!-- Ganchos de Entrada e Insignias de Conversión -->
-              <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06);">
-                
-                <!-- Gancho de Entrada -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; display: flex; justify-content: space-between;">
-                    <span>🪝 Gancho de Entrada (Primeros 2.5s):</span>
-                    <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 400;">✍️ 100% Editable</span>
+                <!-- Selector y Editor de Gancho -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                  <label style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span>Frase del Gancho Inicial:</span>
+                    <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 400;">✍️ 100% Editable en Vivo</span>
                   </label>
-                  <select id="videoSelectHook" onchange="cambiarHookVideo(this.value)" style="padding: 0.6rem; border-color: rgba(245, 158, 11, 0.4);">
+                  <select id="videoSelectHook" onchange="cambiarHookVideo(this.value)" style="padding: 0.6rem; border-color: rgba(245, 158, 11, 0.4); font-size: 0.85rem; margin-bottom: 0.6rem;">
                     <option value="rutina" selected>🎒 ¿Cansado de la rutina? Mira esto...</option>
                     <option value="playas">🌴 3 Playas saliendo desde Puebla y Atlixco</option>
                     <option value="alerta">✈️ ¡Alerta de viaje económico! Salidas 100% confirmadas</option>
@@ -1751,25 +1684,26 @@
                   </select>
 
                   <!-- Editor en vivo de texto del gancho -->
-                  <div id="videoHookEditorWrap" style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                  <div id="videoHookEditorWrap" style="display: flex; flex-direction: column; gap: 0.35rem;">
+                    <span style="font-size: 0.72rem; color: #cbd5e1; font-weight: 600;">Escribe o modifica los dos textos:</span>
                     <div style="display: flex; gap: 0.35rem;">
-                      <input type="text" id="videoHookInputPre" value="🎒 ¿CANSADO DE LA RUTINA?" placeholder="Etiqueta (ej: 🌴 TOP PLAYAS 2026)" title="Etiqueta superior pequeña"
-                        style="width: 42%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #facc15; font-weight: 700;"
+                      <input type="text" id="videoHookInputPre" value="🎒 ¿CANSADO DE LA RUTINA?" placeholder="Etiqueta superior (ej: 🌴 TOP PLAYAS 2026)" title="Etiqueta superior pequeña"
+                        style="width: 42%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #facc15; font-weight: 700;"
                         oninput="editarTextoGancho('pre')">
-                      <input type="text" id="videoHookInputMain" value="Mira a dónde nos vamos este finde 👇" placeholder="Texto llamativo" title="Texto principal en grande"
-                        style="width: 58%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #fff; font-weight: 600;"
+                      <input type="text" id="videoHookInputMain" value="Mira a dónde nos vamos este finde 👇" placeholder="Texto principal en grande" title="Texto principal en grande"
+                        style="width: 58%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #fff; font-weight: 600;"
                         oninput="editarTextoGancho('main')">
                     </div>
-                    <span style="font-size: 0.68rem; color: #94a3b8;">💡 Puedes escribir lo que quieras: la etiqueta amarilla y el título blanco se actualizan en vivo en el video.</span>
+                    <span style="font-size: 0.7rem; color: #94a3b8;">💡 Puedes escribir lo que quieras: la etiqueta amarilla y el título blanco se actualizan en vivo en la pantalla del celular.</span>
                   </div>
                 </div>
 
-                <!-- Insignia Superior -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem; color: #34d399; font-weight: 700;">
+                <!-- Insignia Superior de Confianza -->
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(52, 211, 153, 0.3); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                  <label style="font-size: 0.85rem; color: #34d399; font-weight: 700; display: block; margin-bottom: 0.4rem;">
                     🛡️ Insignia de Confianza / Urgencia:
                   </label>
-                  <select id="videoSelectSticker" onchange="videoStudioState.sticker = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(52, 211, 153, 0.4);">
+                  <select id="videoSelectSticker" onchange="videoStudioState.sticker = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(52, 211, 153, 0.4); font-size: 0.85rem; margin-bottom: 0.85rem;">
                     <option value="aparta500" selected>🎟️ ¡APARTA TU LUGAR DESDE $500 MXN!</option>
                     <option value="sectur">🛡️ AGENCIA REGISTRADA EN SECTUR / RNT</option>
                     <option value="salidas">📍 SALIDAS DESDE ATLIXCO Y PUEBLA</option>
@@ -1780,136 +1714,349 @@
                     <option value="promo">🎒 PROMOCIÓN EXCLUSIVA</option>
                     <option value="none">Sin insignia superior</option>
                   </select>
-                </div>
 
-                <!-- Mostrar Datos de Cada Viaje -->
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">📍 Barra Inferior de Datos de Viaje:</label>
-                  <select id="videoSelectLowerThird" onchange="videoStudioState.mostrarDatos = (this.value === 'si'); dibujarFrameActual();" style="padding: 0.6rem;">
-                    <option value="si" selected>✅ Sí, mostrar destino, precio y WhatsApp</option>
-                    <option value="no">❌ Solo mostrar flyer completo</option>
+                  <label style="font-size: 0.85rem; color: #38bdf8; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+                    📍 Barra Inferior de Datos de Viaje (Lower-Third):
+                  </label>
+                  <select id="videoSelectLowerThird" onchange="videoStudioState.mostrarDatos = (this.value === 'si'); dibujarFrameActual();" style="padding: 0.6rem; font-size: 0.85rem;">
+                    <option value="si" selected>✅ Sí, mostrar destino, precio y WhatsApp en cada diapositiva</option>
+                    <option value="no">❌ Solo mostrar imagen limpia completa</option>
                   </select>
                 </div>
 
-              </div>
-
-            </div>
-
-            <!-- Configuración de Placa Final de Venta de Lujo -->
-            <div style="background: #0d1b2a; border: 1px solid rgba(234, 179, 8, 0.3); border-radius: var(--radius); padding: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                  <span style="font-size: 1.3rem;">🏆</span>
-                  <strong style="color: #facc15; font-size: 0.95rem;">Placa Final de Cierre de Venta (Últimos 3 segundos)</strong>
-                </div>
-                <label class="switch" style="margin: 0;" title="Activar/Desactivar Placa Final">
-                  <input type="checkbox" id="videoChkPlacaFinal" checked onchange="videoStudioState.incluirPlaca = this.checked; dibujarFrameActual();">
-                  <span class="slider"></span>
-                </label>
-              </div>
-
-              <div id="videoPlacaCamposWrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.8rem;">Título de Cierre:</label>
-                  <input type="text" id="videoPlacaTitulo" value="¡Reserva tu Lugar Hoy!" oninput="videoStudioState.placaTitulo = this.value; dibujarFrameActual();">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.8rem;">Subtítulo / Salidas:</label>
-                  <input type="text" id="videoPlacaSubtitulo" value="Salidas desde Puebla y Atlixco" oninput="videoStudioState.placaSubtitulo = this.value; dibujarFrameActual();">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.8rem;">Inclusiones Destacadas:</label>
-                  <input type="text" id="videoPlacaIncluye" value="Transporte de Lujo · Seguro · Coordinador" oninput="videoStudioState.placaIncluye = this.value; dibujarFrameActual();">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.8rem;">Teléfono WhatsApp Verónica:</label>
-                  <input type="text" id="videoPlacaTelefono" value="244 447 0237" oninput="videoStudioState.placaTelefono = this.value; dibujarFrameActual();">
+                <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1.25rem;">
+                  <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('musica')">◀ Volver a Música</button>
+                  <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('placa')">Continuar a Placa Final 🏆 ➔</button>
                 </div>
               </div>
-            </div>
 
-          </div>
-
-          <!-- Columna Derecha: Mockup de Celular y Exportación -->
-          <div style="display: flex; flex-direction: column; gap: 1rem;">
-            
-            <div class="phone-mockup-wrapper">
-              <div style="color: #94a3b8; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 0.4rem;">
-                  <span id="videoMockupIcon">📱</span>
-                  <span id="videoMockupLabel">Vista Previa (9:16 Vertical)</span>
+              <!-- PANE 4: PLACA FINAL DE CIERRE DE VENTA -->
+              <div class="studio-tab-pane" id="studioPane_placa">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                  <h4 style="color: #facc15; font-size: 1.05rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+                    🏆 Placa Final de Cierre de Venta (Últimos 3s)
+                  </h4>
+                  <label class="switch" style="margin: 0;" title="Activar/Desactivar Placa Final">
+                    <input type="checkbox" id="videoChkPlacaFinal" checked onchange="videoStudioState.incluirPlaca = this.checked; dibujarFrameActual();">
+                    <span class="slider"></span>
+                  </label>
                 </div>
-                <span id="videoMockupResBadge" style="background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; color: #38bdf8;">720 × 1280</span>
-              </div>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 1rem;">
+                  Pantalla animada final de llamada a la acción con tu WhatsApp oficial y condiciones de reserva.
+                </p>
 
-              <!-- Marco del Teléfono Móvil o Feed Cuadrado -->
-              <div id="videoPhoneFrameContainer" class="phone-frame">
-                <div id="videoPhoneNotch" class="phone-notch"></div>
-                <canvas id="videoCanvasPreview" width="720" height="1280"></canvas>
-              </div>
-
-              <!-- Barra de Controles de Reproducción -->
-              <div class="phone-controls-bar">
-                <button type="button" class="btn btn-secondary" id="btnPlayPausePreview" onclick="togglePlayPausePreview()" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">
-                  ▶ Reproducir
-                </button>
-                <span id="videoPreviewTimer" style="font-family: monospace; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">
-                  0:00 / 0:20
-                </span>
-                <button type="button" class="btn btn-secondary" onclick="reiniciarPreviewVideo()" style="padding: 0.45rem 0.75rem; font-size: 0.85rem;" title="Reiniciar desde el inicio">
-                  🔄
-                </button>
-              </div>
-
-              <!-- Barra de Progreso de Exportación -->
-              <div class="video-progress-bar-wrap" id="videoExportProgressWrap">
-                <div class="video-progress-bar-fill" id="videoExportProgressBar"></div>
-              </div>
-              <div id="videoExportStatusText" style="display: none; font-size: 0.8rem; color: #38bdf8; margin-top: 0.4rem; text-align: center;"></div>
-
-              <!-- Botón Principal: Generar y Descargar Video -->
-              <button type="button" id="btnGenerarVideoMP4" class="btn btn-primary" onclick="generarYDescargarVideoMP4()"
-                style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none; padding: 0.85rem 1.25rem; font-size: 0.98rem; width: 100%; justify-content: center; font-weight: 800; box-shadow: 0 4px 20px rgba(236,72,153,0.4); margin-top: 1rem;">
-                🎬 Generar y Descargar Video MP4 / WebM
-              </button>
-
-              <!-- Generador de Copys Publicitarios Persuasivos -->
-              <div style="width: 100%; margin-top: 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.85rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
-                  <strong style="color: #38bdf8; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
-                    <span>📝</span> Textos Listos para Publicar:
-                  </strong>
-                  <!-- Pestañas de formato de copy -->
-                  <div style="display: flex; gap: 0.3rem;">
-                    <button type="button" class="btn btn-secondary" id="btnCopyTabFb" onclick="seleccionarTabCopy('facebook')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: #1e293b; border-color: #38bdf8; color: #fff;">
-                      📘 Facebook
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btnCopyTabWa" onclick="seleccionarTabCopy('whatsapp')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
-                      💬 WhatsApp
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btnCopyTabTt" onclick="seleccionarTabCopy('tiktok')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
-                      🎵 TikTok/Reels
-                    </button>
+                <div id="videoPlacaCamposWrap" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 10px; padding: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem;">Título de Cierre:</label>
+                    <input type="text" id="videoPlacaTitulo" value="¡Reserva tu Lugar Hoy!" oninput="videoStudioState.placaTitulo = this.value; dibujarFrameActual();">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem;">Subtítulo / Salidas:</label>
+                    <input type="text" id="videoPlacaSubtitulo" value="Salidas desde Puebla y Atlixco" oninput="videoStudioState.placaSubtitulo = this.value; dibujarFrameActual();">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem;">Inclusiones Destacadas:</label>
+                    <input type="text" id="videoPlacaIncluye" value="Transporte de Lujo · Seguro · Coordinador" oninput="videoStudioState.placaIncluye = this.value; dibujarFrameActual();">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.8rem; color: #4ade80; font-weight: 700;">Teléfono WhatsApp Verónica:</label>
+                    <input type="text" id="videoPlacaTelefono" value="244 447 0237" oninput="videoStudioState.placaTelefono = this.value; dibujarFrameActual();">
                   </div>
                 </div>
 
-                <textarea id="videoTextoRedesPreview" readonly rows="5"
-                  style="width: 100%; font-size: 0.78rem; background: #020617; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.6rem; resize: none; font-family: inherit; line-height: 1.45;"></textarea>
+                <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1.25rem;">
+                  <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('ganchos')">◀ Volver a Ganchos</button>
+                  <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('estilo')">Continuar a Estilo ✨ ➔</button>
+                </div>
+              </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.6rem;">
-                  <button type="button" class="btn btn-secondary" onclick="copiarTextoParaRedes()" style="justify-content: center; font-size: 0.82rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 0.45rem;">
-                    📋 Copiar Texto
+              <!-- PANE 5: ESTILO VISUAL, FILTROS Y DURACIÓN -->
+              <div class="studio-tab-pane" id="studioPane_estilo">
+                <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  ✨ Estilo Visual, Filtros & Duración
+                </h4>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 1rem;">
+                  Ajusta la duración total del video, el tipo de animación entre fotos y los filtros cinemáticos de luz.
+                </p>
+
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                  <!-- Formato de Pantalla -->
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;">📐 Formato de Pantalla:</label>
+                    <select id="videoSelectFormato" onchange="cambiarFormatoVideo(this.value)" style="padding: 0.6rem;">
+                      <option value="9:16" selected>📱 Vertical 9:16 (Reels, TikTok, WhatsApp)</option>
+                      <option value="1:1">🟦 Cuadrado 1:1 (Post Feed Facebook e Instagram)</option>
+                    </select>
+                  </div>
+
+                  <!-- Duración -->
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.85rem;">⏱️ Duración del Clip:</label>
+                    <select id="videoSelectDuracion" onchange="cambiarDuracionVideo(this.value)" style="padding: 0.6rem;">
+                      <option value="15">15 Segundos (WhatsApp Status & Stories)</option>
+                      <option value="20" selected>20 Segundos (Reels & TikTok Óptimo)</option>
+                      <option value="25">25 Segundos (Completo y Detallado)</option>
+                    </select>
+                  </div>
+
+                  <!-- Efecto Visual / Transición -->
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.85rem;">✨ Transición entre Fotos:</label>
+                    <select id="videoSelectEstilo" onchange="cambiarEstiloVideo(this.value)" style="padding: 0.6rem;">
+                      <option value="beatsync" selected>🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
+                      <option value="kenburns">🎥 Ken Burns Cinematográfico (Paneo suave)</option>
+                      <option value="fade">✨ Disolución Cruzada Suave (Crossfade)</option>
+                    </select>
+                  </div>
+
+                  <!-- Filtro de Luz Cinemático -->
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size: 0.85rem; color: #facc15; font-weight: 700;">☀️ Filtro de Luz Cinemático:</label>
+                    <select id="videoSelectOverlay" onchange="videoStudioState.overlay = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(250, 204, 21, 0.4);">
+                      <option value="sunflare" selected>☀️ Rayos de Sol Veraniegos (Playas y Sol)</option>
+                      <option value="golddust">✨ Destellos y Polvo Dorado (Elegante)</option>
+                      <option value="nature">🍃 Brisa Fresca de Montaña (Senderismo)</option>
+                      <option value="none">Sin partículas (Limpio)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1.25rem;">
+                  <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('placa')">◀ Volver a Placa Final</button>
+                  <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('copys')">Ver Textos para Redes 📢 ➔</button>
+                </div>
+              </div>
+
+              <!-- PANE 6: PROMPT IA GEMINI OMNI -->
+              <div class="studio-tab-pane" id="studioPane_promptia">
+                <div style="background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                    <span style="font-size: 1.35rem;">🎥✨</span>
+                    <h4 style="margin: 0; color: #f3e8ff; font-size: 1.05rem; font-weight: 800;">
+                      Generador de Prompts de Video para Gemini Omni & Google Veo
+                    </h4>
+                  </div>
+                  <p style="margin: 0 0 1rem 0; color: #cbd5e1; font-size: 0.82rem;">
+                    Crea tomas aéreas de dron, olas cristalinas o autobuses en carretera. Genera aquí el prompt maestro en inglés optimizado, cópialo a Gemini Omni para que genere el video, y arrastra el archivo MP4 resultante a tu línea de tiempo.
+                  </p>
+
+                  <!-- Entrada Foto o Texto -->
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.85rem; margin-bottom: 0.85rem;">
+                    <!-- Columna 1 -->
+                    <div>
+                      <label style="font-size: 0.8rem; color: #c084fc; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+                        1️⃣ ¿De qué quieres el video? (Destino o Foto):
+                      </label>
+                      <input type="text" id="videoIADestinoInput" value="Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras" 
+                        placeholder="Ej: Acapulco con olas doradas al atardecer..." 
+                        oninput="generarPromptVideoIA()"
+                        style="width: 100%; font-size: 0.82rem; padding: 0.5rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff; margin-bottom: 0.45rem;">
+                      
+                      <select id="videoIASelTour" onchange="seleccionarTourParaPromptIA(this)" 
+                        style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.2); color: #94a3b8; margin-bottom: 0.45rem;">
+                        <option value="">-- O elige uno de tus viajes registrados --</option>
+                      </select>
+
+                      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.65rem; border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff;"
+                          onclick="document.getElementById('videoIAFotoInput').click()">
+                          📸 Subir Foto de Referencia
+                        </button>
+                        <input type="file" id="videoIAFotoInput" accept="image/*" style="display: none;" onchange="cargarFotoParaPromptIA(this)">
+                        <span style="font-size: 0.72rem; color: #94a3b8;">(Para animar una foto)</span>
+                      </div>
+
+                      <div id="videoIAFotoPreviewWrap" style="display: none; margin-top: 0.35rem; align-items: center; gap: 0.5rem;">
+                        <img id="videoIAFotoPreview" src="" alt="Foto referencia" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #c084fc;">
+                        <span id="videoIAFotoNombre" style="font-size: 0.72rem; color: #34d399; font-weight: 600;">✓ Foto de referencia cargada</span>
+                      </div>
+                    </div>
+
+                    <!-- Columna 2: Cámara y Formato -->
+                    <div>
+                      <label style="font-size: 0.8rem; color: #c084fc; font-weight: 700; display: block; margin-bottom: 0.35rem;">
+                        2️⃣ Movimiento de Cámara y Estilo:
+                      </label>
+                      <select id="videoIACamara" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff; margin-bottom: 0.45rem;">
+                        <option value="drone" selected>🦅 Dron FPV aéreo sobrevolando suavemente hacia adelante</option>
+                        <option value="pan">🌅 Paneo cinematográfico horizontal lento y majestuoso</option>
+                        <option value="waves">🌊 Olas en cámara lenta a 60fps con espuma y brisa marina</option>
+                        <option value="bus">🚍 Plano secuencia de seguimiento al autobús en carretera</option>
+                        <option value="zoom">🔍 Zoom in lento y envolvente hacia el paisaje</option>
+                      </select>
+
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">
+                        <select id="videoIAIluminacion" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
+                          <option value="golden" selected>🌅 Atardecer Cálido</option>
+                          <option value="sunny">☀️ Sol Radiante</option>
+                          <option value="twilight">🌌 Crepúsculo Azul</option>
+                        </select>
+                        <select id="videoIAFormato" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
+                          <option value="9:16" selected>📱 Vertical 9:16</option>
+                          <option value="1:1">🟦 Cuadrado 1:1</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Chips de Ideas Rápidas -->
+                  <div style="margin-bottom: 0.85rem;">
+                    <span style="font-size: 0.72rem; color: #cbd5e1; display: block; margin-bottom: 0.25rem;">⚡ Ideas rápidas con 1 clic:</span>
+                    <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
+                      <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras al viento')">🏖️ Huatulco Turquesa</button>
+                      <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Atardecer dorado en Acapulco con el sol ocultándose en el mar y reflejos brillantes')">🌅 Atardecer Acapulco</button>
+                      <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Autobús turístico blanco de lujo viajando en autopista hacia la costa al amanecer')">🚍 Autobús de Lujo</button>
+                      <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Cascadas de agua cristalina turquesa en Chiapas rodeadas de selva verde exuberante')">🏞️ Cascadas Chiapas</button>
+                      <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Pueblo Mágico colonial iluminado de noche con calles empedradas y arquitectura tradicional')">✨ Pueblo Mágico</button>
+                    </div>
+                  </div>
+
+                  <!-- Prompt Maestro y Botones -->
+                  <div style="background: #020617; border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.85rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                      <span style="font-size: 0.76rem; color: #facc15; font-weight: 700;">📋 Prompt Maestro en Inglés (Optimizado):</span>
+                      <button type="button" class="btn btn-secondary" style="font-size: 0.7rem; padding: 0.15rem 0.45rem; color: #facc15;" onclick="generarPromptVideoIA()">🔄 Regenerar</button>
+                    </div>
+                    <textarea id="videoIAPromptOutput" rows="3" readonly style="width: 100%; font-family: monospace; font-size: 0.78rem; background: #0b1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.45rem; resize: vertical;"></textarea>
+                    <div id="videoIAPromptDescEs" style="margin-top: 0.35rem; font-size: 0.72rem; color: #94a3b8;">
+                      <strong>🇪🇸 Explicación:</strong> Toma de dron aéreo sobrevolando Huatulco al atardecer en 4K y 60fps vertical.
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                    <button type="button" class="btn btn-primary" onclick="copiarPromptVideoIA()" 
+                      style="background: linear-gradient(135deg, #9333ea, #c084fc); border: none; font-weight: 800; font-size: 0.85rem; padding: 0.55rem 1.15rem;">
+                      📋 Copiar Prompt para Gemini Omni
+                    </button>
+                    <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
+                      style="border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff; font-size: 0.8rem; padding: 0.55rem 0.85rem; text-decoration: none;">
+                      🌐 Abrir Google Gemini
+                    </a>
+                    <a href="https://aistudio.google.com/live" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
+                      style="border-color: rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 0.8rem; padding: 0.55rem 0.85rem; text-decoration: none;">
+                      🚀 Google AI Studio (Veo)
+                    </a>
+                  </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(192, 132, 252, 0.35); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.74rem; color: #cbd5e1;">
+                  <strong style="color: #38bdf8; display: block; margin-bottom: 0.25rem;">🔄 Cómo juntarlo con tus fotos:</strong>
+                  1. Pega el prompt en Gemini con <kbd style="background: #1e1b4b; padding: 0.1rem 0.25rem; border-radius: 3px;">Ctrl + V</kbd> y descarga el archivo <code>.mp4</code>.<br>
+                  2. Ve a la pestaña <b>"Diapositivas"</b> y arrastra el archivo de video. ¡El Estudio lo reproducirá en tu reel junto con tu música y placa final!
+                </div>
+              </div>
+
+              <!-- PANE 7: COPYS PUBLICITARIOS PARA REDES -->
+              <div class="studio-tab-pane" id="studioPane_copys">
+                <h4 style="color: #38bdf8; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  📢 Textos Listos para Publicar en Redes Sociales
+                </h4>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 1rem;">
+                  Textos persuasivos con emojis, itinerario de tus salidas y tu enlace directo a WhatsApp.
+                </p>
+
+                <div style="background: #060d1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.4rem;">
+                    <strong style="color: #fff; font-size: 0.84rem;">Elige la Red Social:</strong>
+                    <div style="display: flex; gap: 0.3rem;">
+                      <button type="button" class="btn btn-secondary" id="btnCopyTabFb" onclick="seleccionarTabCopy('facebook')" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; background: #1e293b; border-color: #38bdf8; color: #fff;">
+                        📘 Facebook
+                      </button>
+                      <button type="button" class="btn btn-secondary" id="btnCopyTabWa" onclick="seleccionarTabCopy('whatsapp')" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
+                        💬 WhatsApp
+                      </button>
+                      <button type="button" class="btn btn-secondary" id="btnCopyTabTt" onclick="seleccionarTabCopy('tiktok')" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
+                        🎵 TikTok / Reels
+                      </button>
+                    </div>
+                  </div>
+
+                  <textarea id="videoTextoRedesPreview" readonly rows="7"
+                    style="width: 100%; font-size: 0.82rem; background: #020617; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.65rem; resize: vertical; font-family: inherit; line-height: 1.45;"></textarea>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
+                    <button type="button" class="btn btn-secondary" onclick="copiarTextoParaRedes()" style="justify-content: center; font-size: 0.82rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 0.5rem;">
+                      📋 Copiar Texto
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="abrirWhatsAppConTexto()" style="justify-content: center; font-size: 0.82rem; background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80; padding: 0.5rem;">
+                      📲 Abrir WhatsApp Web
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 3. COLUMNA DERECHA: ESCENARIO FIJO DEL CELULAR / MOCKUP & EXPORTACIÓN -->
+            <div class="studio-stage-column">
+              
+              <!-- Formato Toggle & Badge de Resolución -->
+              <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; font-weight: 700; color: #fff;">
+                  <span id="videoMockupIcon">📱</span>
+                  <span id="videoMockupLabel">9:16 Vertical</span>
+                </div>
+                <span id="videoMockupResBadge" style="background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; color: #38bdf8; font-weight: 700;">
+                  720 × 1280
+                </span>
+              </div>
+
+              <!-- Marco del Celular con Canvas -->
+              <div class="phone-mockup-wrapper">
+                <div id="videoPhoneFrameContainer" class="phone-frame">
+                  <div id="videoPhoneNotch" class="phone-notch"></div>
+                  <canvas id="videoCanvasPreview" width="720" height="1280"></canvas>
+                </div>
+
+                <!-- Barra de Controles de Reproducción -->
+                <div class="phone-controls-bar">
+                  <button type="button" class="btn btn-secondary" id="btnPlayPausePreview" onclick="togglePlayPausePreview()" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">
+                    ▶ Reproducir
                   </button>
-                  <button type="button" class="btn btn-secondary" onclick="abrirWhatsAppConTexto()" style="justify-content: center; font-size: 0.82rem; background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80; padding: 0.45rem;">
-                    📲 Abrir WhatsApp
+                  <span id="videoPreviewTimer" style="font-family: monospace; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">
+                    0:00 / 0:20
+                  </span>
+                  <button type="button" class="btn btn-secondary" onclick="reiniciarPreviewVideo()" style="padding: 0.45rem 0.75rem; font-size: 0.85rem;" title="Reiniciar desde el inicio">
+                    🔄
                   </button>
+                </div>
+              </div>
+
+              <!-- Barra de Progreso de Exportación -->
+              <div class="video-progress-bar-wrap" id="videoExportProgressWrap" style="width: 100%;">
+                <div class="video-progress-bar-fill" id="videoExportProgressBar"></div>
+              </div>
+              <div id="videoExportStatusText" style="display: none; font-size: 0.8rem; color: #38bdf8; margin-top: 0.2rem; text-align: center;"></div>
+
+              <!-- Botón Principal: Generar y Descargar Video -->
+              <button type="button" id="btnGenerarVideoMP4" class="btn btn-primary" onclick="generarYDescargarVideoMP4()"
+                style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none; padding: 0.8rem 1.25rem; font-size: 0.95rem; width: 100%; justify-content: center; font-weight: 800; box-shadow: 0 4px 20px rgba(236,72,153,0.4);">
+                🎬 Descargar Video MP4 / WebM
+              </button>
+
+              <!-- Tira de Línea de Tiempo (Timeline Strip) Siempre a la Vista -->
+              <div style="width: 100%; background: #060d1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem; margin-top: 0.35rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                  <strong style="color: #fff; font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
+                    🎞️ Secuencia (<span id="videoTimelineCount" style="color: #ec4899;">0</span>)
+                  </strong>
+                  <span style="font-size: 0.72rem; color: #94a3b8;">
+                    <b id="videoTimePerSlide" style="color: #38bdf8;">2.0s</b> · Total: <b id="videoTimelineTotal" style="color: #4ade80;">20s</b>
+                  </span>
+                  <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.15rem 0.45rem; font-size: 0.7rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
+                    🧹 Vaciar
+                  </button>
+                </div>
+                <div class="timeline-strip" id="videoTimelineStrip" style="padding: 0.4rem; min-height: 80px;">
+                  <div id="timelineEmptyNotice" style="color: #64748b; font-size: 0.78rem; width: 100%; text-align: center; padding: 1rem;">
+                    Tu secuencia está vacía. Selecciona una categoría en "Diapositivas" para comenzar.
+                  </div>
                 </div>
               </div>
 
             </div>
 
           </div>
-
         </div>
 
       </div>
@@ -3890,6 +4037,7 @@ IMPORTANT DESIGN DIRECTIVES:
       actualizarAudioStatusText();
       poblarSelectorToursVideoIA();
       generarPromptVideoIA();
+      cambiarTabEstudioVideo('medios');
       if (videoStudioState.items.length === 0) {
         aplicarPresetVideo('playas', false);
       } else {
@@ -3920,36 +4068,88 @@ IMPORTANT DESIGN DIRECTIVES:
       const label = document.getElementById('videoMockupLabel');
       const icon = document.getElementById('videoMockupIcon');
       const resBadge = document.getElementById('videoMockupResBadge');
+      const selFormato = document.getElementById('videoSelectFormato');
+      if (selFormato) selFormato.value = videoStudioState.formato;
 
-      if (!canvas) return;
+      const btn916 = document.getElementById('btnFormatToggle_916');
+      const btn11 = document.getElementById('btnFormatToggle_11');
 
       if (formato === '1:1') {
-        canvas.width = 1080;
-        canvas.height = 1080;
+        if (canvas) {
+          canvas.width = 1080;
+          canvas.height = 1080;
+        }
         if (frameContainer) {
-          frameContainer.style.aspectRatio = '1 / 1';
-          frameContainer.style.maxWidth = '360px';
-          frameContainer.style.borderRadius = '16px';
+          frameContainer.style.width = '290px';
+          frameContainer.style.height = '290px';
+          frameContainer.style.borderRadius = '18px';
         }
         if (notch) notch.style.display = 'none';
-        if (label) label.textContent = 'Vista Previa (1:1 Cuadrado)';
+        if (label) label.textContent = '1:1 Cuadrado';
         if (icon) icon.textContent = '🟦';
         if (resBadge) resBadge.textContent = '1080 × 1080';
+        if (btn11) {
+          btn11.style.background = '#38bdf8';
+          btn11.style.color = '#000';
+          btn11.style.fontWeight = '700';
+        }
+        if (btn916) {
+          btn916.style.background = 'transparent';
+          btn916.style.color = '#94a3b8';
+          btn916.style.fontWeight = '600';
+        }
       } else {
-        canvas.width = 720;
-        canvas.height = 1280;
+        if (canvas) {
+          canvas.width = 720;
+          canvas.height = 1280;
+        }
         if (frameContainer) {
-          frameContainer.style.aspectRatio = '9 / 16';
-          frameContainer.style.maxWidth = '320px';
-          frameContainer.style.borderRadius = '32px';
+          frameContainer.style.width = '280px';
+          frameContainer.style.height = '498px';
+          frameContainer.style.borderRadius = '34px';
         }
         if (notch) notch.style.display = 'block';
-        if (label) label.textContent = 'Vista Previa (9:16 Vertical)';
+        if (label) label.textContent = '9:16 Vertical';
         if (icon) icon.textContent = '📱';
         if (resBadge) resBadge.textContent = '720 × 1280';
+        if (btn916) {
+          btn916.style.background = '#38bdf8';
+          btn916.style.color = '#000';
+          btn916.style.fontWeight = '700';
+        }
+        if (btn11) {
+          btn11.style.background = 'transparent';
+          btn11.style.color = '#94a3b8';
+          btn11.style.fontWeight = '600';
+        }
       }
 
       dibujarFrameActual();
+    }
+
+    function cambiarTabEstudioVideo(tab) {
+      const tabs = ['medios', 'musica', 'ganchos', 'placa', 'estilo', 'promptia', 'copys'];
+      tabs.forEach(t => {
+        const pane = document.getElementById('studioPane_' + t);
+        const btn = document.getElementById('studioDockBtn_' + t);
+        if (pane) {
+          if (t === tab) {
+            pane.classList.add('active');
+            pane.style.display = 'block';
+          } else {
+            pane.classList.remove('active');
+            pane.style.display = 'none';
+          }
+        }
+        if (btn) {
+          btn.classList.toggle('active', t === tab);
+        }
+      });
+      if (tab === 'promptia') {
+        generarPromptVideoIA();
+      } else if (tab === 'copys') {
+        actualizarTextoRedesSociales();
+      }
     }
 
     const ganchosPreset = {
@@ -4053,20 +4253,13 @@ IMPORTANT DESIGN DIRECTIVES:
 
     function seleccionarModoVideo(modo) {
       videoStudioState.modo = modo;
-      ['cardModoShowcase', 'cardModoViajeros', 'cardModoIA'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.remove('active');
-      });
 
       if (modo === 'showcase') {
-        const c = document.getElementById('cardModoShowcase');
-        if (c) c.classList.add('active');
         videoStudioState.estilo = 'beatsync';
         const selEstilo = document.getElementById('videoSelectEstilo');
         if (selEstilo) selEstilo.value = 'beatsync';
+        cambiarTabEstudioVideo('medios');
       } else if (modo === 'viajeros') {
-        const c = document.getElementById('cardModoViajeros');
-        if (c) c.classList.add('active');
         videoStudioState.estilo = 'beatsync';
         videoStudioState.musica = 'rocky';
         const selMus = document.getElementById('videoSelectMusica');
@@ -4074,20 +4267,12 @@ IMPORTANT DESIGN DIRECTIVES:
         if (videoStudioState.items.length === 0 || videoStudioState.items[0]?.tipo === 'showcase') {
           cargarFotosGaleriaEnVideo();
         }
+        cambiarTabEstudioVideo('musica');
       } else if (modo === 'ia') {
-        const c = document.getElementById('cardModoIA');
-        if (c) c.classList.add('active');
         videoStudioState.estilo = 'kenburns';
         const selEstilo = document.getElementById('videoSelectEstilo');
         if (selEstilo) selEstilo.value = 'kenburns';
-
-        const panelIA = document.getElementById('panelGeneradorVideoIA');
-        if (panelIA) {
-          panelIA.style.display = 'block';
-          panelIA.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          panelIA.style.borderColor = '#c084fc';
-        }
-        generarPromptVideoIA();
+        cambiarTabEstudioVideo('promptia');
       }
 
       actualizarAudioStatusText();
