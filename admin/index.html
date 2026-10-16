@@ -1522,8 +1522,15 @@
               </button>
             </div>
 
-            <!-- Derecha: Selector de Formato & Empezar de Cero -->
-            <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <!-- Derecha: Selector de Formato, Toggle Música & Empezar de Cero -->
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" id="btnQuickToggleMusica" onclick="toggleMusicaRapida()" 
+                style="padding: 0.35rem 0.75rem; font-size: 0.76rem; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700; cursor: pointer; background: rgba(239, 68, 68, 0.12); color: #f87171; display: flex; align-items: center; gap: 0.35rem; transition: all 0.2s;"
+                title="Activar o Desactivar la música de fondo en 1 clic">
+                <span id="quickMusicaIcon">🔇</span>
+                <span id="quickMusicaText">Música: APAGADA</span>
+              </button>
+
               <div style="display: flex; background: #030712; padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);">
                 <button type="button" id="btnFormatToggle_916" onclick="cambiarFormatoVideo('9:16')" 
                   style="padding: 0.3rem 0.65rem; font-size: 0.76rem; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; background: #38bdf8; color: #000; transition: all 0.2s;">
@@ -1803,6 +1810,39 @@
                     </div>
                   </div>
 
+                  <!-- PASO 2.5: CONTROL DIRECTO DE AUDIO / MÚSICA -->
+                  <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 1rem 1.15rem; margin-bottom: 1rem;">
+                    <div style="margin-bottom: 0.6rem;">
+                      <strong style="color: #fff; font-size: 0.92rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="font-size: 1.25rem;">🔊</span>
+                        Paso 2.5: ¿Quieres música de fondo o solo el audio de tus videos?
+                      </strong>
+                      <span style="font-size: 0.74rem; color: #94a3b8; display: block; margin-top: 0.2rem;">
+                        Tus videos se reproducirán continuos sin pausas. Elige cómo quieres el sonido:
+                      </span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+                      <button type="button" id="btnModoUnirSinMusica" onclick="setMusicaModoUnir('none')" 
+                        style="padding: 0.75rem 0.85rem; border-radius: 8px; border: 2px solid #22c55e; background: rgba(34,197,94,0.18); color: #fff; font-weight: 700; font-size: 0.82rem; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.25rem; transition: all 0.2s;">
+                        <span style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: #4ade80;">
+                          🔇 SIN MÚSICA (Recomendado)
+                        </span>
+                        <span style="font-size: 0.72rem; color: #cbd5e1; font-weight: 400; line-height: 1.3;">
+                          Apaga la música. Se escuchará 100% limpio únicamente el audio de tus videos.
+                        </span>
+                      </button>
+                      <button type="button" id="btnModoUnirConMusica" onclick="setMusicaModoUnir('rocky')" 
+                        style="padding: 0.75rem 0.85rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0b1523; color: #94a3b8; font-weight: 600; font-size: 0.82rem; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.25rem; transition: all 0.2s;">
+                        <span style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: #94a3b8;">
+                          🎵 CON MÚSICA DE FONDO
+                        </span>
+                        <span style="font-size: 0.72rem; color: #64748b; font-weight: 400; line-height: 1.3;">
+                          Agrega una pista musical rítmica de fondo mezclada con tus videos.
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
                   <!-- PASO 3: PLACA FINAL DE CONTACTO AUTOMÁTICA -->
                   <div style="background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.78rem; color: #cbd5e1; display: flex; align-items: center; gap: 0.5rem;">
                     <span style="font-size: 1.4rem;">🏆</span>
@@ -1813,6 +1853,9 @@
                   </div>
 
                 </div>
+
+                <!-- Contenedor oculto en el DOM para alojar elementos de video y garantizar salida de audio en el navegador -->
+                <div id="videoStudioMediaContainer" style="position:fixed; top:-9999px; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none; overflow:hidden;"></div>
 
                 <!-- Inputs de archivos independientes fuera de los dropzones para evitar bugs de eventos -->
                 <input type="file" id="videoFileInputClientes" multiple accept="image/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this, 'viajeros')">
@@ -2273,7 +2316,7 @@
                 </div>
 
                 <!-- Barra de Controles de Reproducción -->
-                <div class="phone-controls-bar">
+                <div class="phone-controls-bar" style="display: flex; gap: 0.4rem; align-items: center; justify-content: center; flex-wrap: wrap;">
                   <button type="button" class="btn btn-secondary" id="btnPlayPausePreview" onclick="togglePlayPausePreview()" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">
                     ▶ Reproducir
                   </button>
@@ -2282,6 +2325,9 @@
                   </span>
                   <button type="button" class="btn btn-secondary" onclick="reiniciarPreviewVideo()" style="padding: 0.45rem 0.75rem; font-size: 0.85rem;" title="Reiniciar desde el inicio">
                     🔄
+                  </button>
+                  <button type="button" class="btn btn-secondary" id="btnPhoneToggleMusica" onclick="toggleMusicaRapida()" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; font-weight: 700; color: #f87171; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.1);" title="Encender o apagar música de fondo">
+                    🔇 Sin Música
                   </button>
                 </div>
               </div>
@@ -4243,26 +4289,27 @@ IMPORTANT DESIGN DIRECTIVES:
        ========================================================= */
 
     const videoStudioState = {
-      modo: 'showcase',      // 'showcase', 'viajeros', 'ia'
+      modo: 'unir',          // 'unir', 'viajeros', 'showcase'
       duracion: 20,          // 15, 20, 25 segundos
-      estilo: 'beatsync',    // 'beatsync', 'kenburns', 'fade'
+      estilo: 'none',        // 'none', 'beatsync', 'kenburns', 'fade'
       formato: '9:16',       // '9:16' (720x1280), '1:1' (1080x1080)
-      overlay: 'sunflare',   // 'sunflare', 'golddust', 'nature', 'none'
-      hookTipo: 'rutina',    // 'rutina', 'playas', 'alerta', 'escapada', 'aparta500', 'custom', 'none'
+      overlay: 'none',       // 'sunflare', 'golddust', 'nature', 'none'
+      hookTipo: 'none',      // 'rutina', 'playas', 'alerta', 'escapada', 'aparta500', 'custom', 'none'
       hookTextoPre: '🎒 ¿CANSADO DE LA RUTINA?',
       hookTextoMain: 'Mira a dónde nos vamos este finde 👇',
-      musica: 'rocky',       // 'rocky', 'tropical', 'pop', 'mexico', 'chill', 'custom'
+      musica: 'none',        // 'none' (Sin música por defecto), 'rocky', 'tropical', 'pop', 'mexico', 'chill', 'custom'
+      _ultimaMusica: 'rocky',
       audioCustomBuffer: null,
       audioCustomUrl: '',
       customBPM: 120,
-      sticker: 'aparta500',  // 'aparta500', 'sectur', 'salidas', 'ultimos', 'transporte', 'confirmadas', 'viaja', 'promo', 'none'
-      mostrarDatos: true,
+      sticker: 'none',       // 'aparta500', 'sectur', 'salidas', 'ultimos', 'transporte', 'confirmadas', 'viaja', 'promo', 'none'
+      mostrarDatos: false,
       incluirPlaca: true,
       placaTitulo: '¡Reserva tu Lugar Hoy!',
       placaSubtitulo: 'Salidas desde Puebla y Atlixco',
       placaIncluye: 'Transporte de Lujo · Seguro · Coordinador',
       placaTelefono: '244 447 0237',
-      modoCorte: 'beat',     // 'beat', 'doble', 'tap', 'regular'
+      modoCorte: 'regular',  // 'regular', 'beat', 'doble', 'tap'
       puntosCorteCustom: [], // Marcas registradas con tecla espacio / botón tap
       puntosCorteDetectados: null, // Puntos de corte calculados del audio custom
       tipoCopyRedes: 'facebook', // 'facebook', 'whatsapp', 'tiktok'
@@ -4286,23 +4333,24 @@ IMPORTANT DESIGN DIRECTIVES:
       videoStudioState.tiempoActual = 0;
 
       const selModo = document.getElementById('videoSelectModoCorte');
-      if (selModo) videoStudioState.modoCorte = selModo.value || 'beat';
+      if (selModo) videoStudioState.modoCorte = selModo.value || 'regular';
       const selFormato = document.getElementById('videoSelectFormato');
       if (selFormato) videoStudioState.formato = selFormato.value || '9:16';
       const selHook = document.getElementById('videoSelectHook');
-      if (selHook) videoStudioState.hookTipo = selHook.value || 'rutina';
+      if (selHook) videoStudioState.hookTipo = selHook.value || 'none';
       const inputHookPre = document.getElementById('videoHookInputPre');
       if (inputHookPre) inputHookPre.value = videoStudioState.hookTextoPre;
       const inputHookMain = document.getElementById('videoHookInputMain');
       if (inputHookMain) inputHookMain.value = videoStudioState.hookTextoMain;
       const selOverlay = document.getElementById('videoSelectOverlay');
-      if (selOverlay) videoStudioState.overlay = selOverlay.value || 'sunflare';
+      if (selOverlay) videoStudioState.overlay = selOverlay.value || 'none';
       const selSticker = document.getElementById('videoSelectSticker');
-      if (selSticker) videoStudioState.sticker = selSticker.value || 'aparta500';
+      if (selSticker) videoStudioState.sticker = selSticker.value || 'none';
       const inputTel = document.getElementById('videoPlacaTelefono');
       if (inputTel) videoStudioState.placaTelefono = inputTel.value || '244 447 0237';
 
       actualizarAudioStatusText();
+      actualizarBotonesMusicaUI();
       poblarSelectorToursVideoIA();
       generarPromptVideoIA();
       cambiarTabEstudioVideo('medios');
@@ -4598,6 +4646,7 @@ IMPORTANT DESIGN DIRECTIVES:
       }
 
       actualizarAudioStatusText();
+      actualizarBotonesMusicaUI();
       actualizarTiemposTimeline();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
@@ -4843,10 +4892,14 @@ IMPORTANT DESIGN DIRECTIVES:
 
     function cambiarMusicaVideo(val) {
       videoStudioState.musica = val;
+      if (val !== 'none') {
+        videoStudioState._ultimaMusica = val;
+      }
       if (val === 'custom') {
         document.getElementById('videoCustomAudioInput').click();
       }
       actualizarAudioStatusText();
+      actualizarBotonesMusicaUI();
       if (val === 'none') {
         detenerAudioSintetizado();
       } else if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
@@ -4854,6 +4907,104 @@ IMPORTANT DESIGN DIRECTIVES:
         iniciarAudioSintetizado();
       }
       dibujarFrameActual();
+    }
+
+    function toggleMusicaRapida() {
+      if (videoStudioState.musica === 'none') {
+        cambiarMusicaVideo(videoStudioState._ultimaMusica || 'rocky');
+      } else {
+        videoStudioState._ultimaMusica = videoStudioState.musica;
+        cambiarMusicaVideo('none');
+      }
+    }
+
+    function setMusicaModoUnir(val) {
+      if (val !== 'none') {
+        videoStudioState._ultimaMusica = val;
+      }
+      cambiarMusicaVideo(val);
+      if (val === 'none') {
+        mostrarNotificacionEstudio('🔇 Sin música de fondo: se escuchará únicamente el audio de tus videos.');
+      } else {
+        mostrarNotificacionEstudio('🎵 Música de fondo activada.');
+      }
+    }
+
+    function actualizarBotonesMusicaUI() {
+      const estaApagada = (videoStudioState.musica === 'none');
+
+      // 1. Botón rápido en la barra superior (Top Bar)
+      const btnQuick = document.getElementById('btnQuickToggleMusica');
+      const iconQuick = document.getElementById('quickMusicaIcon');
+      const textQuick = document.getElementById('quickMusicaText');
+      if (btnQuick && iconQuick && textQuick) {
+        if (estaApagada) {
+          iconQuick.textContent = '🔇';
+          textQuick.textContent = 'Música: APAGADA';
+          btnQuick.style.background = 'rgba(239, 68, 68, 0.12)';
+          btnQuick.style.color = '#f87171';
+          btnQuick.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+          btnQuick.title = 'Música desactivada. Clic para activar música de fondo.';
+        } else {
+          iconQuick.textContent = '🎵';
+          textQuick.textContent = 'Música: ENCENDIDA';
+          btnQuick.style.background = 'rgba(34, 197, 94, 0.15)';
+          btnQuick.style.color = '#4ade80';
+          btnQuick.style.borderColor = '#22c55e';
+          btnQuick.title = 'Música activada. Clic para apagar música y dejar solo el audio de tus videos.';
+        }
+      }
+
+      // 2. Botón en la barra de controles del celular
+      const btnPhone = document.getElementById('btnPhoneToggleMusica');
+      if (btnPhone) {
+        if (estaApagada) {
+          btnPhone.textContent = '🔇 Sin Música';
+          btnPhone.style.color = '#f87171';
+          btnPhone.style.background = 'rgba(239, 68, 68, 0.12)';
+          btnPhone.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+        } else {
+          btnPhone.textContent = '🎵 Con Música';
+          btnPhone.style.color = '#4ade80';
+          btnPhone.style.background = 'rgba(34, 197, 94, 0.15)';
+          btnPhone.style.borderColor = '#22c55e';
+        }
+      }
+
+      // 3. Tarjetas Paso 2.5 en Modo 3 (Unir Videos)
+      const btnSin = document.getElementById('btnModoUnirSinMusica');
+      const btnCon = document.getElementById('btnModoUnirConMusica');
+      if (btnSin && btnCon) {
+        if (estaApagada) {
+          btnSin.style.border = '2px solid #22c55e';
+          btnSin.style.background = 'rgba(34, 197, 94, 0.18)';
+          btnSin.style.color = '#fff';
+          btnCon.style.border = '1px solid rgba(255, 255, 255, 0.12)';
+          btnCon.style.background = '#0b1523';
+          btnCon.style.color = '#94a3b8';
+        } else {
+          btnSin.style.border = '1px solid rgba(255, 255, 255, 0.12)';
+          btnSin.style.background = '#0b1523';
+          btnSin.style.color = '#94a3b8';
+          btnCon.style.border = '2px solid #38bdf8';
+          btnCon.style.background = 'rgba(56, 189, 248, 0.18)';
+          btnCon.style.color = '#fff';
+        }
+      }
+
+      // 4. Selector en el panel de música
+      const selMusica = document.getElementById('videoSelectMusica');
+      if (selMusica && selMusica.value !== videoStudioState.musica) {
+        selMusica.value = videoStudioState.musica;
+      }
+
+      // 5. Ajustar mute y volumen de los videos en la secuencia
+      videoStudioState.items.forEach(it => {
+        if (it.videoEl) {
+          it.videoEl.muted = !estaApagada;
+          it.videoEl.volume = 1.0;
+        }
+      });
     }
 
     function actualizarAudioStatusText() {
@@ -5324,11 +5475,23 @@ IMPORTANT DESIGN DIRECTIVES:
       if (itemData.tipo === 'video') {
         const video = document.createElement('video');
         video.src = itemData.src;
-        video.muted = false; // Permitir que suene el audio del video
+        video.muted = (videoStudioState.musica !== 'none'); // Muted solo si hay música de fondo
         video.volume = 1.0;
         video.playsInline = true;
         video.crossOrigin = 'anonymous';
         video.preload = 'auto';
+
+        // Anexar elemento video al DOM dentro del contenedor invisible
+        // para que Chrome mantenga activo su pipeline de audio y decodificación nativa
+        let mediaContainer = document.getElementById('videoStudioMediaContainer');
+        if (!mediaContainer) {
+          mediaContainer = document.createElement('div');
+          mediaContainer.id = 'videoStudioMediaContainer';
+          mediaContainer.style.cssText = 'position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden;';
+          document.body.appendChild(mediaContainer);
+        }
+        mediaContainer.appendChild(video);
+
         itemData.videoEl = video;
 
         video.onloadedmetadata = function() {
@@ -5388,6 +5551,10 @@ IMPORTANT DESIGN DIRECTIVES:
 
     function eliminarItemTimeline(index) {
       if (index < 0 || index >= videoStudioState.items.length) return;
+      const it = videoStudioState.items[index];
+      if (it && it.videoEl && it.videoEl.parentNode) {
+        it.videoEl.parentNode.removeChild(it.videoEl);
+      }
       videoStudioState.items.splice(index, 1);
       renderizarTimeline();
       actualizarTiemposTimeline();
@@ -5397,7 +5564,14 @@ IMPORTANT DESIGN DIRECTIVES:
 
     function vaciarTimeline() {
       if (videoStudioState.items.length > 0 && !confirm('¿Deseas vaciar todas las diapositivas de la secuencia?')) return;
+      videoStudioState.items.forEach(it => {
+        if (it && it.videoEl && it.videoEl.parentNode) {
+          it.videoEl.parentNode.removeChild(it.videoEl);
+        }
+      });
       videoStudioState.items = [];
+      const mediaContainer = document.getElementById('videoStudioMediaContainer');
+      if (mediaContainer) mediaContainer.innerHTML = '';
       renderizarTimeline();
       actualizarTiemposTimeline();
       dibujarFrameActual();
@@ -5521,7 +5695,26 @@ IMPORTANT DESIGN DIRECTIVES:
       const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
       const tiempoDiapos = Math.max(1, videoStudioState.duracion - placaSec);
       const puntos = obtenerPuntosCorteActuales(tiempoDiapos, count);
+
+      // Pausar todos los videos
+      videoStudioState.items.forEach((it, i) => {
+        if (it.videoEl) {
+          it.videoEl.pause();
+          if (i !== idx) it.videoEl.currentTime = 0;
+        }
+      });
+
       videoStudioState.tiempoActual = (puntos[idx] !== undefined) ? puntos[idx] : 0;
+      const targetItem = videoStudioState.items[idx];
+      if (targetItem && targetItem.tipo === 'video' && targetItem.videoEl) {
+        targetItem.videoEl.currentTime = 0;
+        if (videoStudioState.reproduciendo) {
+          targetItem.videoEl.muted = (videoStudioState.musica !== 'none');
+          targetItem.videoEl.volume = 1.0;
+          targetItem.videoEl.play().catch(() => {});
+        }
+      }
+
       dibujarFrameActual();
       actualizarRelojPreview();
     }
@@ -6194,20 +6387,10 @@ IMPORTANT DESIGN DIRECTIVES:
       // 4. Fondo de video: Imagen/Video desenfocada + viñeta oscura
       const mediaActual = (curItem.tipo === 'video' && curItem.videoEl) ? curItem.videoEl : curItem.imgEl;
       if (curItem.tipo === 'video' && curItem.videoEl) {
-        const vidDur = curItem.videoEl.duration || duracionEsteSlide;
-        const targetTime = Math.min(vidDur - 0.05, Math.max(0, (slideProg * vidDur) % vidDur));
-
-        if (videoStudioState.reproduciendo) {
-          // Solo resincronizar si hay desfase grande (> 0.4s) o al inicio del slide para permitir que el audio fluya sin trabas
-          if (slideProg < 0.03 || Math.abs(curItem.videoEl.currentTime - targetTime) > 0.4) {
-            curItem.videoEl.currentTime = targetTime;
-          }
-          if (curItem.videoEl.paused) {
-            curItem.videoEl.muted = (videoStudioState.musica !== 'none');
-            curItem.videoEl.play().catch(() => {});
-          }
-        } else {
-          // Si está en pausa o estático, ubicar el frame exacto
+        if (!videoStudioState.reproduciendo) {
+          // Solo si está en pausa o estático ubicamos el frame exacto para preview
+          const vidDur = curItem.duracionReal || curItem.videoEl.duration || duracionEsteSlide;
+          const targetTime = Math.min(vidDur - 0.05, Math.max(0, slideProg * vidDur));
           if (Math.abs(curItem.videoEl.currentTime - targetTime) > 0.05) {
             curItem.videoEl.currentTime = targetTime;
           }
@@ -6858,11 +7041,59 @@ IMPORTANT DESIGN DIRECTIVES:
         return;
       }
 
+      // Reanudar AudioContext si el navegador lo suspendió
+      const ctx = getAudioContext();
+      if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
+      }
+
       videoStudioState.reproduciendo = true;
       const btn = document.getElementById('btnPlayPausePreview');
       if (btn) btn.textContent = '⏸ Pausar';
 
-      iniciarAudioSintetizado();
+      // Sincronizar estado de mute y volumen según si hay música activa
+      const estaSinMusica = (videoStudioState.musica === 'none');
+      videoStudioState.items.forEach(it => {
+        if (it.videoEl) {
+          it.videoEl.muted = !estaSinMusica;
+          it.videoEl.volume = 1.0;
+        }
+      });
+
+      if (!estaSinMusica) {
+        iniciarAudioSintetizado();
+      } else {
+        detenerAudioSintetizado();
+      }
+
+      // Preparar el video correspondiente al tiempo actual
+      const items = videoStudioState.items;
+      const totalDur = videoStudioState.duracion;
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const tiempoDiapos = Math.max(1, totalDur - placaSec);
+      const puntos = obtenerPuntosCorteActuales(tiempoDiapos, items.length);
+
+      let slideIdx = 0;
+      for (let i = 0; i < puntos.length; i++) {
+        if (videoStudioState.tiempoActual >= puntos[i]) {
+          slideIdx = i;
+        } else {
+          break;
+        }
+      }
+      if (slideIdx >= items.length) slideIdx = items.length - 1;
+
+      const curItem = (items && items.length > 0) ? items[slideIdx] : null;
+      if (curItem && curItem.tipo === 'video' && curItem.videoEl) {
+        const offsetInVideo = Math.max(0, videoStudioState.tiempoActual - (puntos[slideIdx] || 0));
+        if (Math.abs(curItem.videoEl.currentTime - offsetInVideo) > 0.15) {
+          curItem.videoEl.currentTime = offsetInVideo;
+        }
+        curItem.videoEl.muted = !estaSinMusica;
+        curItem.videoEl.volume = 1.0;
+        curItem.videoEl.play().catch(e => console.warn('Preview play error:', e));
+      }
+
       videoStudioState.lastFrameTime = performance.now();
 
       function bucleAnimacion(ahora) {
@@ -6870,10 +7101,78 @@ IMPORTANT DESIGN DIRECTIVES:
         const delta = (ahora - videoStudioState.lastFrameTime) / 1000;
         videoStudioState.lastFrameTime = ahora;
 
-        videoStudioState.tiempoActual += delta;
-        if (videoStudioState.tiempoActual >= videoStudioState.duracion) {
-          // Bucle automático
+        const items = videoStudioState.items;
+        const totalDur = videoStudioState.duracion;
+        const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+        const tiempoDiapos = Math.max(1, totalDur - placaSec);
+        const puntos = obtenerPuntosCorteActuales(tiempoDiapos, items.length);
+
+        // Si estamos en la Placa Final
+        if (videoStudioState.incluirPlaca && videoStudioState.tiempoActual >= tiempoDiapos) {
+          videoStudioState.tiempoActual += delta;
+        } else {
+          let slideIdx = 0;
+          for (let i = 0; i < puntos.length; i++) {
+            if (videoStudioState.tiempoActual >= puntos[i]) {
+              slideIdx = i;
+            } else {
+              break;
+            }
+          }
+          if (slideIdx >= items.length) slideIdx = items.length - 1;
+          const curItem = items[slideIdx];
+
+          if (curItem && curItem.tipo === 'video' && curItem.videoEl) {
+            // Reproducción continua fluida a 1.0x sin pausas ni micro-cortes
+            if (curItem.videoEl.paused) {
+              curItem.videoEl.muted = (videoStudioState.musica !== 'none');
+              curItem.videoEl.volume = 1.0;
+              curItem.videoEl.play().catch(() => {});
+            }
+
+            const tInicio = puntos[slideIdx] || 0;
+            videoStudioState.tiempoActual = tInicio + curItem.videoEl.currentTime;
+
+            const tFin = (slideIdx + 1 < puntos.length) ? puntos[slideIdx + 1] : tiempoDiapos;
+            const durEsperada = Math.max(0.1, tFin - tInicio);
+
+            // Transición automática al siguiente clip cuando este video termine
+            if (curItem.videoEl.currentTime >= (durEsperada - 0.06) || curItem.videoEl.ended) {
+              curItem.videoEl.pause();
+              if (slideIdx < items.length - 1) {
+                slideIdx++;
+                const nextItem = items[slideIdx];
+                videoStudioState.tiempoActual = puntos[slideIdx];
+                if (nextItem && nextItem.tipo === 'video' && nextItem.videoEl) {
+                  nextItem.videoEl.currentTime = 0;
+                  nextItem.videoEl.muted = (videoStudioState.musica !== 'none');
+                  nextItem.videoEl.volume = 1.0;
+                  nextItem.videoEl.play().catch(() => {});
+                }
+              } else {
+                videoStudioState.tiempoActual = tiempoDiapos;
+              }
+            }
+          } else {
+            videoStudioState.tiempoActual += delta;
+          }
+        }
+
+        // Bucle automático si llega al final total
+        if (videoStudioState.tiempoActual >= totalDur) {
           videoStudioState.tiempoActual = 0;
+          items.forEach(it => {
+            if (it.videoEl) {
+              it.videoEl.pause();
+              it.videoEl.currentTime = 0;
+            }
+          });
+          if (items.length > 0 && items[0].tipo === 'video' && items[0].videoEl) {
+            items[0].videoEl.currentTime = 0;
+            items[0].videoEl.muted = (videoStudioState.musica !== 'none');
+            items[0].videoEl.volume = 1.0;
+            items[0].videoEl.play().catch(() => {});
+          }
         }
 
         dibujarFrameActual();
@@ -6965,6 +7264,19 @@ IMPORTANT DESIGN DIRECTIVES:
         const audioDest = ctx.createMediaStreamDestination();
         if (videoStudioState.musica !== 'none') {
           iniciarAudioSintetizado(audioDest);
+        }
+
+        // Asegurar que cada video tenga su pista de audio decodificada
+        for (const item of videoStudioState.items) {
+          if (item.tipo === 'video' && !item.audioBuffer && item.src) {
+            try {
+              const resp = await fetch(item.src);
+              const ab = await resp.arrayBuffer();
+              item.audioBuffer = await ctx.decodeAudioData(ab);
+            } catch(eAudio) {
+              console.warn('Audio de video no decodificable:', eAudio);
+            }
+          }
         }
 
         // Programar el audio de cada video subido sincronizado al segundo exacto:
@@ -7070,7 +7382,10 @@ IMPORTANT DESIGN DIRECTIVES:
 
         // Restaurar estado de audio
         videoStudioState.items.forEach(it => {
-          if (it.videoEl) it.videoEl.muted = (videoStudioState.musica !== 'none');
+          if (it.videoEl) {
+            it.videoEl.muted = (videoStudioState.musica !== 'none');
+            it.videoEl.volume = 1.0;
+          }
         });
 
         const videoBlob = await exportPromise;
@@ -7098,7 +7413,10 @@ IMPORTANT DESIGN DIRECTIVES:
       } finally {
         videoStudioState.grabando = false;
         videoStudioState.items.forEach(it => {
-          if (it.videoEl) it.videoEl.muted = (videoStudioState.musica !== 'none');
+          if (it.videoEl) {
+            it.videoEl.muted = (videoStudioState.musica !== 'none');
+            it.videoEl.volume = 1.0;
+          }
         });
         if (btn) {
           btn.disabled = false;
