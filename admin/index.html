@@ -1055,8 +1055,12 @@
 
         <div class="form-group">
           <label>URL o Nombre del Flyer</label>
-          <input type="text" id="formFlyer" required placeholder="Ej: 01.jpg o https://raw.githubusercontent.com/.../01.jpg">
-          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imágenes nuevas, sube el archivo a GitHub y anota su nombre aquí.</small>
+          <input type="text" id="formFlyer" required placeholder="Ej: 01.jpg o https://raw.githubusercontent.com/.../01.jpg" oninput="actualizarPreviewFlyerForm(this.value)">
+          <small style="color: var(--text-muted); font-size: 0.75rem;">Para imágenes nuevas, sube el archivo a GitHub o selecciónalo con la IA arriba para cargarlo directamente.</small>
+          <div id="formFlyerPreviewWrap" style="display: none; margin-top: 0.6rem; text-align: center; background: rgba(0,0,0,0.35); padding: 0.6rem; border-radius: 8px; border: 1px dashed rgba(56, 189, 248, 0.4);">
+            <span style="font-size: 0.75rem; color: #4ade80; display: block; margin-bottom: 0.35rem; font-weight: 700;">🖼️ Vista previa del flyer para este viaje:</span>
+            <img id="formFlyerPreviewImg" src="" alt="Vista previa flyer" style="max-height: 140px; max-width: 100%; border-radius: 6px; object-fit: contain;">
+          </div>
         </div>
 
         <div class="form-group">
@@ -1461,12 +1465,14 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         if (cleanJson.descripcion) document.getElementById('formDesc').value = cleanJson.descripcion;
 
         const formFlyer = document.getElementById('formFlyer');
-        if (!formFlyer.value) {
-          formFlyer.value = file.name;
+        const flyerDataUrl = 'data:image/jpeg;base64,' + base64Data;
+        if (formFlyer) {
+          formFlyer.value = flyerDataUrl;
         }
+        actualizarPreviewFlyerForm(flyerDataUrl);
 
         statusEl.style.color = '#4ade80';
-        statusEl.innerText = '✅ ¡Campos completados en 2 segundos!';
+        statusEl.innerText = '✅ ¡Flyer sustituido y campos completados por Gemini!';
         setTimeout(() => { statusEl.innerText = ''; }, 4000);
 
       } catch (err) {
@@ -1482,21 +1488,52 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       }
     }
 
+    function actualizarPreviewFlyerForm(val) {
+      const wrap = document.getElementById('formFlyerPreviewWrap');
+      const img = document.getElementById('formFlyerPreviewImg');
+      if (!wrap || !img) return;
+      if (!val) {
+        wrap.style.display = 'none';
+        return;
+      }
+      let src = val;
+      if (!src.startsWith('http') && !src.startsWith('../') && !src.startsWith('data:')) {
+        src = '../' + src;
+      }
+      img.src = src;
+      wrap.style.display = 'block';
+    }
+
     async function inicializar() {
       cargarApiKey();
+
+      // Cargar caché local primero para reflejar cambios inmediatos
+      try {
+        const cache = localStorage.getItem('betaazul_viajes_cache');
+        if (cache) {
+          const cData = JSON.parse(cache);
+          if (cData.viajes && cData.viajes.length) viajes = cData.viajes;
+          if (cData.galeria && cData.galeria.length) galeria = cData.galeria;
+        }
+      } catch(e) {}
+
       try {
         const res = await fetch('../viajes.json?v=' + Date.now());
         if (!res.ok) throw new Error("No cargo local");
         const data = await res.json();
-        viajes = data.viajes || [];
-        galeria = data.galeria || [];
+        if (!viajes.length) {
+          viajes = data.viajes || [];
+          galeria = data.galeria || [];
+        }
       } catch (err) {
         console.warn("Cargando desde GitHub raw:", err);
         try {
           const resRaw = await fetch('https://raw.githubusercontent.com/danorov2915/catalogo-viajes/main/viajes.json');
           const dataRaw = await resRaw.json();
-          viajes = dataRaw.viajes || [];
-          galeria = dataRaw.galeria || [];
+          if (!viajes.length) {
+            viajes = dataRaw.viajes || [];
+            galeria = dataRaw.galeria || [];
+          }
         } catch (err2) {
           console.error("Error al cargar viajes:", err2);
         }
@@ -1548,7 +1585,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
 
         const img = document.createElement('img');
         let flyerUrl = v.flyer || '../logo.jpg';
-        if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../')) {
+        if (flyerUrl && !flyerUrl.startsWith('http') && !flyerUrl.startsWith('../') && !flyerUrl.startsWith('data:')) {
           flyerUrl = '../' + flyerUrl;
         }
         img.className = 'viaje-thumb';
@@ -1670,6 +1707,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       document.getElementById('viajeForm').reset();
       document.getElementById('formActivo').checked = true;
       document.getElementById('aiStatus').innerText = '';
+      actualizarPreviewFlyerForm('');
       document.getElementById('viajeModal').classList.add('active');
     }
 
@@ -1691,6 +1729,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       document.getElementById('formActivo').checked = !!v.activo;
       document.getElementById('formDestacado').checked = !!v.destacado;
       document.getElementById('aiStatus').innerText = '';
+      actualizarPreviewFlyerForm(v.flyer || '');
       document.getElementById('viajeModal').classList.add('active');
     }
 
@@ -1724,8 +1763,29 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         viajes.unshift(nuevoViaje);
       }
 
+      try {
+        localStorage.setItem('betaazul_viajes_cache', JSON.stringify({ viajes: viajes, galeria: galeria }));
+      } catch(err){}
+
       cerrarModal();
       renderizar();
+      poblarSelectorTaller();
+
+      const targetIdx = index >= 0 ? index : 0;
+      setTimeout(() => {
+        const items = document.querySelectorAll('.viaje-item');
+        if (items && items[targetIdx]) {
+          items[targetIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          items[targetIdx].style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+          items[targetIdx].style.borderColor = '#22c55e';
+          items[targetIdx].style.boxShadow = '0 0 25px rgba(34, 197, 94, 0.6)';
+          setTimeout(() => {
+            items[targetIdx].style.borderColor = '';
+            items[targetIdx].style.boxShadow = '';
+          }, 3500);
+        }
+      }, 200);
+
       await descargarViajesJson();
     }
 
@@ -1809,6 +1869,7 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
           btnAccion.style.display = 'inline-flex';
           btnAccion.textContent = '+ Agregar Nuevo Viaje';
         }
+        renderizar();
       } else if (seccion === 'galeria') {
         if (btnAccion) {
           btnAccion.style.display = 'inline-flex';
@@ -2412,10 +2473,31 @@ ${userTxt || 'Diseño publicitario moderno con letras doradas y fotografía tur�
         document.getElementById('tallerImgOriginal').src = dataUrl;
         document.getElementById('tallerInfoPrecio').textContent = viajes[tallerViajeIndex].precio || '--';
 
+        try {
+          localStorage.setItem('betaazul_viajes_cache', JSON.stringify({ viajes: viajes, galeria: galeria }));
+        } catch(err){}
+
         renderizar();
+        poblarSelectorTaller();
         await descargarViajesJson();
 
-        alert(`🎉 ¡ÉXITO TOTAL!\n\n1. El flyer fue sustituido en tu catálogo web.\n2. La imagen se descargó en tu computadora como "${filename}".`);
+        // Cambiar inmediatamente a la vista del catálogo para ver el cambio reflejado en vivo
+        cambiarSeccionAdmin('viajes');
+        setTimeout(() => {
+          const items = document.querySelectorAll('.viaje-item');
+          if (items && items[tallerViajeIndex]) {
+            items[tallerViajeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            items[tallerViajeIndex].style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+            items[tallerViajeIndex].style.borderColor = '#22c55e';
+            items[tallerViajeIndex].style.boxShadow = '0 0 25px rgba(34, 197, 94, 0.6)';
+            setTimeout(() => {
+              items[tallerViajeIndex].style.borderColor = '';
+              items[tallerViajeIndex].style.boxShadow = '';
+            }, 3500);
+          }
+        }, 250);
+
+        alert(`🎉 ¡ÉXITO TOTAL!\n\n1. El flyer fue sustituido en tu catálogo y ya se muestra actualizado en tu panel de control.\n2. La imagen se descargó en tu computadora como "${filename}".`);
       } else {
         alert(`💾 Flyer descargado en tu computadora como "${filename}".`);
       }
