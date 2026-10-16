@@ -688,6 +688,16 @@
     </div>
   </div>
 
+  <script>
+    // Si ya inició sesión en esta pestaña/navegador, ocultar pantalla de bloqueo al instante sin parpadeo
+    try {
+      if (window.sessionStorage && window.sessionStorage.getItem('admin_autenticado') === 'true') {
+        var _ov = document.getElementById('loginOverlay');
+        if (_ov) _ov.style.display = 'none';
+      }
+    } catch (e) {}
+  </script>
+
   <!-- Modal Oculto de Configuración de Claves (Solo visible si das clic en Ajustes) -->
   <div class="modal" id="ajustesModal">
     <div class="modal-content" style="max-width: 520px;">
@@ -1209,8 +1219,7 @@
       }
     }
 
-    // Siempre solicita clave al entrar
-
+    // Control de Sesión y Clave Fija de Administrador
     function toggleVerClave() {
       const input = document.getElementById('adminPin');
       if (!input) return;
@@ -1237,10 +1246,9 @@
       try {
         const pinInput = document.getElementById('adminPin');
         const pin = (pinInput ? pinInput.value : '').trim();
-        const pinLimpio = pin.toLowerCase().replace(/[\$\*\s]/g, '');
         
-        // Acepta: $$VerDan1829$$, **VerDan1829**, VerDan1829, verdan1829, 1829, verdan, etc.
-        if (pin === CLAVE_ADMIN || pinLimpio === 'verdan1829' || pinLimpio.includes('1829') || pinLimpio.includes('verdan')) {
+        // Contraseña única y fija oficial solicitada: estrictamente $$VerDan1829$$
+        if (pin === CLAVE_ADMIN) {
           desbloquearDirecto();
           return false;
         } else {
@@ -1249,10 +1257,14 @@
           if (pinInput) pinInput.focus();
         }
       } catch (err) {
-        console.warn('Error en verificacion, desbloqueando:', err);
-        desbloquearDirecto();
+        console.warn('Error en verificacion:', err);
       }
       return false;
+    }
+
+    // Mantener la sesión activa durante toda la navegación mientras no se cierre la página o pestaña
+    if (safeGet('admin_autenticado', true) === 'true') {
+      desbloquearDirecto();
     }
 
     let viajes = [];
