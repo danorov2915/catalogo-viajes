@@ -656,10 +656,316 @@
       .viaje-item > *:nth-child(n+3) {
         grid-column: 2;
       }
+    }
+
     /* Ocultar el icono nativo de revelar clave de Edge/Windows para evitar colisiones */
     input[type="password"]::-ms-reveal,
     input[type="password"]::-ms-clear {
       display: none !important;
+    }
+
+    /* =========================================================
+       ESTILOS DEL ESTUDIO DE VIDEO PUBLICITARIO & REELS
+       ========================================================= */
+    .video-studio-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .video-header-banner {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(2, 132, 199, 0.2) 100%), #0d1b2a;
+      border: 1px solid rgba(236, 72, 153, 0.35);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .video-modes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .video-mode-card {
+      background: #0d1b2a;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .video-mode-card:hover {
+      border-color: rgba(236, 72, 153, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .video-mode-card.active {
+      border-color: #ec4899;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(124, 58, 237, 0.12));
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+    }
+
+    .video-mode-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .video-mode-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .video-mode-desc {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .video-workspace {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 950px) {
+      .video-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Marco de Celular / Mockup Smartphone Vertical 9:16 */
+    .phone-mockup-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #08111e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .phone-frame {
+      width: 280px;
+      height: 498px;
+      background: #000;
+      border-radius: 36px;
+      border: 6px solid #1e293b;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 16px;
+      background: #1e293b;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      z-index: 10;
+    }
+
+    #videoCanvasPreview {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #030712;
+    }
+
+    .phone-controls-bar {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    /* Tira de Miniaturas / Timeline */
+    .timeline-strip {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding: 0.75rem;
+      background: #060d1a;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      min-height: 110px;
+      align-items: center;
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 65px;
+      height: 90px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-item img, .timeline-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .timeline-item-badge {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      font-size: 0.65rem;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .timeline-item-del {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(239, 68, 68, 0.85);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-item-move {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      display: flex;
+      gap: 2px;
+    }
+
+    .timeline-move-btn {
+      background: rgba(0,0,0,0.75);
+      color: #38bdf8;
+      border: none;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      padding: 1px 3px;
+      cursor: pointer;
+    }
+
+    .pill-filter-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .pill-filter-btn:hover {
+      background: rgba(236, 72, 153, 0.25);
+      border-color: #ec4899;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .pill-filter-btn.active {
+      background: #ec4899;
+      border-color: #f472b6;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
+    }
+
+    /* Extras para el Estudio de Video & Reels */
+    .video-dropzone {
+      border: 2px dashed rgba(236, 72, 153, 0.45);
+      background: rgba(236, 72, 153, 0.05);
+      border-radius: var(--radius);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+    .video-dropzone:hover, .video-dropzone.dragover {
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.15);
+      transform: translateY(-2px);
+    }
+    .video-progress-bar-wrap {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 0.75rem;
+      display: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .video-progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ec4899, #8b5cf6, #38bdf8);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    .video-audio-wave {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+      margin-left: 6px;
+    }
+    .video-audio-wave span {
+      width: 3px;
+      height: 100%;
+      background: #38bdf8;
+      border-radius: 2px;
+      animation: wavePulse 0.8s ease-in-out infinite alternate;
+    }
+    .video-audio-wave span:nth-child(2) { animation-delay: 0.2s; height: 60%; }
+    .video-audio-wave span:nth-child(3) { animation-delay: 0.4s; height: 80%; }
+    .video-audio-wave span:nth-child(4) { animation-delay: 0.1s; height: 40%; }
+    @keyframes wavePulse {
+      0% { transform: scaleY(0.3); }
+      100% { transform: scaleY(1); }
     }
   </style>
 </head>
@@ -783,6 +1089,9 @@
       </button>
       <button type="button" class="admin-tab-btn" id="tabNavTaller" onclick="cambiarSeccionAdmin('taller')">
         🎨 Taller de Flyers con IA ✨
+      </button>
+      <button type="button" class="admin-tab-btn" id="tabNavVideos" onclick="cambiarSeccionAdmin('videos')" style="background: linear-gradient(135deg, rgba(236,72,153,0.18), rgba(139,92,246,0.18)); border-color: rgba(236,72,153,0.4); color: #fff;">
+        🎬 Estudio de Video & Reels ⚡
       </button>
     </div>
 
@@ -999,6 +1308,334 @@
               ⭐ Sustituir en la Página y Guardar en PC
             </button>
           </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4: Estudio de Video Publicitario & Reels -->
+    <div id="seccionVideos" style="display: none;">
+      <div class="video-studio-container">
+        
+        <!-- Banner de Encabezado -->
+        <div class="video-header-banner">
+          <div>
+            <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              🎬 Estudio de Video Publicitario & Reels para Redes ⚡
+            </h3>
+            <p style="color: #cbd5e1; font-size: 0.88rem; max-width: 820px; line-height: 1.45;">
+              Crea en segundos videos verticales en alta definición (9:16) con ritmo musical sincronizado para <strong>Estados de WhatsApp, Instagram Reels y TikTok</strong>. Combina múltiples salidas en un solo clip publicitario con placa de venta de lujo y el contacto directo de Verónica.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" onclick="limpiarEstudioVideos()" style="font-size: 0.82rem;">
+              🧹 Empezar de Cero
+            </button>
+          </div>
+        </div>
+
+        <!-- Botones de Creación Rápida en 1 Clic (Presets) -->
+        <div style="background: rgba(13, 27, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius); padding: 1rem 1.25rem;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            ⚡ Creación Exprés en 1 Clic:
+          </div>
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('playas')" title="Carga todas las salidas de playa con música alegre y ritmo">
+              🏖️ Reel de Playas en 1 Clic
+            </button>
+            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('pueblos')" title="Carga todos los Pueblos Mágicos con música tradicional de México">
+              ✨ Reel Pueblos Mágicos
+            </button>
+            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('aventura')" title="Carga salidas de aventura y senderismo con beat energético">
+              🧗 Reel Aventura & Senderismo
+            </button>
+            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('viajeros')" title="Carga fotos reales de clientes de la galería con golpes rítmicos estilo Rocky">
+              📸 Reel de Viajeros (Fotos Reales)
+            </button>
+            <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('todos')" title="Carga todos los viajes activos del catálogo">
+              🎒 Gran Catálogo Completo
+            </button>
+          </div>
+        </div>
+
+        <!-- Selector de Modos de Creación (3 Tarjetas) -->
+        <div class="video-modes-grid">
+          <div class="video-mode-card active" id="cardModoShowcase" onclick="seleccionarModoVideo('showcase')">
+            <div class="video-mode-icon">🏖️⚡</div>
+            <div class="video-mode-title">1. Showcase de Salidas por Categoría</div>
+            <div class="video-mode-desc">
+              Promociona varias salidas del catálogo (Playas, Pueblos Mágicos, etc.) en un solo video sincronizado al compás de la música.
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #ec4899; font-weight: 700;">★ Más usado para ventas</div>
+          </div>
+
+          <div class="video-mode-card" id="cardModoViajeros" onclick="seleccionarModoVideo('viajeros')">
+            <div class="video-mode-icon">📸🥊</div>
+            <div class="video-mode-title">2. Álbum Rítmico de Viajeros</div>
+            <div class="video-mode-desc">
+              Montaje ultra dinámico con fotos de clientes reales. Cada foto cambia al golpe de los acordes de guitarra o batería (estilo "Ojo de Tigre").
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #38bdf8; font-weight: 700;">★ Máxima confianza y testimonios</div>
+          </div>
+
+          <div class="video-mode-card" id="cardModoIA" onclick="seleccionarModoVideo('ia')">
+            <div class="video-mode-icon">🎥✨</div>
+            <div class="video-mode-title">3. Híbrido Cinematográfico con IA</div>
+            <div class="video-mode-desc">
+              Integra 1 video aéreo/paneo tipo dron generado en Gemini Omni o tu celular + fotos de apoyo + placa final de venta. Ahorra tu cuota diaria de IA.
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #c084fc; font-weight: 700;">★ Calidad cine y dron</div>
+          </div>
+        </div>
+
+        <!-- Espacio de Trabajo Principal (2 Columnas) -->
+        <div class="video-workspace">
+          
+          <!-- Columna Izquierda: Contenido, Controles y Configuración -->
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            
+            <!-- Zona de Carga Rápida de Fotos & Archivos -->
+            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                <label style="font-weight: 700; color: #38bdf8; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
+                  📂 Agregar Diapositivas al Video:
+                </label>
+                <div style="font-size: 0.8rem; color: #94a3b8;">
+                  Puedes arrastrar múltiples fotos a la vez
+                </div>
+              </div>
+
+              <!-- Filtros de Categorías para carga rápida -->
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Playa')">🏖️ + Salidas Playa</button>
+                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Pueblos Magicos')">✨ + Pueblos Mágicos</button>
+                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Aventura')">🧗 + Aventura</button>
+                <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Senderismo')">🥾 + Senderismo</button>
+                <button type="button" class="pill-filter-btn" onclick="cargarFotosGaleriaEnVideo()">📸 + Fotos de Galería Real</button>
+              </div>
+
+              <!-- Dropzone para arrastrar 8, 12, 15+ fotos de una sola vez -->
+              <div class="video-dropzone" id="videoDropzone" onclick="document.getElementById('videoMultiFileInput').click()">
+                <div style="font-size: 1.8rem;">📁📥</div>
+                <strong style="color: #fff; font-size: 0.95rem;">
+                  Arrastra aquí tus fotos o da clic para seleccionarlas en lote
+                </strong>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin: 0;">
+                  Puedes seleccionar 8, 11, 15 o las fotos que quieras juntas de una sola vez (JPG, PNG, WebP o videos MP4).
+                </p>
+                <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this)">
+              </div>
+            </div>
+
+            <!-- Tira de Línea de Tiempo (Timeline Strip) -->
+            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                <div>
+                  <strong style="color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+                    🎞️ Secuencia de Diapositivas (<span id="videoTimelineCount" style="color: #ec4899;">0</span>)
+                  </strong>
+                  <span style="font-size: 0.78rem; color: #94a3b8;">
+                    Tiempo por foto: <b id="videoTimePerSlide" style="color: #38bdf8;">2.0s</b> · Duración Total: <b id="videoTimelineTotal" style="color: #4ade80;">20s</b>
+                  </span>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
+                  🧹 Vaciar Timeline
+                </button>
+              </div>
+
+              <!-- Contenedor scrolleable de diapositivas -->
+              <div class="timeline-strip" id="videoTimelineStrip">
+                <div id="timelineEmptyNotice" style="color: #64748b; font-size: 0.85rem; width: 100%; text-align: center; padding: 1.5rem;">
+                  Tu secuencia está vacía. Selecciona una categoría arriba o arrastra fotos para comenzar.
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel de Controles: Duración, Efecto Visual y Música -->
+            <div style="background: #0d1b2a; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem;">
+              <h4 style="color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;">
+                ⚙️ Ajustes del Video & Ritmo Musical:
+              </h4>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                
+                <!-- Duración -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem;">⏱️ Duración del Clip:</label>
+                  <select id="videoSelectDuracion" onchange="cambiarDuracionVideo(this.value)" style="padding: 0.6rem;">
+                    <option value="15">15 Segundos (WhatsApp Status & Stories)</option>
+                    <option value="20" selected>20 Segundos (Reels & TikTok Óptimo)</option>
+                    <option value="25">25 Segundos (Completo y Detallado)</option>
+                  </select>
+                </div>
+
+                <!-- Efecto Visual -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem;">✨ Efecto de Transición:</label>
+                  <select id="videoSelectEstilo" onchange="cambiarEstiloVideo(this.value)" style="padding: 0.6rem;">
+                    <option value="beatsync" selected>🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
+                    <option value="kenburns">🎥 Ken Burns Cinematográfico (Paneo suave)</option>
+                    <option value="fade">✨ Disolución Cruzada Suave (Crossfade)</option>
+                  </select>
+                </div>
+
+                <!-- Música de Fondo -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem; display: flex; justify-content: space-between;">
+                    <span>🎵 Música de Fondo:</span>
+                    <span id="audioPlayingIndicator" style="display: none; color: #38bdf8; font-size: 0.75rem;">
+                      Reproduciendo <span class="video-audio-wave"><span></span><span></span><span></span><span></span></span>
+                    </span>
+                  </label>
+                  <select id="videoSelectMusica" onchange="cambiarMusicaVideo(this.value)" style="padding: 0.6rem;">
+                    <option value="rocky" selected>🎸 Rock Épico / "Ojo de Tigre" (Rítmico con guitarra y batería)</option>
+                    <option value="tropical">🌴 Tropical House / Playa & Sol (Vibra veraniega)</option>
+                    <option value="pop">⚡ Pop Energético / Aventura (Moderno y acelerado)</option>
+                    <option value="mexico">🎺 Folclor Mexicano / Pueblos Mágicos (Guitarras festivas)</option>
+                    <option value="chill">🌿 Naturaleza & Senderismo (Armónico y relajante)</option>
+                    <option value="custom">📁 Subir mi propio MP3 desde la PC...</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- Fila de Controles de Audio (Probar pista / Subir MP3) -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <button type="button" class="btn btn-secondary" id="btnProbarAudio" onclick="toggleProbarAudio()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;">
+                    ▶ Probar Música
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="document.getElementById('videoCustomAudioInput').click()" style="padding: 0.4rem 0.85rem; font-size: 0.82rem; color: #c084fc; border-color: rgba(192,132,252,0.35);">
+                    📁 Cargar Otro MP3
+                  </button>
+                  <input type="file" id="videoCustomAudioInput" accept="audio/*" style="display: none;" onchange="procesarAudioPersonalizado(this)">
+                </div>
+                <div id="videoAudioStatus" style="font-size: 0.8rem; color: #94a3b8;">
+                  Pista: Rock Épico rítmico seleccionado
+                </div>
+              </div>
+
+              <!-- Insignia / Sticker Promocional Flotante -->
+              <div style="margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem;">🏷️ Insignia Promocional Superior:</label>
+                  <select id="videoSelectSticker" onchange="videoStudioState.sticker = this.value; dibujarFrameActual();" style="padding: 0.6rem;">
+                    <option value="none">Sin insignia</option>
+                    <option value="ultimos" selected>🔥 ¡ÚLTIMOS LUGARES DISPONIBLES!</option>
+                    <option value="confirmadas">🏖️ SALIDAS CONFIRMADAS 2026</option>
+                    <option value="viaja">⭐ VIAJA CON BETA AZUL</option>
+                    <option value="promo">🎒 PROMOCIÓN EXCLUSIVA</option>
+                  </select>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem;">📍 Mostrar Datos de Cada Viaje:</label>
+                  <select id="videoSelectLowerThird" onchange="videoStudioState.mostrarDatos = (this.value === 'si'); dibujarFrameActual();" style="padding: 0.6rem;">
+                    <option value="si" selected>✅ Sí, mostrar título, destino y precio</option>
+                    <option value="no">❌ Solo mostrar flyer completo</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Configuración de Placa Final de Venta de Lujo -->
+            <div style="background: #0d1b2a; border: 1px solid rgba(234, 179, 8, 0.3); border-radius: var(--radius); padding: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-size: 1.3rem;">🏆</span>
+                  <strong style="color: #facc15; font-size: 0.95rem;">Placa Final de Cierre de Venta (Últimos 3 segundos)</strong>
+                </div>
+                <label class="switch" style="margin: 0;" title="Activar/Desactivar Placa Final">
+                  <input type="checkbox" id="videoChkPlacaFinal" checked onchange="videoStudioState.incluirPlaca = this.checked; dibujarFrameActual();">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div id="videoPlacaCamposWrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.8rem;">Título de Cierre:</label>
+                  <input type="text" id="videoPlacaTitulo" value="¡Reserva tu Lugar Hoy!" oninput="videoStudioState.placaTitulo = this.value; dibujarFrameActual();">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.8rem;">Subtítulo / Salidas:</label>
+                  <input type="text" id="videoPlacaSubtitulo" value="Salidas desde Puebla y Atlixco" oninput="videoStudioState.placaSubtitulo = this.value; dibujarFrameActual();">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.8rem;">Inclusiones Destacadas:</label>
+                  <input type="text" id="videoPlacaIncluye" value="Transporte de Lujo · Seguro · Coordinador" oninput="videoStudioState.placaIncluye = this.value; dibujarFrameActual();">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.8rem;">Teléfono WhatsApp Verónica:</label>
+                  <input type="text" id="videoPlacaTelefono" value="244 118 1829" oninput="videoStudioState.placaTelefono = this.value; dibujarFrameActual();">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Columna Derecha: Mockup de Celular y Exportación -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            
+            <div class="phone-mockup-wrapper">
+              <div style="color: #94a3b8; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 0.4rem;">
+                <span>📱</span> Vista Previa en Vivo (9:16 Vertical)
+              </div>
+
+              <!-- Marco del Teléfono Móvil -->
+              <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <canvas id="videoCanvasPreview" width="720" height="1280"></canvas>
+              </div>
+
+              <!-- Barra de Controles de Reproducción -->
+              <div class="phone-controls-bar">
+                <button type="button" class="btn btn-secondary" id="btnPlayPausePreview" onclick="togglePlayPausePreview()" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">
+                  ▶ Reproducir
+                </button>
+                <span id="videoPreviewTimer" style="font-family: monospace; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">
+                  0:00 / 0:20
+                </span>
+                <button type="button" class="btn btn-secondary" onclick="reiniciarPreviewVideo()" style="padding: 0.45rem 0.75rem; font-size: 0.85rem;" title="Reiniciar desde el inicio">
+                  🔄
+                </button>
+              </div>
+
+              <!-- Barra de Progreso de Exportación -->
+              <div class="video-progress-bar-wrap" id="videoExportProgressWrap">
+                <div class="video-progress-bar-fill" id="videoExportProgressBar"></div>
+              </div>
+              <div id="videoExportStatusText" style="display: none; font-size: 0.8rem; color: #38bdf8; margin-top: 0.4rem; text-align: center;"></div>
+
+              <!-- Botón Principal: Generar y Descargar Video -->
+              <button type="button" id="btnGenerarVideoMP4" class="btn btn-primary" onclick="generarYDescargarVideoMP4()"
+                style="background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none; padding: 0.85rem 1.25rem; font-size: 0.98rem; width: 100%; justify-content: center; font-weight: 800; box-shadow: 0 4px 20px rgba(236,72,153,0.4); margin-top: 1rem;">
+                🎬 Generar y Descargar Video MP4 / WebM
+              </button>
+
+              <!-- Botones de Redes y WhatsApp -->
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 0.75rem;">
+                <button type="button" class="btn btn-secondary" onclick="copiarTextoParaRedes()" style="width: 100%; justify-content: center; font-size: 0.85rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
+                  📋 Copiar Texto para WhatsApp / Redes
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="abrirWhatsAppConTexto()" style="width: 100%; justify-content: center; font-size: 0.85rem; background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80;">
+                  📲 Enviar Directo a WhatsApp Web
+                </button>
+              </div>
+
+              <!-- Vista previa del texto publicitario para copiar -->
+              <div style="width: 100%; margin-top: 0.75rem;">
+                <label style="font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">
+                  📝 Texto listo para acompañar el video en tus redes:
+                </label>
+                <textarea id="videoTextoRedesPreview" readonly rows="4"
+                  style="width: 100%; font-size: 0.78rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #cbd5e1; padding: 0.5rem; resize: none; font-family: inherit;"></textarea>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -1900,18 +2537,22 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
       const tabViajes = document.getElementById('tabNavViajes');
       const tabGaleria = document.getElementById('tabNavGaleria');
       const tabTaller = document.getElementById('tabNavTaller');
+      const tabVideos = document.getElementById('tabNavVideos');
       const secViajes = document.getElementById('seccionViajes');
       const secGaleria = document.getElementById('seccionGaleria');
       const secTaller = document.getElementById('seccionTaller');
+      const secVideos = document.getElementById('seccionVideos');
       const btnAccion = document.getElementById('btnAccionPrincipal');
 
       if (tabViajes) tabViajes.classList.toggle('active', seccion === 'viajes');
       if (tabGaleria) tabGaleria.classList.toggle('active', seccion === 'galeria');
       if (tabTaller) tabTaller.classList.toggle('active', seccion === 'taller');
+      if (tabVideos) tabVideos.classList.toggle('active', seccion === 'videos');
 
       if (secViajes) secViajes.style.display = (seccion === 'viajes') ? 'block' : 'none';
       if (secGaleria) secGaleria.style.display = (seccion === 'galeria') ? 'block' : 'none';
       if (secTaller) secTaller.style.display = (seccion === 'taller') ? 'block' : 'none';
+      if (secVideos) secVideos.style.display = (seccion === 'videos') ? 'block' : 'none';
 
       if (seccion === 'viajes') {
         if (btnAccion) {
@@ -1931,6 +2572,12 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
           btnAccion.textContent = '✨ Generar con IA';
         }
         poblarSelectorTaller();
+      } else if (seccion === 'videos') {
+        if (btnAccion) {
+          btnAccion.style.display = 'inline-flex';
+          btnAccion.textContent = '🎬 Generar Video MP4';
+        }
+        inicializarEstudioVideos();
       }
     }
 
@@ -1941,6 +2588,8 @@ Responde ÚNICAMENTE con el bloque JSON válido, sin texto adicional ni markdown
         abrirModalNuevaFoto();
       } else if (seccionActual === 'taller') {
         generarFlyerConIA();
+      } else if (seccionActual === 'videos') {
+        generarYDescargarVideoMP4();
       }
     }
 
@@ -2902,6 +3551,1382 @@ IMPORTANT DESIGN DIRECTIVES:
           btnGenerar.innerText = '✨ Generar Nueva Versión con IA';
         }
       }
+    }
+
+    /* =========================================================
+       ESTUDIO DE VIDEO PUBLICITARIO & REELS ⚡ (MOTOR COMPLETO)
+       ========================================================= */
+
+    const videoStudioState = {
+      modo: 'showcase',      // 'showcase', 'viajeros', 'ia'
+      duracion: 20,          // 15, 20, 25 segundos
+      estilo: 'beatsync',    // 'beatsync', 'kenburns', 'fade'
+      musica: 'rocky',       // 'rocky', 'tropical', 'pop', 'mexico', 'chill', 'custom'
+      audioCustomBuffer: null,
+      audioCustomUrl: '',
+      sticker: 'ultimos',    // 'none', 'ultimos', 'confirmadas', 'viaja', 'promo'
+      mostrarDatos: true,
+      incluirPlaca: true,
+      placaTitulo: '¡Reserva tu Lugar Hoy!',
+      placaSubtitulo: 'Salidas desde Puebla y Atlixco',
+      placaIncluye: 'Transporte de Lujo · Seguro · Coordinador',
+      placaTelefono: '244 118 1829',
+      items: [],             // { id, tipo: 'img'|'video', src, imgEl, videoEl, titulo, destino, precio }
+      reproduciendo: false,
+      tiempoActual: 0,
+      animId: null,
+      audioCtx: null,
+      audioNodeActivo: null,
+      audioDestStream: null,
+      grabando: false,
+      lastFrameTime: 0
+    };
+
+    function inicializarEstudioVideos() {
+      configurarDropzoneVideo();
+      configurarCanvasMockup();
+      if (videoStudioState.items.length === 0) {
+        // Cargar por defecto las primeras salidas activas para que Verónica vea contenido de inmediato
+        aplicarPresetVideo('playas', false);
+      } else {
+        renderizarTimeline();
+        dibujarFrameActual();
+        actualizarTextoRedesSociales();
+      }
+    }
+
+    function configurarCanvasMockup() {
+      const canvas = document.getElementById('videoCanvasPreview');
+      if (!canvas) return;
+      canvas.width = 720;
+      canvas.height = 1280;
+      dibujarFrameActual();
+    }
+
+    function configurarDropzoneVideo() {
+      const dropzone = document.getElementById('videoDropzone');
+      if (!dropzone || dropzone.dataset.configurado) return;
+      dropzone.dataset.configurado = 'true';
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        });
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt ? dt.files : null;
+        if (files && files.length > 0) {
+          procesarArchivosArrastrados(Array.from(files));
+        }
+      });
+    }
+
+    function seleccionarModoVideo(modo) {
+      videoStudioState.modo = modo;
+      ['cardModoShowcase', 'cardModoViajeros', 'cardModoIA'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+      });
+
+      if (modo === 'showcase') {
+        const c = document.getElementById('cardModoShowcase');
+        if (c) c.classList.add('active');
+        videoStudioState.estilo = 'beatsync';
+        const selEstilo = document.getElementById('videoSelectEstilo');
+        if (selEstilo) selEstilo.value = 'beatsync';
+      } else if (modo === 'viajeros') {
+        const c = document.getElementById('cardModoViajeros');
+        if (c) c.classList.add('active');
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.musica = 'rocky';
+        const selMus = document.getElementById('videoSelectMusica');
+        if (selMus) selMus.value = 'rocky';
+        if (videoStudioState.items.length === 0 || videoStudioState.items[0]?.tipo === 'showcase') {
+          cargarFotosGaleriaEnVideo();
+        }
+      } else if (modo === 'ia') {
+        const c = document.getElementById('cardModoIA');
+        if (c) c.classList.add('active');
+        videoStudioState.estilo = 'kenburns';
+        const selEstilo = document.getElementById('videoSelectEstilo');
+        if (selEstilo) selEstilo.value = 'kenburns';
+      }
+
+      actualizarAudioStatusText();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+    }
+
+    function cambiarDuracionVideo(val) {
+      videoStudioState.duracion = parseInt(val, 10) || 20;
+      actualizarTiemposTimeline();
+      actualizarTextoRedesSociales();
+      dibujarFrameActual();
+    }
+
+    function cambiarEstiloVideo(val) {
+      videoStudioState.estilo = val || 'beatsync';
+      dibujarFrameActual();
+    }
+
+    function cambiarMusicaVideo(val) {
+      videoStudioState.musica = val;
+      if (val === 'custom') {
+        document.getElementById('videoCustomAudioInput').click();
+      }
+      actualizarAudioStatusText();
+      if (videoStudioState.reproduciendo) {
+        detenerAudioSintetizado();
+        iniciarAudioSintetizado();
+      }
+    }
+
+    function actualizarAudioStatusText() {
+      const statusEl = document.getElementById('videoAudioStatus');
+      if (!statusEl) return;
+      const nombres = {
+        'rocky': '🎸 Rock Épico / "Ojo de Tigre" (Golpes rítmicos de batería y acordes)',
+        'tropical': '🌴 Tropical House / Playa & Sol (Alegre, fresco y veraniego)',
+        'pop': '⚡ Pop Energético / Aventura (Moderno y bailable)',
+        'mexico': '🎺 Folclor Mexicano / Pueblos Mágicos (Guitarras festivas y trompetas)',
+        'chill': '🌿 Naturaleza & Senderismo (Armónico y relajante)',
+        'custom': '📁 Audio MP3 Personalizado de tu PC'
+      };
+      statusEl.textContent = 'Pista activa: ' + (nombres[videoStudioState.musica] || videoStudioState.musica);
+    }
+
+    /* ---- CARGA DE DIAPOSITIVAS Y MULTI-SELECCIÓN ---- */
+
+    function cargarSalidasPorCategoria(cat) {
+      const filtrados = viajes.filter(v => v && (v.activo !== false) && (v.categoria === cat || (!cat && true)));
+      if (!filtrados.length) {
+        alert('No se encontraron viajes registrados en la categoría "' + cat + '".');
+        return;
+      }
+      filtrados.forEach(v => {
+        let src = v.flyer || '../logo.jpg';
+        if (src && !src.startsWith('http') && !src.startsWith('../') && !src.startsWith('data:')) {
+          src = '../' + src;
+        }
+        agregarItemAlTimeline({
+          id: 'v-' + v.id + '-' + Date.now() + Math.random().toString(36).substr(2, 4),
+          tipo: 'imagen',
+          src: src,
+          titulo: v.titulo || 'Tour Beta Azul',
+          destino: v.destino || 'Puebla',
+          precio: v.precio || 'Consultar tarifa',
+          categoria: v.categoria || cat
+        });
+      });
+    }
+
+    function cargarFotosGaleriaEnVideo() {
+      if (!galeria.length) {
+        alert('Aún no tienes fotos en la Galería de Clientes.');
+        return;
+      }
+      galeria.forEach(g => {
+        let src = g.foto || '../logo.jpg';
+        if (src && !src.startsWith('http') && !src.startsWith('../') && !src.startsWith('data:')) {
+          src = '../' + src;
+        }
+        agregarItemAlTimeline({
+          id: 'g-' + (g.id || Date.now()) + Math.random().toString(36).substr(2, 4),
+          tipo: 'imagen',
+          src: src,
+          titulo: g.titulo || 'Viajeros Felices',
+          destino: g.destino || 'México',
+          precio: g.autor ? ('Foto de ' + g.autor) : 'Experiencia Real',
+          categoria: g.categoria || 'Viajeros'
+        });
+      });
+    }
+
+    function procesarMultiplesArchivosVideo(input) {
+      const files = input ? input.files : null;
+      if (files && files.length > 0) {
+        procesarArchivosArrastrados(Array.from(files));
+        input.value = '';
+      }
+    }
+
+    function procesarArchivosArrastrados(fileList) {
+      let cargadas = 0;
+      fileList.forEach(file => {
+        const esVideo = file.type.startsWith('video/');
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataUrl = e.target.result;
+          agregarItemAlTimeline({
+            id: 'file-' + Date.now() + Math.random().toString(36).substr(2, 4),
+            tipo: esVideo ? 'video' : 'imagen',
+            src: dataUrl,
+            titulo: file.name.replace(/\.[^/.]+$/, ""),
+            destino: 'Salida Especial',
+            precio: 'Promoción',
+            categoria: 'Personalizado'
+          });
+          cargadas++;
+          if (cargadas === fileList.length) {
+            actualizarTextoRedesSociales();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function agregarItemAlTimeline(itemData) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = itemData.src;
+      itemData.imgEl = img;
+
+      videoStudioState.items.push(itemData);
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+    }
+
+    function moverItemTimeline(index, direccion) {
+      const nuevoIndex = index + direccion;
+      if (nuevoIndex < 0 || nuevoIndex >= videoStudioState.items.length) return;
+      const temp = videoStudioState.items[index];
+      videoStudioState.items[index] = videoStudioState.items[nuevoIndex];
+      videoStudioState.items[nuevoIndex] = temp;
+      renderizarTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+    }
+
+    function eliminarItemTimeline(index) {
+      if (index < 0 || index >= videoStudioState.items.length) return;
+      videoStudioState.items.splice(index, 1);
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+    }
+
+    function vaciarTimeline() {
+      if (videoStudioState.items.length > 0 && !confirm('¿Deseas vaciar todas las diapositivas de la secuencia?')) return;
+      videoStudioState.items = [];
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+    }
+
+    function renderizarTimeline() {
+      const strip = document.getElementById('videoTimelineStrip');
+      const countEl = document.getElementById('videoTimelineCount');
+      if (!strip) return;
+
+      if (countEl) countEl.textContent = videoStudioState.items.length;
+
+      if (videoStudioState.items.length === 0) {
+        strip.innerHTML = `
+          <div id="timelineEmptyNotice" style="color: #64748b; font-size: 0.85rem; width: 100%; text-align: center; padding: 1.5rem;">
+            Tu secuencia está vacía. Selecciona una categoría arriba o arrastra fotos para comenzar.
+          </div>
+        `;
+        return;
+      }
+
+      strip.innerHTML = '';
+      videoStudioState.items.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'timeline-item';
+        div.title = (item.titulo || 'Foto') + ' (Clic para ver en el celular)';
+        div.onclick = (e) => {
+          if (e.target.tagName === 'BUTTON') return;
+          saltarASlide(idx);
+        };
+
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.titulo || 'Item';
+        div.appendChild(img);
+
+        const badge = document.createElement('span');
+        badge.className = 'timeline-item-badge';
+        badge.textContent = '#' + (idx + 1);
+        div.appendChild(badge);
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'timeline-item-del';
+        delBtn.textContent = '✕';
+        delBtn.title = 'Eliminar diapositiva';
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          eliminarItemTimeline(idx);
+        };
+        div.appendChild(delBtn);
+
+        const moveWrap = document.createElement('div');
+        moveWrap.className = 'timeline-item-move';
+
+        if (idx > 0) {
+          const btnLeft = document.createElement('button');
+          btnLeft.className = 'timeline-move-btn';
+          btnLeft.textContent = '◀';
+          btnLeft.title = 'Mover hacia la izquierda';
+          btnLeft.onclick = (e) => {
+            e.stopPropagation();
+            moverItemTimeline(idx, -1);
+          };
+          moveWrap.appendChild(btnLeft);
+        }
+
+        if (idx < videoStudioState.items.length - 1) {
+          const btnRight = document.createElement('button');
+          btnRight.className = 'timeline-move-btn';
+          btnRight.textContent = '▶';
+          btnRight.title = 'Mover hacia la derecha';
+          btnRight.onclick = (e) => {
+            e.stopPropagation();
+            moverItemTimeline(idx, 1);
+          };
+          moveWrap.appendChild(btnRight);
+        }
+
+        div.appendChild(moveWrap);
+        strip.appendChild(div);
+      });
+    }
+
+    function actualizarTiemposTimeline() {
+      const count = videoStudioState.items.length;
+      const totalSec = videoStudioState.duracion;
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const tiempoDiapos = Math.max(1, totalSec - placaSec);
+      const timePerSlide = count > 0 ? (tiempoDiapos / count).toFixed(1) : '0.0';
+
+      const timeSlideEl = document.getElementById('videoTimePerSlide');
+      const totalEl = document.getElementById('videoTimelineTotal');
+      if (timeSlideEl) timeSlideEl.textContent = timePerSlide + 's';
+      if (totalEl) totalEl.textContent = totalSec + 's';
+
+      actualizarRelojPreview();
+    }
+
+    function saltarASlide(idx) {
+      const count = videoStudioState.items.length;
+      if (count === 0) return;
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const tiempoDiapos = Math.max(1, videoStudioState.duracion - placaSec);
+      const slideDur = tiempoDiapos / count;
+      videoStudioState.tiempoActual = idx * slideDur;
+      dibujarFrameActual();
+      actualizarRelojPreview();
+    }
+
+    /* ---- PRESETS EXPRÉS EN 1 CLIC ---- */
+
+    function aplicarPresetVideo(preset, showAlert = true) {
+      videoStudioState.items = [];
+      const selDuracion = document.getElementById('videoSelectDuracion');
+      const selEstilo = document.getElementById('videoSelectEstilo');
+      const selMusica = document.getElementById('videoSelectMusica');
+
+      if (preset === 'playas') {
+        seleccionarModoVideo('showcase');
+        cargarSalidasPorCategoria('Playa');
+        videoStudioState.duracion = 20;
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.musica = 'tropical';
+        videoStudioState.sticker = 'confirmadas';
+      } else if (preset === 'pueblos') {
+        seleccionarModoVideo('showcase');
+        cargarSalidasPorCategoria('Pueblos Magicos');
+        cargarSalidasPorCategoria('Coloniales');
+        videoStudioState.duracion = 20;
+        videoStudioState.estilo = 'kenburns';
+        videoStudioState.musica = 'mexico';
+        videoStudioState.sticker = 'viaja';
+      } else if (preset === 'aventura') {
+        seleccionarModoVideo('showcase');
+        cargarSalidasPorCategoria('Aventura');
+        cargarSalidasPorCategoria('Senderismo');
+        videoStudioState.duracion = 20;
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.musica = 'pop';
+        videoStudioState.sticker = 'ultimos';
+      } else if (preset === 'viajeros') {
+        seleccionarModoVideo('viajeros');
+        cargarFotosGaleriaEnVideo();
+        videoStudioState.duracion = 20;
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.musica = 'rocky';
+        videoStudioState.sticker = 'viaja';
+      } else if (preset === 'todos') {
+        seleccionarModoVideo('showcase');
+        viajes.filter(v => v && v.activo !== false).forEach(v => {
+          let src = v.flyer || '../logo.jpg';
+          if (src && !src.startsWith('http') && !src.startsWith('../') && !src.startsWith('data:')) src = '../' + src;
+          agregarItemAlTimeline({
+            id: 'v-' + v.id,
+            tipo: 'imagen',
+            src: src,
+            titulo: v.titulo,
+            destino: v.destino,
+            precio: v.precio,
+            categoria: v.categoria
+          });
+        });
+        videoStudioState.duracion = 25;
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.musica = 'rocky';
+        videoStudioState.sticker = 'promo';
+      }
+
+      if (selDuracion) selDuracion.value = videoStudioState.duracion;
+      if (selEstilo) selEstilo.value = videoStudioState.estilo;
+      if (selMusica) selMusica.value = videoStudioState.musica;
+      const selSticker = document.getElementById('videoSelectSticker');
+      if (selSticker) selSticker.value = videoStudioState.sticker;
+
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+
+      if (showAlert) {
+        alert('⚡ ¡Preset aplicado! Se han cargado las diapositivas y configurado el ritmo. Presiona "▶ Reproducir" para ver la vista previa.');
+      }
+    }
+
+    function limpiarEstudioVideos() {
+      if (confirm('¿Deseas reiniciar el estudio de video y empezar de cero?')) {
+        detenerPreviewVideo();
+        videoStudioState.items = [];
+        videoStudioState.tiempoActual = 0;
+        renderizarTimeline();
+        actualizarTiemposTimeline();
+        dibujarFrameActual();
+        actualizarTextoRedesSociales();
+      }
+    }
+
+    /* ---- SINTETIZADOR DE AUDIO Y EFECTOS RÍTMICOS WEB AUDIO API ---- */
+
+    function getAudioContext() {
+      if (!videoStudioState.audioCtx) {
+        const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+        videoStudioState.audioCtx = new AudioCtxClass();
+      }
+      if (videoStudioState.audioCtx.state === 'suspended') {
+        videoStudioState.audioCtx.resume();
+      }
+      return videoStudioState.audioCtx;
+    }
+
+    function procesarAudioPersonalizado(input) {
+      const file = input ? input.files[0] : null;
+      if (!file) return;
+      const ctx = getAudioContext();
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        ctx.decodeAudioData(e.target.result, function(buffer) {
+          videoStudioState.audioCustomBuffer = buffer;
+          videoStudioState.musica = 'custom';
+          const sel = document.getElementById('videoSelectMusica');
+          if (sel) sel.value = 'custom';
+          actualizarAudioStatusText();
+          alert('🎵 ¡Tu archivo de audio "' + file.name + '" se cargó correctamente y será el fondo del video!');
+        }, function(err) {
+          alert('❌ Error al procesar el archivo de audio. Asegúrate de que sea un MP3 válido.');
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function toggleProbarAudio() {
+      const btn = document.getElementById('btnProbarAudio');
+      if (videoStudioState.audioNodeActivo) {
+        detenerAudioSintetizado();
+        if (btn) btn.textContent = '▶ Probar Música';
+      } else {
+        iniciarAudioSintetizado();
+        if (btn) btn.textContent = '⏹ Detener Música';
+      }
+    }
+
+    function iniciarAudioSintetizado(destStream = null) {
+      detenerAudioSintetizado();
+      const ctx = getAudioContext();
+      const track = videoStudioState.musica;
+      const waveEl = document.getElementById('audioPlayingIndicator');
+      if (waveEl) waveEl.style.display = 'inline-flex';
+
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0.7, ctx.currentTime);
+      masterGain.connect(ctx.destination);
+      if (destStream) {
+        masterGain.connect(destStream);
+      }
+
+      // Si es audio personalizado del usuario
+      if (track === 'custom' && videoStudioState.audioCustomBuffer) {
+        const src = ctx.createBufferSource();
+        src.buffer = videoStudioState.audioCustomBuffer;
+        src.loop = true;
+        src.connect(masterGain);
+        src.start(0);
+        videoStudioState.audioNodeActivo = {
+          stop: () => {
+            try { src.stop(); } catch(e){}
+            masterGain.disconnect();
+          }
+        };
+        return;
+      }
+
+      // Sintetizador procedural para cada estilo musical
+      const intervalId = setInterval(() => {
+        // Ticks periódicos de batería y acordes
+        tocarGolpeMusical(track, ctx, masterGain);
+      }, 500); // 120 BPM base
+
+      videoStudioState.audioNodeActivo = {
+        stop: () => {
+          clearInterval(intervalId);
+          masterGain.disconnect();
+        }
+      };
+    }
+
+    function tocarGolpeMusical(tipo, ctx, dest) {
+      const now = ctx.currentTime;
+
+      // 1. Bombo / Kick punch
+      const oscKick = ctx.createOscillator();
+      const gainKick = ctx.createGain();
+      oscKick.type = 'sine';
+      oscKick.frequency.setValueAtTime(130, now);
+      oscKick.frequency.exponentialRampToValueAtTime(0.01, now + 0.35);
+      gainKick.gain.setValueAtTime(0.8, now);
+      gainKick.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+      oscKick.connect(gainKick);
+      gainKick.connect(dest);
+      oscKick.start(now);
+      oscKick.stop(now + 0.35);
+
+      // 2. Acorde rítmico según estilo
+      if (tipo === 'rocky') {
+        // Power Chord de guitarra con distorsión / armónicos estilo Eye of the Tiger
+        [164.81, 246.94, 329.63].forEach(freq => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.25, now);
+          g.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(now);
+          osc.stop(now + 0.45);
+        });
+      } else if (tipo === 'tropical') {
+        // Marimba / Pluck veraniego
+        [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.05);
+          g.gain.setValueAtTime(0.3, now + i * 0.05);
+          g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.05 + 0.3);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(now + i * 0.05);
+          osc.stop(now + i * 0.05 + 0.3);
+        });
+      } else if (tipo === 'mexico') {
+        // Rasgueo alegre mexicano
+        [196.00, 246.94, 293.66, 392.00].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + i * 0.03);
+          g.gain.setValueAtTime(0.22, now + i * 0.03);
+          g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.03 + 0.4);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(now + i * 0.03);
+          osc.stop(now + i * 0.03 + 0.4);
+        });
+      } else if (tipo === 'pop') {
+        // Synth de sintetizador dance moderno
+        [220, 277.18, 329.63].forEach(freq => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.18, now);
+          g.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        });
+      } else if (tipo === 'chill') {
+        // Acorde suave envolvente
+        [130.81, 164.81, 196.00, 261.63].forEach(freq => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.15, now);
+          g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(now);
+          osc.stop(now + 0.7);
+        });
+      }
+    }
+
+    function detenerAudioSintetizado() {
+      if (videoStudioState.audioNodeActivo) {
+        try { videoStudioState.audioNodeActivo.stop(); } catch(e){}
+        videoStudioState.audioNodeActivo = null;
+      }
+      const waveEl = document.getElementById('audioPlayingIndicator');
+      if (waveEl) waveEl.style.display = 'none';
+      const btn = document.getElementById('btnProbarAudio');
+      if (btn) btn.textContent = '▶ Probar Música';
+    }
+
+    /* ---- MOTOR DE RENDERIZADO CANVAS EN ALTA DEFINICIÓN (720 x 1280 9:16) ---- */
+
+    function dibujarFrameActual() {
+      const canvas = document.getElementById('videoCanvasPreview');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      renderizarFrameEnCanvas(ctx, 720, 1280, videoStudioState.tiempoActual);
+    }
+
+    function renderizarFrameEnCanvas(ctx, width, height, tSec) {
+      ctx.clearRect(0, 0, width, height);
+
+      const items = videoStudioState.items;
+      const totalDur = videoStudioState.duracion;
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const tiempoDiapos = Math.max(1, totalDur - placaSec);
+
+      // 1. ¿Estamos en la Placa Final de Venta? (últimos 3 segundos)
+      if (videoStudioState.incluirPlaca && tSec >= (totalDur - placaSec)) {
+        renderizarPlacaFinalDeVenta(ctx, width, height, tSec - (totalDur - placaSec));
+        dibujarBarraProgresoSuperior(ctx, width, height, tSec, totalDur);
+        return;
+      }
+
+      // 2. Si no hay items en la secuencia, mostrar mensaje de invitación
+      if (!items || items.length === 0) {
+        renderizarCanvasVacio(ctx, width, height);
+        return;
+      }
+
+      // 3. Calcular diapositiva activa
+      const slideDur = tiempoDiapos / items.length;
+      let slideIdx = Math.floor(tSec / slideDur);
+      if (slideIdx >= items.length) slideIdx = items.length - 1;
+      const slideTime = tSec - (slideIdx * slideDur);
+      const slideProg = Math.min(1, Math.max(0, slideTime / slideDur));
+
+      const curItem = items[slideIdx];
+      const nextItem = (slideIdx < items.length - 1) ? items[slideIdx + 1] : null;
+
+      // 4. Fondo de video: Imagen desenfocada + viñeta oscura
+      dibujarFondoDesenfocado(ctx, width, height, curItem.imgEl);
+
+      // 5. Imagen Principal en Primer Plano con Efecto Visual
+      dibujarImagenConEfecto(ctx, width, height, curItem.imgEl, slideProg, videoStudioState.estilo, slideTime);
+
+      // Si el efecto es disolución suave y estamos al final del slide, mezclar con la siguiente
+      if (videoStudioState.estilo === 'fade' && nextItem && slideProg > 0.8) {
+        const fadeAlpha = (slideProg - 0.8) / 0.2;
+        ctx.save();
+        ctx.globalAlpha = fadeAlpha;
+        dibujarImagenConEfecto(ctx, width, height, nextItem.imgEl, 0, 'none', 0);
+        ctx.restore();
+      }
+
+      // 6. Insignia Promocional Superior (Sticker)
+      dibujarStickerPromocional(ctx, width, height, videoStudioState.sticker);
+
+      // 7. Franja Inferior con Datos del Viaje (Lower-Third Glassmorphic)
+      if (videoStudioState.mostrarDatos) {
+        dibujarLowerThirdViaje(ctx, width, height, curItem);
+      }
+
+      // 8. Barra de Progreso Superior (Estilo Instagram Stories / Reels)
+      dibujarBarraProgresoSuperior(ctx, width, height, tSec, totalDur);
+    }
+
+    function dibujarFondoDesenfocado(ctx, w, h, imgEl) {
+      ctx.save();
+      if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+        // Escalar imagen para cubrir todo el canvas
+        const imgRatio = imgEl.naturalWidth / imgEl.naturalHeight;
+        const canvasRatio = w / h;
+        let dw, dh, dx, dy;
+        if (imgRatio > canvasRatio) {
+          dh = h;
+          dw = h * imgRatio;
+          dx = (w - dw) / 2;
+          dy = 0;
+        } else {
+          dw = w;
+          dh = w / imgRatio;
+          dx = 0;
+          dy = (h - dh) / 2;
+        }
+        ctx.drawImage(imgEl, dx, dy, dw, dh);
+      } else {
+        ctx.fillStyle = '#0a192f';
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Filtro oscuro + gradiente para contraste profesional
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, 'rgba(6, 13, 26, 0.75)');
+      grad.addColorStop(0.5, 'rgba(6, 13, 26, 0.5)');
+      grad.addColorStop(1, 'rgba(6, 13, 26, 0.9)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+      ctx.restore();
+    }
+
+    function dibujarImagenConEfecto(ctx, w, h, imgEl, prog, estilo, slideTime) {
+      if (!imgEl || !imgEl.complete || imgEl.naturalWidth === 0) return;
+
+      ctx.save();
+
+      // Dimensiones máximas del flyer centrado
+      const maxW = w * 0.90; // 648px
+      const maxH = h * 0.74; // ~947px
+      const imgRatio = imgEl.naturalWidth / imgEl.naturalHeight;
+      let dw, dh;
+      if (imgRatio > (maxW / maxH)) {
+        dw = maxW;
+        dh = maxW / imgRatio;
+      } else {
+        dh = maxH;
+        dw = maxH * imgRatio;
+      }
+
+      let dx = (w - dw) / 2;
+      let dy = (h - dh) / 2 - 25; // Ligero offset hacia arriba para dejar espacio a la placa inferior
+
+      // APLICAR EFECTO DE ANIMACIÓN
+      let scale = 1.0;
+      let panX = 0;
+      let panY = 0;
+
+      if (estilo === 'beatsync') {
+        // Golpes rítmicos marcados: Cada 0.5s salta el beat
+        const beatFraction = (slideTime % 0.5) / 0.5;
+        const punch = Math.exp(-beatFraction * 8) * 0.06; // Expande un 6% y rebota
+        scale = 1.0 + punch;
+
+        // Destello blanco rítmico en el golpe
+        if (beatFraction < 0.15) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.28 * (1 - beatFraction / 0.15)})`;
+          ctx.fillRect(0, 0, w, h);
+        }
+      } else if (estilo === 'kenburns') {
+        // Paneo suave continuo estilo documental / cine
+        scale = 1.0 + (prog * 0.12); // Zoom continuo de 1.0 a 1.12
+        panY = (prog - 0.5) * 30;    // Paneo vertical suave
+      }
+
+      // Centrar transformaciones en el medio de la imagen
+      const cx = dx + dw / 2;
+      const cy = dy + dh / 2 + panY;
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+      ctx.translate(-cx, -cy);
+
+      // Sombra proyectada prémium
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+      ctx.shadowBlur = 35;
+      ctx.shadowOffsetY = 15;
+
+      // Dibujar imagen con esquinas redondeadas
+      const r = 20;
+      ctx.beginPath();
+      ctx.moveTo(dx + r, dy);
+      ctx.lineTo(dx + dw - r, dy);
+      ctx.quadraticCurveTo(dx + dw, dy, dx + dw, dy + r);
+      ctx.lineTo(dx + dw, dy + dh - r);
+      ctx.quadraticCurveTo(dx + dw, dy + dh, dx + dw - r, dy + dh);
+      ctx.lineTo(dx + r, dy + dh);
+      ctx.quadraticCurveTo(dx, dy + dh, dx, dy + dh - r);
+      ctx.lineTo(dx, dy + r);
+      ctx.quadraticCurveTo(dx, dy, dx + r, dy);
+      ctx.closePath();
+      ctx.clip();
+
+      ctx.drawImage(imgEl, dx, dy, dw, dh);
+
+      // Borde plateado elegante
+      ctx.shadowColor = 'transparent';
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function dibujarStickerPromocional(ctx, w, h, stickerTipo) {
+      if (!stickerTipo || stickerTipo === 'none') return;
+
+      const textos = {
+        'ultimos': '🔥 ¡ÚLTIMOS LUGARES DISPONIBLES!',
+        'confirmadas': '🏖️ SALIDAS CONFIRMADAS 2026',
+        'viaja': '⭐ VIAJA CON BETA AZUL',
+        'promo': '🎒 PROMOCIÓN EXCLUSIVA'
+      };
+      const texto = textos[stickerTipo] || stickerTipo;
+
+      ctx.save();
+      const badgeY = 65;
+      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      const textWidth = ctx.measureText(texto).width;
+      const boxW = textWidth + 40;
+      const boxH = 46;
+      const boxX = (w - boxW) / 2;
+
+      // Gradiente del sticker
+      const grad = ctx.createLinearGradient(boxX, badgeY, boxX + boxW, badgeY + boxH);
+      if (stickerTipo === 'ultimos') {
+        grad.addColorStop(0, '#ef4444');
+        grad.addColorStop(1, '#f97316');
+      } else if (stickerTipo === 'confirmadas') {
+        grad.addColorStop(0, '#0284c7');
+        grad.addColorStop(1, '#06b6d4');
+      } else {
+        grad.addColorStop(0, '#ec4899');
+        grad.addColorStop(1, '#8b5cf6');
+      }
+
+      // Sombra
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowBlur = 15;
+      ctx.shadowOffsetY = 6;
+
+      // Píldora redondeada
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(boxX, badgeY, boxW, boxH, 23);
+      ctx.fill();
+
+      // Borde brillante
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.stroke();
+
+      // Texto
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+      ctx.shadowBlur = 4;
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(texto, w / 2, badgeY + boxH / 2);
+
+      ctx.restore();
+    }
+
+    function dibujarLowerThirdViaje(ctx, w, h, item) {
+      if (!item) return;
+
+      ctx.save();
+      const barH = 110;
+      const barY = h - barH - 45;
+      const barW = w * 0.92;
+      const barX = (w - barW) / 2;
+
+      // Fondo de cristal ahumado (Glassmorphism)
+      ctx.fillStyle = 'rgba(13, 27, 42, 0.92)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetY = 8;
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, barW, barH, 18);
+      ctx.fill();
+
+      // Borde turquesa
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.stroke();
+
+      // Etiqueta de destino
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('📍 ' + (item.destino || 'Destino Turístico'), barX + 22, barY + 18);
+
+      // Título del viaje
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px system-ui, sans-serif';
+      let titulo = item.titulo || 'Salida Programada';
+      if (titulo.length > 34) titulo = titulo.substring(0, 32) + '...';
+      ctx.fillText(titulo, barX + 22, barY + 45);
+
+      // Tarifa / Precio en dorado a la derecha
+      if (item.precio) {
+        ctx.fillStyle = '#facc15';
+        ctx.font = 'bold 22px system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('Tarifa: ' + item.precio, barX + 22, barY + 76);
+      }
+
+      // WhatsApp badge mini a la derecha
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#4ade80';
+      ctx.font = 'bold 16px system-ui, sans-serif';
+      ctx.fillText('💬 244 118 1829', barX + barW - 20, barY + 76);
+
+      ctx.restore();
+    }
+
+    function renderizarPlacaFinalDeVenta(ctx, w, h, tPlaca) {
+      ctx.save();
+
+      // Fondo degradado de gala (Azul imperial a morado profundo)
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      bgGrad.addColorStop(0, '#040d1a');
+      bgGrad.addColorStop(0.5, '#0f172a');
+      bgGrad.addColorStop(1, '#1e1b4b');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Marco dorado doble
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = 'rgba(234, 179, 8, 0.6)';
+      ctx.strokeRect(30, 30, w - 60, h - 60);
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(234, 179, 8, 0.3)';
+      ctx.strokeRect(40, 40, w - 80, h - 80);
+
+      // Icono de Estrella / Corona
+      ctx.textAlign = 'center';
+      ctx.font = '70px system-ui';
+      ctx.fillText('🏆', w / 2, 220);
+
+      // Título Principal
+      ctx.fillStyle = '#facc15';
+      ctx.font = '800 38px system-ui, sans-serif';
+      ctx.fillText(videoStudioState.placaTitulo || '¡Reserva tu Lugar Hoy!', w / 2, 310);
+
+      // Nombre de la Agencia
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 26px system-ui, sans-serif';
+      ctx.fillText('BETA AZUL VIAJES TURÍSTICOS', w / 2, 360);
+
+      // Subtítulo
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '600 22px system-ui, sans-serif';
+      ctx.fillText(videoStudioState.placaSubtitulo || 'Salidas desde Puebla y Atlixco', w / 2, 405);
+
+      // Separador dorado
+      ctx.beginPath();
+      ctx.moveTo(w / 2 - 160, 435);
+      ctx.lineTo(w / 2 + 160, 435);
+      ctx.strokeStyle = '#eab308';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Cuadro de Inclusiones
+      const boxW = w * 0.82;
+      const boxH = 220;
+      const boxX = (w - boxW) / 2;
+      const boxY = 475;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.beginPath();
+      ctx.roundRect(boxX, boxY, boxW, boxH, 16);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '20px system-ui, sans-serif';
+
+      const lineas = [
+        '✨ Transporte turístico de lujo con A/C',
+        '🛡️ Seguro de viajero en trayecto',
+        '👨‍✈️ Coordinador y guía certificado',
+        '🎉 El mejor ambiente familiar y seguro'
+      ];
+      lineas.forEach((lin, i) => {
+        ctx.fillText(lin, boxX + 24, boxY + 45 + (i * 42));
+      });
+
+      // Botón Gigante de WhatsApp
+      const btnW = w * 0.82;
+      const btnH = 90;
+      const btnX = (w - btnW) / 2;
+      const btnY = 750;
+
+      const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
+      btnGrad.addColorStop(0, '#22c55e');
+      btnGrad.addColorStop(1, '#16a34a');
+
+      ctx.shadowColor = 'rgba(34, 197, 94, 0.5)';
+      ctx.shadowBlur = 25;
+      ctx.fillStyle = btnGrad;
+      ctx.beginPath();
+      ctx.roundRect(btnX, btnY, btnW, btnH, 20);
+      ctx.fill();
+
+      ctx.shadowColor = 'transparent';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px system-ui, sans-serif';
+      ctx.fillText('💬 WhatsApp: ' + (videoStudioState.placaTelefono || '244 118 1829'), w / 2, btnY + 42);
+
+      ctx.font = '18px system-ui, sans-serif';
+      ctx.fillStyle = '#f0fdf4';
+      ctx.fillText('Atención Personalizada con Verónica Hernández', w / 2, btnY + 70);
+
+      // Sello SECTUR
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '16px system-ui, sans-serif';
+      ctx.fillText('🛡️ Empresa Registrada en SECTUR México', w / 2, 910);
+      ctx.fillText('Atlixco, Puebla · www.viajesturisticosbetaazul.com', w / 2, 940);
+
+      ctx.restore();
+    }
+
+    function dibujarBarraProgresoSuperior(ctx, w, h, tSec, totalDur) {
+      ctx.save();
+      const barH = 5;
+      const barY = 25;
+      const margin = 20;
+      const totalW = w - (margin * 2);
+
+      // Fondo oscuro de la barra
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.fillRect(margin, barY, totalW, barH);
+
+      // Progreso actual
+      const pct = Math.min(1, Math.max(0, tSec / totalDur));
+      const fillW = totalW * pct;
+
+      const fillGrad = ctx.createLinearGradient(margin, 0, margin + totalW, 0);
+      fillGrad.addColorStop(0, '#ec4899');
+      fillGrad.addColorStop(0.5, '#8b5cf6');
+      fillGrad.addColorStop(1, '#38bdf8');
+
+      ctx.fillStyle = fillGrad;
+      ctx.fillRect(margin, barY, fillW, barH);
+      ctx.restore();
+    }
+
+    function renderizarCanvasVacio(ctx, w, h) {
+      ctx.fillStyle = '#08111e';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'center';
+      ctx.font = '60px system-ui';
+      ctx.fillText('🎬', w / 2, h / 2 - 80);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px system-ui, sans-serif';
+      ctx.fillText('Estudio de Video & Reels', w / 2, h / 2 - 10);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '18px system-ui, sans-serif';
+      ctx.fillText('Selecciona una categoría arriba o arrastra fotos', w / 2, h / 2 + 30);
+    }
+
+    /* ---- CONTROLES DE REPRODUCCIÓN EN EL CELULAR ---- */
+
+    function togglePlayPausePreview() {
+      if (videoStudioState.reproduciendo) {
+        detenerPreviewVideo();
+      } else {
+        iniciarPreviewVideo();
+      }
+    }
+
+    function iniciarPreviewVideo() {
+      if (videoStudioState.items.length === 0) {
+        alert('Agrega al menos una foto o selecciona una categoría antes de reproducir.');
+        return;
+      }
+
+      videoStudioState.reproduciendo = true;
+      const btn = document.getElementById('btnPlayPausePreview');
+      if (btn) btn.textContent = '⏸ Pausar';
+
+      iniciarAudioSintetizado();
+      videoStudioState.lastFrameTime = performance.now();
+
+      function bucleAnimacion(ahora) {
+        if (!videoStudioState.reproduciendo) return;
+        const delta = (ahora - videoStudioState.lastFrameTime) / 1000;
+        videoStudioState.lastFrameTime = ahora;
+
+        videoStudioState.tiempoActual += delta;
+        if (videoStudioState.tiempoActual >= videoStudioState.duracion) {
+          // Bucle automático
+          videoStudioState.tiempoActual = 0;
+        }
+
+        dibujarFrameActual();
+        actualizarRelojPreview();
+        videoStudioState.animId = requestAnimationFrame(bucleAnimacion);
+      }
+
+      videoStudioState.animId = requestAnimationFrame(bucleAnimacion);
+    }
+
+    function detenerPreviewVideo() {
+      videoStudioState.reproduciendo = false;
+      if (videoStudioState.animId) {
+        cancelAnimationFrame(videoStudioState.animId);
+        videoStudioState.animId = null;
+      }
+      detenerAudioSintetizado();
+      const btn = document.getElementById('btnPlayPausePreview');
+      if (btn) btn.textContent = '▶ Reproducir';
+    }
+
+    function reiniciarPreviewVideo() {
+      detenerPreviewVideo();
+      videoStudioState.tiempoActual = 0;
+      dibujarFrameActual();
+      actualizarRelojPreview();
+    }
+
+    function actualizarRelojPreview() {
+      const el = document.getElementById('videoPreviewTimer');
+      if (!el) return;
+      const cur = Math.floor(videoStudioState.tiempoActual);
+      const tot = videoStudioState.duracion;
+      const pad = (n) => n < 10 ? '0' + n : n;
+      el.textContent = `0:${pad(cur)} / 0:${pad(tot)}`;
+    }
+
+    /* ---- EXPORTADOR REAL A VIDEO MP4 / WEBM (MediaRecorder) ---- */
+
+    async function generarYDescargarVideoMP4() {
+      if (videoStudioState.items.length === 0) {
+        alert('Por favor agrega al menos una diapositiva o presiona un preset arriba para generar tu video.');
+        return;
+      }
+
+      if (videoStudioState.grabando) return;
+      videoStudioState.grabando = true;
+
+      detenerPreviewVideo();
+
+      const btn = document.getElementById('btnGenerarVideoMP4');
+      const progressWrap = document.getElementById('videoExportProgressWrap');
+      const progressBar = document.getElementById('videoExportProgressBar');
+      const statusText = document.getElementById('videoExportStatusText');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Generando Reel en Alta Definición...';
+      }
+      if (progressWrap) progressWrap.style.display = 'block';
+      if (statusText) {
+        statusText.style.display = 'block';
+        statusText.textContent = 'Iniciando captura en 720x1280 9:16...';
+      }
+
+      try {
+        const canvas = document.getElementById('videoCanvasPreview');
+        const totalSec = videoStudioState.duracion;
+
+        // 1. Obtener stream de video a 30 FPS
+        const videoStream = canvas.captureStream(30);
+
+        // 2. Audio graph conectado a stream
+        const ctx = getAudioContext();
+        const audioDest = ctx.createMediaStreamDestination();
+        iniciarAudioSintetizado(audioDest);
+
+        // Combinar audio y video en un solo stream
+        const combinedStream = new MediaStream([
+          ...videoStream.getVideoTracks(),
+          ...audioDest.stream.getAudioTracks()
+        ]);
+
+        // 3. Determinar formato óptimo
+        let mimeType = 'video/mp4;codecs=avc1';
+        let extension = 'mp4';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'video/mp4';
+        }
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'video/webm;codecs=vp9,opus';
+          extension = 'webm';
+        }
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'video/webm';
+          extension = 'webm';
+        }
+
+        const recordedChunks = [];
+        const recorder = new MediaRecorder(combinedStream, {
+          mimeType: mimeType,
+          videoBitsPerSecond: 3500000 // 3.5 Mbps HD nítido
+        });
+
+        recorder.ondataavailable = function(e) {
+          if (e.data && e.data.size > 0) {
+            recordedChunks.push(e.data);
+          }
+        };
+
+        const exportPromise = new Promise((resolve, reject) => {
+          recorder.onstop = function() {
+            resolve(new Blob(recordedChunks, { type: mimeType }));
+          };
+          recorder.onerror = reject;
+        });
+
+        recorder.start();
+
+        // 4. Renderizado paso a paso de cada frame a 30 FPS
+        const fps = 30;
+        const totalFrames = Math.round(totalSec * fps);
+        let frameActual = 0;
+
+        await new Promise((resolve) => {
+          function renderLoop() {
+            if (frameActual >= totalFrames) {
+              resolve();
+              return;
+            }
+            const t = frameActual / fps;
+            renderizarFrameEnCanvas(canvas.getContext('2d'), 720, 1280, t);
+
+            frameActual++;
+            const pct = Math.round((frameActual / totalFrames) * 100);
+            if (progressBar) progressBar.style.width = pct + '%';
+            if (statusText) statusText.textContent = `Procesando video... ${pct}% (${(t).toFixed(1)}s de ${totalSec}s)`;
+
+            setTimeout(renderLoop, 1000 / fps);
+          }
+          renderLoop();
+        });
+
+        recorder.stop();
+        detenerAudioSintetizado();
+
+        const videoBlob = await exportPromise;
+
+        // 5. Descargar automáticamente el archivo
+        const url = URL.createObjectURL(videoBlob);
+        const a = document.createElement('a');
+        const fechaStr = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `BetaAzul_Reel_${videoStudioState.modo}_${fechaStr}.${extension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        if (statusText) {
+          statusText.style.color = '#4ade80';
+          statusText.textContent = '🎉 ¡Video generado y descargado a tu computadora con éxito!';
+        }
+
+        alert(`🎬 ¡VIDEO PUBLICITARIO CREADO CON ÉXITO!\n\nSe ha guardado en tu carpeta de Descargas:\n📁 BetaAzul_Reel_${videoStudioState.modo}_${fechaStr}.${extension}\n\n💡 Ya está listo para subir a tus Estados de WhatsApp, Instagram Reels o TikTok.`);
+
+      } catch (err) {
+        console.error('Error generando video:', err);
+        alert('❌ Error al compilar el video: ' + (err.message || 'Error desconocido'));
+      } finally {
+        videoStudioState.grabando = false;
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '🎬 Generar y Descargar Video MP4 / WebM';
+        }
+      }
+    }
+
+    /* ---- TEXTO PUBLICITARIO PARA WHATSAPP Y REDES SOCIALES ---- */
+
+    function actualizarTextoRedesSociales() {
+      const textarea = document.getElementById('videoTextoRedesPreview');
+      if (!textarea) return;
+
+      const items = videoStudioState.items;
+      let destinosLista = '';
+      if (items.length > 0) {
+        const unicos = [];
+        items.forEach(it => {
+          const nom = it.titulo || it.destino;
+          if (nom && !unicos.includes(nom)) unicos.push(nom);
+        });
+        destinosLista = unicos.slice(0, 6).map(u => `✨ ${u}`).join('\n');
+      } else {
+        destinosLista = '🏖️ Playas paradisíacas\n✨ Pueblos Mágicos inolvidables\n🧗 Rutas de Aventura y Naturaleza';
+      }
+
+      const mensaje = `🚌✨ ¡NUEVAS SALIDAS CONFIRMADAS CON BETA AZUL VIAJES! 🏖️✨
+
+Acompáñanos a disfrutar de las mejores experiencias con la seguridad, comodidad y ambiente que nos distingue:
+
+${destinosLista}
+
+✅ TODOS NUESTROS VIAJES INCLUYEN:
+🚍 Autobús turístico de lujo con aire acondicionado
+🛡️ Seguro de viajero en trayecto
+👨‍✈️ Coordinador de grupo certificado
+🎉 Gran ambiente familiar
+
+📲 ¡Aparta tu lugar hoy mismo antes de que se agoten!
+WhatsApp directo: https://wa.me/522441181829?text=Hola%20Ver%C3%B3nica,%20vi%20el%20video%20y%20quiero%20informes%20de%20las%20salidas
+📍 Salidas desde Puebla y Atlixco
+🛡️ Empresa Registrada en SECTUR México`;
+
+      textarea.value = mensaje;
+    }
+
+    function copiarTextoParaRedes() {
+      actualizarTextoRedesSociales();
+      const textarea = document.getElementById('videoTextoRedesPreview');
+      if (!textarea) return;
+
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        alert('📋 ¡Texto publicitario copiado al portapapeles!\n\nPégalo directamente en WhatsApp, Facebook, Instagram o TikTok junto a tu video.');
+      }).catch(() => {
+        textarea.select();
+        document.execCommand('copy');
+        alert('📋 ¡Texto copiado con éxito!');
+      });
+    }
+
+    function abrirWhatsAppConTexto() {
+      actualizarTextoRedesSociales();
+      const textarea = document.getElementById('videoTextoRedesPreview');
+      const texto = textarea ? textarea.value : '';
+      const url = `https://wa.me/522441181829?text=${encodeURIComponent(texto)}`;
+      window.open(url, '_blank');
     }
 
     window.addEventListener('DOMContentLoaded', inicializar);
