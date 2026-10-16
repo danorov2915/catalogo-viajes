@@ -1843,6 +1843,36 @@
                     </div>
                   </div>
 
+                  <!-- PASO 2.8: TRANSICIÓN SUAVE ENTRE VIDEOS Y HACIA EL CIERRE -->
+                  <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 12px; padding: 1rem 1.15rem; margin-bottom: 1rem;">
+                    <div style="margin-bottom: 0.6rem;">
+                      <strong style="color: #fff; font-size: 0.92rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="font-size: 1.25rem;">✨</span>
+                        Paso 2.8: Transición entre videos y hacia el cierre
+                      </strong>
+                      <span style="font-size: 0.74rem; color: #94a3b8; display: block; margin-top: 0.2rem;">
+                        Suaviza los cortes para que no sean bruscos. Elige tu transición favorita:
+                      </span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.55rem;">
+                      <button type="button" id="btnTransicion_fade" onclick="setTransicionEstudio('fade')" 
+                        style="padding: 0.7rem 0.6rem; border-radius: 8px; border: 2px solid #a855f7; background: rgba(168,85,247,0.22); color: #fff; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; transition: all 0.2s;">
+                        <span style="font-size: 0.95rem;">✨ Disolución Suave</span>
+                        <span style="font-size: 0.68rem; color: #e9d5ff; font-weight: 400; line-height: 1.2;">Fade / Crossfade (Recomendado)</span>
+                      </button>
+                      <button type="button" id="btnTransicion_dip" onclick="setTransicionEstudio('dip')" 
+                        style="padding: 0.7rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0b1523; color: #94a3b8; font-weight: 600; font-size: 0.8rem; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; transition: all 0.2s;">
+                        <span style="font-size: 0.95rem;">🌑 Fundido a Negro</span>
+                        <span style="font-size: 0.68rem; color: #64748b; font-weight: 400; line-height: 1.2;">Dip to Black (Cine)</span>
+                      </button>
+                      <button type="button" id="btnTransicion_none" onclick="setTransicionEstudio('none')" 
+                        style="padding: 0.7rem 0.6rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: #0b1523; color: #94a3b8; font-weight: 600; font-size: 0.8rem; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; transition: all 0.2s;">
+                        <span style="font-size: 0.95rem;">✂️ Corte Directo</span>
+                        <span style="font-size: 0.68rem; color: #64748b; font-weight: 400; line-height: 1.2;">Sin transición</span>
+                      </button>
+                    </div>
+                  </div>
+
                   <!-- PASO 3: PLACA FINAL DE CONTACTO AUTOMÁTICA -->
                   <div style="background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.78rem; color: #cbd5e1; display: flex; align-items: center; gap: 0.5rem;">
                     <span style="font-size: 1.4rem;">🏆</span>
@@ -2098,11 +2128,13 @@
 
                   <!-- Efecto Visual / Transición -->
                   <div class="form-group" style="margin-bottom: 0;">
-                    <label style="font-size: 0.85rem;">✨ Transición entre Fotos:</label>
+                    <label style="font-size: 0.85rem;">✨ Transición entre Fotos / Videos:</label>
                     <select id="videoSelectEstilo" onchange="cambiarEstiloVideo(this.value)" style="padding: 0.6rem;">
-                      <option value="beatsync" selected>🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
+                      <option value="fade" selected>✨ Disolución Cruzada Suave (Crossfade / Fade)</option>
+                      <option value="dip">🌑 Fundido a Negro Suave (Dip to Black)</option>
+                      <option value="beatsync">🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
                       <option value="kenburns">🎥 Ken Burns Cinematográfico (Paneo suave)</option>
-                      <option value="fade">✨ Disolución Cruzada Suave (Crossfade)</option>
+                      <option value="none">✂️ Corte Directo (Sin transición)</option>
                     </select>
                   </div>
 
@@ -4291,7 +4323,7 @@ IMPORTANT DESIGN DIRECTIVES:
     const videoStudioState = {
       modo: 'unir',          // 'unir', 'viajeros', 'showcase'
       duracion: 20,          // 15, 20, 25 segundos
-      estilo: 'none',        // 'none', 'beatsync', 'kenburns', 'fade'
+      estilo: 'fade',        // 'fade' (Disolución suave por defecto), 'dip', 'none', 'beatsync', 'kenburns'
       formato: '9:16',       // '9:16' (720x1280), '1:1' (1080x1080)
       overlay: 'none',       // 'sunflare', 'golddust', 'nature', 'none'
       hookTipo: 'none',      // 'rutina', 'playas', 'alerta', 'escapada', 'aparta500', 'custom', 'none'
@@ -4346,11 +4378,14 @@ IMPORTANT DESIGN DIRECTIVES:
       if (selOverlay) videoStudioState.overlay = selOverlay.value || 'none';
       const selSticker = document.getElementById('videoSelectSticker');
       if (selSticker) videoStudioState.sticker = selSticker.value || 'none';
+      const selEstilo = document.getElementById('videoSelectEstilo');
+      if (selEstilo) selEstilo.value = videoStudioState.estilo || 'fade';
       const inputTel = document.getElementById('videoPlacaTelefono');
       if (inputTel) videoStudioState.placaTelefono = inputTel.value || '244 447 0237';
 
       actualizarAudioStatusText();
       actualizarBotonesMusicaUI();
+      actualizarBotonesTransicionUI();
       poblarSelectorToursVideoIA();
       generarPromptVideoIA();
       cambiarTabEstudioVideo('medios');
@@ -4633,20 +4668,21 @@ IMPORTANT DESIGN DIRECTIVES:
           videoStudioState.tiempoActual = 0;
           renderizarTimeline();
         }
-        videoStudioState.estilo = 'none';
+        videoStudioState.estilo = 'fade';
         videoStudioState.incluirPlaca = true;
         // Por defecto en unir videos, usar SIN MÚSICA para escuchar el audio original de los videos:
         videoStudioState.musica = 'none';
         const chkPlaca = document.getElementById('videoChkPlacaFinal');
         if (chkPlaca) chkPlaca.checked = true;
         const selEstilo = document.getElementById('videoSelectEstilo');
-        if (selEstilo) selEstilo.value = 'none';
+        if (selEstilo) selEstilo.value = 'fade';
         const selMusica = document.getElementById('videoSelectMusica');
         if (selMusica) selMusica.value = 'none';
       }
 
       actualizarAudioStatusText();
       actualizarBotonesMusicaUI();
+      actualizarBotonesTransicionUI();
       actualizarTiemposTimeline();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
@@ -4886,8 +4922,51 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function cambiarEstiloVideo(val) {
-      videoStudioState.estilo = val || 'beatsync';
+      videoStudioState.estilo = val || 'fade';
+      actualizarBotonesTransicionUI();
       dibujarFrameActual();
+    }
+
+    function setTransicionEstudio(val) {
+      videoStudioState.estilo = val || 'fade';
+      const sel = document.getElementById('videoSelectEstilo');
+      if (sel) sel.value = videoStudioState.estilo;
+      actualizarBotonesTransicionUI();
+      dibujarFrameActual();
+      if (val === 'fade') {
+        mostrarNotificacionEstudio('✨ Transición de Disolución Suave (Crossfade) activada.');
+      } else if (val === 'dip') {
+        mostrarNotificacionEstudio('🌑 Transición de Fundido a Negro (Dip to Black) activada.');
+      } else {
+        mostrarNotificacionEstudio('✂️ Corte Directo activado.');
+      }
+    }
+
+    function actualizarBotonesTransicionUI() {
+      const estilo = videoStudioState.estilo || 'fade';
+      const opciones = ['fade', 'dip', 'none'];
+      opciones.forEach(opt => {
+        const btn = document.getElementById('btnTransicion_' + opt);
+        if (!btn) return;
+        if (opt === estilo) {
+          btn.style.border = '2px solid #a855f7';
+          btn.style.background = 'rgba(168,85,247,0.22)';
+          btn.style.color = '#fff';
+          const subSpan = btn.querySelector('span:nth-child(2)');
+          if (subSpan) subSpan.style.color = '#e9d5ff';
+        } else {
+          btn.style.border = '1px solid rgba(255,255,255,0.12)';
+          btn.style.background = '#0b1523';
+          btn.style.color = '#94a3b8';
+          const subSpan = btn.querySelector('span:nth-child(2)');
+          if (subSpan) subSpan.style.color = '#64748b';
+        }
+      });
+
+      const selEstilo = document.getElementById('videoSelectEstilo');
+      if (selEstilo && selEstilo.value !== estilo) {
+        selEstilo.value = estilo;
+      }
     }
 
     function cambiarMusicaVideo(val) {
@@ -6350,20 +6429,36 @@ IMPORTANT DESIGN DIRECTIVES:
       const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
       const tiempoDiapos = Math.max(1, totalDur - placaSec);
 
-      // 1. ¿Estamos en la Placa Final de Venta? (últimos 3 segundos)
-      if (videoStudioState.incluirPlaca && tSec >= (totalDur - placaSec)) {
-        renderizarPlacaFinalDeVenta(ctx, width, height, tSec - (totalDur - placaSec));
-        dibujarBarraProgresoSuperior(ctx, width, height, tSec, totalDur);
-        return;
-      }
-
-      // 2. Si no hay items en la secuencia, mostrar mensaje de invitación
+      // Si no hay items en la secuencia, mostrar mensaje de bienvenida
       if (!items || items.length === 0) {
         renderizarCanvasVacio(ctx, width, height);
         return;
       }
 
-      // 3. Calcular diapositiva activa según los puntos de corte rítmicos exactos
+      // Duración de la transición suave (fade / crossfade / dip)
+      const transTipo = videoStudioState.estilo || 'fade';
+      const durTrans = (transTipo === 'fade' || transTipo === 'dip') ? 0.45 : 0.0;
+
+      // 1. ¿Estamos completamente en la Placa Final de Venta? (últimos 3 segundos)
+      if (videoStudioState.incluirPlaca && tSec >= tiempoDiapos) {
+        const tPlaca = tSec - tiempoDiapos;
+        renderizarPlacaFinalDeVenta(ctx, width, height, tPlaca);
+
+        // Si la transición es Fundido a Negro (Dip to Black), suave apertura desde negro al iniciar la placa:
+        if (transTipo === 'dip' && tPlaca < durTrans && durTrans > 0) {
+          const alphaBlack = 1 - (tPlaca / durTrans);
+          ctx.save();
+          ctx.fillStyle = '#000000';
+          ctx.globalAlpha = Math.max(0, Math.min(1, alphaBlack));
+          ctx.fillRect(0, 0, width, height);
+          ctx.restore();
+        }
+
+        dibujarBarraProgresoSuperior(ctx, width, height, tSec, totalDur);
+        return;
+      }
+
+      // 2. Calcular diapositiva activa según los puntos de corte rítmicos exactos
       const puntos = obtenerPuntosCorteActuales(tiempoDiapos, items.length);
       let slideIdx = 0;
       for (let i = 0; i < puntos.length; i++) {
@@ -6380,15 +6475,14 @@ IMPORTANT DESIGN DIRECTIVES:
       const duracionEsteSlide = Math.max(0.15, tFin - tInicio);
       const slideTime = Math.max(0, tSec - tInicio);
       const slideProg = Math.min(1, Math.max(0, slideTime / duracionEsteSlide));
+      const tiempoRestante = duracionEsteSlide - slideTime;
 
       const curItem = items[slideIdx];
       const nextItem = (slideIdx < items.length - 1) ? items[slideIdx + 1] : null;
 
-      // 4. Fondo de video: Imagen/Video desenfocada + viñeta oscura
-      const mediaActual = (curItem.tipo === 'video' && curItem.videoEl) ? curItem.videoEl : curItem.imgEl;
+      // Posicionamiento de video actual si estamos pausados o arrastrando
       if (curItem.tipo === 'video' && curItem.videoEl) {
         if (!videoStudioState.reproduciendo) {
-          // Solo si está en pausa o estático ubicamos el frame exacto para preview
           const vidDur = curItem.duracionReal || curItem.videoEl.duration || duracionEsteSlide;
           const targetTime = Math.min(vidDur - 0.05, Math.max(0, slideProg * vidDur));
           if (Math.abs(curItem.videoEl.currentTime - targetTime) > 0.05) {
@@ -6406,18 +6500,57 @@ IMPORTANT DESIGN DIRECTIVES:
           it.videoEl.pause();
         }
       });
-      dibujarFondoDesenfocado(ctx, width, height, mediaActual);
 
-      // 5. Imagen/Video Principal en Primer Plano con Efecto Visual
+      // Fondo desenfocado y medio principal actual
+      const mediaActual = (curItem.tipo === 'video' && curItem.videoEl) ? curItem.videoEl : curItem.imgEl;
+      dibujarFondoDesenfocado(ctx, width, height, mediaActual);
       dibujarImagenConEfecto(ctx, width, height, mediaActual, slideProg, videoStudioState.estilo, slideTime);
 
-      // Si el efecto es disolución suave y estamos al final del slide, mezclar con la siguiente
-      if (videoStudioState.estilo === 'fade' && nextItem && slideProg > 0.8) {
-        const fadeAlpha = (slideProg - 0.8) / 0.2;
+      // =========================================================================
+      // TRANSICIÓN CINEMÁTICA SUAVE (CROSSFADE O DIP TO BLACK) ENTRE CLIPS Y CIERRE
+      // =========================================================================
+      const transActiva = (transTipo === 'fade' || transTipo === 'dip') && durTrans > 0;
+      const limiteTrans = Math.min(durTrans, duracionEsteSlide * 0.45);
+
+      if (transActiva && tiempoRestante < limiteTrans) {
+        const transProg = Math.min(1, Math.max(0, (limiteTrans - tiempoRestante) / limiteTrans)); // 0.0 -> 1.0
+
+        if (transTipo === 'fade') {
+          // --- DISOLUCIÓN CRUZADA SUAVE (CROSSFADE) ---
+          ctx.save();
+          ctx.globalAlpha = transProg;
+
+          if (nextItem) {
+            // A. Suave crossfade hacia el siguiente video o foto
+            const nextMedia = (nextItem.tipo === 'video' && nextItem.videoEl) ? nextItem.videoEl : nextItem.imgEl;
+            if (nextItem.tipo === 'video' && nextItem.videoEl && nextItem.videoEl.currentTime === 0) {
+              try { nextItem.videoEl.currentTime = 0.05; } catch(e){}
+            }
+            dibujarFondoDesenfocado(ctx, width, height, nextMedia);
+            dibujarImagenConEfecto(ctx, width, height, nextMedia, 0, 'none', 0);
+          } else if (videoStudioState.incluirPlaca) {
+            // B. Suave crossfade hacia la Placa Final de Cierre
+            renderizarPlacaFinalDeVenta(ctx, width, height, 0);
+          }
+          ctx.restore();
+
+        } else if (transTipo === 'dip') {
+          // --- FUNDIDO A NEGRO (DIP TO BLACK) ---
+          ctx.save();
+          ctx.fillStyle = '#000000';
+          ctx.globalAlpha = transProg;
+          ctx.fillRect(0, 0, width, height);
+          ctx.restore();
+        }
+      }
+
+      // Si venimos saliendo de un Dip to Black al inicio del slide:
+      if (transTipo === 'dip' && slideTime < limiteTrans && slideIdx > 0) {
+        const fadeInProg = Math.max(0, 1 - (slideTime / limiteTrans));
         ctx.save();
-        ctx.globalAlpha = fadeAlpha;
-        const nextMedia = (nextItem.tipo === 'video' && nextItem.videoEl) ? nextItem.videoEl : nextItem.imgEl;
-        dibujarImagenConEfecto(ctx, width, height, nextMedia, 0, 'none', 0);
+        ctx.fillStyle = '#000000';
+        ctx.globalAlpha = fadeInProg;
+        ctx.fillRect(0, 0, width, height);
         ctx.restore();
       }
 
@@ -7135,10 +7268,23 @@ IMPORTANT DESIGN DIRECTIVES:
 
             const tFin = (slideIdx + 1 < puntos.length) ? puntos[slideIdx + 1] : tiempoDiapos;
             const durEsperada = Math.max(0.1, tFin - tInicio);
+            const tiempoRestante = durEsperada - curItem.videoEl.currentTime;
+
+            // Suavizado sutil de audio en los cortes para evitar chasquidos bruscos
+            if (!curItem.videoEl.muted) {
+              if (tiempoRestante < 0.35 && tiempoRestante > 0) {
+                curItem.videoEl.volume = Math.max(0.01, tiempoRestante / 0.35);
+              } else if (curItem.videoEl.currentTime < 0.25) {
+                curItem.videoEl.volume = Math.min(1.0, curItem.videoEl.currentTime / 0.25);
+              } else {
+                curItem.videoEl.volume = 1.0;
+              }
+            }
 
             // Transición automática al siguiente clip cuando este video termine
             if (curItem.videoEl.currentTime >= (durEsperada - 0.06) || curItem.videoEl.ended) {
               curItem.videoEl.pause();
+              curItem.videoEl.volume = 1.0;
               if (slideIdx < items.length - 1) {
                 slideIdx++;
                 const nextItem = items[slideIdx];
@@ -7146,7 +7292,7 @@ IMPORTANT DESIGN DIRECTIVES:
                 if (nextItem && nextItem.tipo === 'video' && nextItem.videoEl) {
                   nextItem.videoEl.currentTime = 0;
                   nextItem.videoEl.muted = (videoStudioState.musica !== 'none');
-                  nextItem.videoEl.volume = 1.0;
+                  nextItem.videoEl.volume = 0.3; // Comienza con volumen suave
                   nextItem.videoEl.play().catch(() => {});
                 }
               } else {
@@ -7294,7 +7440,13 @@ IMPORTANT DESIGN DIRECTIVES:
             const sourceNode = ctx.createBufferSource();
             sourceNode.buffer = item.audioBuffer;
             const gainNode = ctx.createGain();
-            gainNode.gain.setValueAtTime(videoStudioState.musica === 'none' ? 1.0 : 0.85, ctx.currentTime);
+            const targetVol = (videoStudioState.musica === 'none' ? 1.0 : 0.85);
+            // Entrada suave y salida suave de audio para evitar cortes bruscos
+            gainNode.gain.setValueAtTime(0.01, ctx.currentTime + tInicio);
+            gainNode.gain.linearRampToValueAtTime(targetVol, ctx.currentTime + tInicio + 0.15);
+            const fadeOutStart = ctx.currentTime + tInicio + Math.max(0.15, durSlide - 0.35);
+            gainNode.gain.setValueAtTime(targetVol, fadeOutStart);
+            gainNode.gain.linearRampToValueAtTime(0.001, ctx.currentTime + tInicio + durSlide);
             sourceNode.connect(gainNode);
             gainNode.connect(audioDest);
             // Sincronizar el audio del video con el render:
