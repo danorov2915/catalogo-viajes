@@ -1384,7 +1384,169 @@
             <div class="video-mode-desc">
               Integra 1 video aéreo/paneo tipo dron generado en Gemini Omni o tu celular + fotos de apoyo + placa final de venta. Ahorra tu cuota diaria de IA.
             </div>
-            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #c084fc; font-weight: 700;">★ Calidad cine y dron</div>
+            <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #c084fc; font-weight: 700;">★ Calidad cine y dron (Clic para abrir generador)</div>
+          </div>
+        </div>
+
+        <!-- PANEL ESPECIAL: GENERADOR DE PROMPTS DE VIDEO PARA GEMINI OMNI / VEO -->
+        <div id="panelGeneradorVideoIA" style="background: linear-gradient(135deg, rgba(30, 27, 75, 0.94) 0%, rgba(15, 23, 42, 0.98) 100%); border: 2px solid rgba(192, 132, 252, 0.5); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);">
+          
+          <!-- Encabezado con título e instrucciones -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(192, 132, 252, 0.2); padding-bottom: 0.85rem;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <span style="font-size: 1.5rem;">🎥✨</span>
+                <h3 style="margin: 0; color: #f3e8ff; font-size: 1.15rem; font-weight: 800;">
+                  Generador de Prompts de Video para Gemini Omni & Google Veo
+                </h3>
+                <span style="background: rgba(168, 85, 247, 0.25); border: 1px solid #c084fc; color: #e9d5ff; font-size: 0.72rem; padding: 0.15rem 0.55rem; border-radius: 20px; font-weight: 700;">
+                  IA Cinematográfica
+                </span>
+              </div>
+              <p style="margin: 0.35rem 0 0 0; color: #cbd5e1; font-size: 0.84rem;">
+                Crea tomas aéreas de dron, olas cristalinas o autobuses en carretera. Genera aquí el prompt maestro en inglés optimizado, cópialo a Gemini Omni para que genere el video, y arrastra el archivo MP4 resultante a tu línea de tiempo para unirlo con tus fotos, música rítmica y gancho publicitario.
+              </p>
+            </div>
+          </div>
+
+          <!-- Grid de Configuración del Video IA -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+            
+            <!-- Columna 1: Entrada de Contenido (Foto o Texto) -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 10px; padding: 0.85rem;">
+              <label style="font-size: 0.82rem; color: #c084fc; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+                1️⃣ ¿De qué quieres el video? (Destino o Foto de referencia):
+              </label>
+
+              <!-- Opción A: Escribir texto libre -->
+              <input type="text" id="videoIADestinoInput" value="Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras" 
+                placeholder="Ej: Acapulco con olas doradas al atardecer..." 
+                oninput="generarPromptVideoIA()"
+                style="width: 100%; font-size: 0.82rem; padding: 0.55rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff; margin-bottom: 0.5rem;">
+
+              <!-- Selector de Tours del Catálogo para auto-llenar -->
+              <select id="videoIASelTour" onchange="seleccionarTourParaPromptIA(this)" 
+                style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.2); color: #94a3b8; margin-bottom: 0.5rem;">
+                <option value="">-- O elige uno de tus viajes registrados --</option>
+              </select>
+
+              <!-- Opción B: Subir foto propia de referencia -->
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.65rem; border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff;"
+                  onclick="document.getElementById('videoIAFotoInput').click()">
+                  📸 Subir Foto de Referencia
+                </button>
+                <input type="file" id="videoIAFotoInput" accept="image/*" style="display: none;" onchange="cargarFotoParaPromptIA(this)">
+                <span style="font-size: 0.72rem; color: #94a3b8;">(Gemini Omni puede animar una foto fija)</span>
+              </div>
+
+              <!-- Vista previa de la foto seleccionada -->
+              <div id="videoIAFotoPreviewWrap" style="display: none; margin-top: 0.35rem; align-items: center; gap: 0.5rem;">
+                <img id="videoIAFotoPreview" src="" alt="Foto referencia" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #c084fc;">
+                <span id="videoIAFotoNombre" style="font-size: 0.72rem; color: #34d399; font-weight: 600;">✓ Foto de referencia cargada</span>
+              </div>
+
+              <!-- Chips de ideas rápidas -->
+              <div style="margin-top: 0.5rem;">
+                <span style="font-size: 0.7rem; color: #cbd5e1; display: block; margin-bottom: 0.25rem;">⚡ Ideas rápidas con 1 clic:</span>
+                <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
+                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras al viento')">🏖️ Huatulco Turquesa</button>
+                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Atardecer dorado en Acapulco con el sol ocultándose en el mar y reflejos brillantes')">🌅 Atardecer Acapulco</button>
+                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Autobús turístico blanco de lujo viajando en autopista hacia la costa al amanecer')">🚍 Autobús de Lujo</button>
+                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Cascadas de agua cristalina turquesa en Chiapas rodeadas de selva verde exuberante')">🏞️ Cascadas de Chiapas</button>
+                  <button type="button" class="taller-chip" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="aplicarIdeaVideoIA('Pueblo Mágico colonial iluminado de noche con calles empedradas y arquitectura tradicional')">✨ Pueblo Mágico</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna 2: Parámetros Cinematográficos -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(192, 132, 252, 0.25); border-radius: 10px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem;">
+              <label style="font-size: 0.82rem; color: #c084fc; font-weight: 700;">
+                2️⃣ Movimiento de Cámara y Estilo Visual:
+              </label>
+
+              <div>
+                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Movimiento de Cámara:</label>
+                <select id="videoIACamara" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
+                  <option value="drone" selected>🦅 Dron FPV aéreo sobrevolando suavemente hacia adelante</option>
+                  <option value="pan">🌅 Paneo cinematográfico horizontal lento y majestuoso</option>
+                  <option value="waves">🌊 Olas en cámara lenta a 60fps con espuma y brisa marina</option>
+                  <option value="bus">🚍 Plano secuencia de seguimiento al autobús en carretera</option>
+                  <option value="zoom">🔍 Zoom in lento y envolvente hacia el paisaje</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Iluminación y Ambiente:</label>
+                <select id="videoIAIluminacion" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
+                  <option value="golden" selected>🌅 Hora Dorada / Atardecer cálido y radiante</option>
+                  <option value="sunny">☀️ Sol radiante de mediodía con mar turquesa vivo</option>
+                  <option value="twilight">🌌 Crepúsculo / Atardecer azul con luces cálidas acogedoras</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-size: 0.75rem; color: #cbd5e1; display: block; margin-bottom: 0.2rem;">Formato de Salida:</label>
+                <select id="videoIAFormato" onchange="generarPromptVideoIA()" style="width: 100%; font-size: 0.78rem; padding: 0.45rem; border-radius: 6px; background: #020617; border: 1px solid rgba(192, 132, 252, 0.3); color: #fff;">
+                  <option value="9:16" selected>📱 Vertical 9:16 (Reels, TikTok, WhatsApp)</option>
+                  <option value="1:1">🟦 Cuadrado 1:1 (Post clásico)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Área del Prompt Generado Maestro -->
+          <div style="background: #020617; border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 8px; padding: 0.85rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.78rem; color: #facc15; font-weight: 700;">
+                📋 Prompt Maestro en Inglés (Optimizado para Gemini Omni, Veo, Runway, Luma y Pika):
+              </span>
+              <button type="button" class="btn btn-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; border-color: rgba(250, 204, 21, 0.4); color: #facc15;" onclick="generarPromptVideoIA()">
+                🔄 Regenerar Prompt
+              </button>
+            </div>
+            
+            <textarea id="videoIAPromptOutput" rows="3" readonly style="width: 100%; font-family: monospace; font-size: 0.8rem; background: #0b1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.5rem; resize: vertical;"></textarea>
+
+            <div id="videoIAPromptDescEs" style="margin-top: 0.4rem; font-size: 0.74rem; color: #94a3b8; line-height: 1.4;">
+              <strong>🇪🇸 Explicación del prompt:</strong> Toma cinematográfica de dron aéreo sobrevolando Huatulco al atardecer en 4K y 60fps vertical para Reels/TikTok.
+            </div>
+          </div>
+
+          <!-- Botones de Acción Inmediata -->
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;">
+            <button type="button" class="btn btn-primary" onclick="copiarPromptVideoIA()" 
+              style="background: linear-gradient(135deg, #9333ea, #c084fc); border: none; font-weight: 800; font-size: 0.88rem; padding: 0.65rem 1.25rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);">
+              📋 Copiar Prompt para Gemini Omni
+            </button>
+            
+            <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
+              style="border-color: rgba(192, 132, 252, 0.4); color: #e9d5ff; font-size: 0.82rem; padding: 0.65rem 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+              🌐 Abrir Google Gemini
+            </a>
+
+            <a href="https://aistudio.google.com/live" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" 
+              style="border-color: rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 0.82rem; padding: 0.65rem 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+              🚀 Google AI Studio (Veo)
+            </a>
+          </div>
+
+          <!-- Guía Visual de 3 Pasos: Cómo unirlo con tus fotos aquí -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px dashed rgba(192, 132, 252, 0.35); border-radius: 8px; padding: 0.75rem 1rem;">
+            <strong style="color: #38bdf8; font-size: 0.78rem; display: block; margin-bottom: 0.35rem;">
+              🔄 Pasos para unir tu video de IA con tus fotos en el reel:
+            </strong>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; font-size: 0.74rem; color: #cbd5e1;">
+              <div>
+                <strong style="color: #c084fc;">Paso 1:</strong> Dale clic a <em>"Copiar Prompt para Gemini Omni"</em> y pégalo en Gemini con <kbd style="background: #1e1b4b; padding: 0.1rem 0.3rem; border-radius: 4px;">Ctrl + V</kbd>.
+              </div>
+              <div>
+                <strong style="color: #c084fc;">Paso 2:</strong> Cuando Gemini o Veo te dé el video, descárgalo a tu computadora (archivo <code>.mp4</code>).
+              </div>
+              <div>
+                <strong style="color: #c084fc;">Paso 3:</strong> Arrastra el archivo <code>.mp4</code> a la caja de abajo. ¡El sistema lo unirá automáticamente con tu música, tu gancho editable y tu placa final de venta con WhatsApp!
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1401,7 +1563,7 @@
                   📂 Agregar Diapositivas al Video:
                 </label>
                 <div style="font-size: 0.8rem; color: #94a3b8;">
-                  Puedes arrastrar múltiples fotos a la vez
+                  Puedes arrastrar múltiples fotos o videos a la vez
                 </div>
               </div>
 
@@ -1412,16 +1574,17 @@
                 <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Aventura')">🧗 + Aventura</button>
                 <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Senderismo')">🥾 + Senderismo</button>
                 <button type="button" class="pill-filter-btn" onclick="cargarFotosGaleriaEnVideo()">📸 + Fotos de Galería Real</button>
+                <button type="button" class="pill-filter-btn" style="border-color: rgba(192, 132, 252, 0.6); color: #c084fc; font-weight: 700;" onclick="seleccionarModoVideo('ia')">🎥✨ Generar Prompt Video IA</button>
               </div>
 
-              <!-- Dropzone para arrastrar 8, 12, 15+ fotos de una sola vez -->
+              <!-- Dropzone para arrastrar 8, 12, 15+ fotos o videos MP4 -->
               <div class="video-dropzone" id="videoDropzone" onclick="document.getElementById('videoMultiFileInput').click()">
                 <div style="font-size: 1.8rem;">📁📥</div>
                 <strong style="color: #fff; font-size: 0.95rem;">
-                  Arrastra aquí tus fotos o da clic para seleccionarlas en lote
+                  Arrastra aquí tus fotos o videos MP4 (incluidos los de Gemini) o da clic para seleccionarlos
                 </strong>
                 <p style="color: #94a3b8; font-size: 0.8rem; margin: 0;">
-                  Puedes seleccionar 8, 11, 15 o las fotos que quieras juntas de una sola vez (JPG, PNG, WebP o videos MP4).
+                  Puedes combinar fotos y clips de video en la misma secuencia (JPG, PNG, WebP o videos MP4 de IA o celular).
                 </p>
                 <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this)">
               </div>
@@ -1457,8 +1620,19 @@
                 ⚙️ Ajustes del Video & Ritmo Musical:
               </h4>
 
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem;">
                 
+                <!-- Formato de Pantalla -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;">
+                    📐 Formato de Pantalla:
+                  </label>
+                  <select id="videoSelectFormato" onchange="cambiarFormatoVideo(this.value)" style="padding: 0.6rem; border-color: rgba(56, 189, 248, 0.4);">
+                    <option value="9:16" selected>📱 Vertical 9:16 (Reels, TikTok, WhatsApp)</option>
+                    <option value="1:1">🟦 Cuadrado 1:1 (Post Feed Facebook e Instagram)</option>
+                  </select>
+                </div>
+
                 <!-- Duración -->
                 <div class="form-group" style="margin-bottom: 0;">
                   <label style="font-size: 0.85rem;">⏱️ Duración del Clip:</label>
@@ -1471,11 +1645,24 @@
 
                 <!-- Efecto Visual -->
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">✨ Efecto de Transición:</label>
+                  <label style="font-size: 0.85rem;">✨ Transición entre Fotos:</label>
                   <select id="videoSelectEstilo" onchange="cambiarEstiloVideo(this.value)" style="padding: 0.6rem;">
                     <option value="beatsync" selected>🥊 Beat Sync Flash & Scale (Golpes rítmicos marcados)</option>
                     <option value="kenburns">🎥 Ken Burns Cinematográfico (Paneo suave)</option>
                     <option value="fade">✨ Disolución Cruzada Suave (Crossfade)</option>
+                  </select>
+                </div>
+
+                <!-- Efecto de Partículas / Luz -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem; color: #facc15; font-weight: 700;">
+                    ☀️ Filtro de Luz Cinemático:
+                  </label>
+                  <select id="videoSelectOverlay" onchange="videoStudioState.overlay = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(250, 204, 21, 0.4);">
+                    <option value="sunflare" selected>☀️ Rayos de Sol Veraniegos (Playas y Sol)</option>
+                    <option value="golddust">✨ Destellos y Polvo Dorado (Elegante)</option>
+                    <option value="nature">🍃 Brisa Fresca de Montaña (Senderismo)</option>
+                    <option value="none">Sin partículas (Limpio)</option>
                   </select>
                 </div>
 
@@ -1544,26 +1731,66 @@
                 </div>
               </div>
 
-              <!-- Insignia / Sticker Promocional Flotante -->
-              <div style="margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <!-- Ganchos de Entrada e Insignias de Conversión -->
+              <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06);">
+                
+                <!-- Gancho de Entrada -->
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">🏷️ Insignia Promocional Superior:</label>
-                  <select id="videoSelectSticker" onchange="videoStudioState.sticker = this.value; dibujarFrameActual();" style="padding: 0.6rem;">
-                    <option value="none">Sin insignia</option>
-                    <option value="ultimos" selected>🔥 ¡ÚLTIMOS LUGARES DISPONIBLES!</option>
-                    <option value="confirmadas">🏖️ SALIDAS CONFIRMADAS 2026</option>
+                  <label style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; display: flex; justify-content: space-between;">
+                    <span>🪝 Gancho de Entrada (Primeros 2.5s):</span>
+                    <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 400;">✍️ 100% Editable</span>
+                  </label>
+                  <select id="videoSelectHook" onchange="cambiarHookVideo(this.value)" style="padding: 0.6rem; border-color: rgba(245, 158, 11, 0.4);">
+                    <option value="rutina" selected>🎒 ¿Cansado de la rutina? Mira esto...</option>
+                    <option value="playas">🌴 3 Playas saliendo desde Puebla y Atlixco</option>
+                    <option value="alerta">✈️ ¡Alerta de viaje económico! Salidas 100% confirmadas</option>
+                    <option value="escapada">🏖️ Paraísos a menos de 5 horas de casa</option>
+                    <option value="aparta500">🎟️ ¡Aparta tu lugar con solo $500 pesos!</option>
+                    <option value="custom">✏️ Escribir texto completamente libre...</option>
+                    <option value="none">Sin gancho inicial</option>
+                  </select>
+
+                  <!-- Editor en vivo de texto del gancho -->
+                  <div id="videoHookEditorWrap" style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <div style="display: flex; gap: 0.35rem;">
+                      <input type="text" id="videoHookInputPre" value="🎒 ¿CANSADO DE LA RUTINA?" placeholder="Etiqueta (ej: 🌴 TOP PLAYAS 2026)" title="Etiqueta superior pequeña"
+                        style="width: 42%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #facc15; font-weight: 700;"
+                        oninput="editarTextoGancho('pre')">
+                      <input type="text" id="videoHookInputMain" value="Mira a dónde nos vamos este finde 👇" placeholder="Texto llamativo" title="Texto principal en grande"
+                        style="width: 58%; font-size: 0.76rem; padding: 0.4rem; border-radius: 6px; background: #020617; border: 1px solid rgba(245, 158, 11, 0.4); color: #fff; font-weight: 600;"
+                        oninput="editarTextoGancho('main')">
+                    </div>
+                    <span style="font-size: 0.68rem; color: #94a3b8;">💡 Puedes escribir lo que quieras: la etiqueta amarilla y el título blanco se actualizan en vivo en el video.</span>
+                  </div>
+                </div>
+
+                <!-- Insignia Superior -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem; color: #34d399; font-weight: 700;">
+                    🛡️ Insignia de Confianza / Urgencia:
+                  </label>
+                  <select id="videoSelectSticker" onchange="videoStudioState.sticker = this.value; dibujarFrameActual();" style="padding: 0.6rem; border-color: rgba(52, 211, 153, 0.4);">
+                    <option value="aparta500" selected>🎟️ ¡APARTA TU LUGAR DESDE $500 MXN!</option>
+                    <option value="sectur">🛡️ AGENCIA REGISTRADA EN SECTUR / RNT</option>
+                    <option value="salidas">📍 SALIDAS DESDE ATLIXCO Y PUEBLA</option>
+                    <option value="ultimos">🔥 ¡ÚLTIMOS 6 LUGARES DISPONIBLES!</option>
+                    <option value="transporte">🚌 TRANSPORTE CON SEGURO Y COORDINADOR</option>
+                    <option value="confirmadas">🏖️ SALIDAS 100% CONFIRMADAS 2026</option>
                     <option value="viaja">⭐ VIAJA CON BETA AZUL</option>
                     <option value="promo">🎒 PROMOCIÓN EXCLUSIVA</option>
+                    <option value="none">Sin insignia superior</option>
                   </select>
                 </div>
-                
+
+                <!-- Mostrar Datos de Cada Viaje -->
                 <div class="form-group" style="margin-bottom: 0;">
-                  <label style="font-size: 0.85rem;">📍 Mostrar Datos de Cada Viaje:</label>
+                  <label style="font-size: 0.85rem;">📍 Barra Inferior de Datos de Viaje:</label>
                   <select id="videoSelectLowerThird" onchange="videoStudioState.mostrarDatos = (this.value === 'si'); dibujarFrameActual();" style="padding: 0.6rem;">
-                    <option value="si" selected>✅ Sí, mostrar título, destino y precio</option>
+                    <option value="si" selected>✅ Sí, mostrar destino, precio y WhatsApp</option>
                     <option value="no">❌ Solo mostrar flyer completo</option>
                   </select>
                 </div>
+
               </div>
 
             </div>
@@ -1596,7 +1823,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                   <label style="font-size: 0.8rem;">Teléfono WhatsApp Verónica:</label>
-                  <input type="text" id="videoPlacaTelefono" value="244 118 1829" oninput="videoStudioState.placaTelefono = this.value; dibujarFrameActual();">
+                  <input type="text" id="videoPlacaTelefono" value="244 447 0237" oninput="videoStudioState.placaTelefono = this.value; dibujarFrameActual();">
                 </div>
               </div>
             </div>
@@ -1607,13 +1834,17 @@
           <div style="display: flex; flex-direction: column; gap: 1rem;">
             
             <div class="phone-mockup-wrapper">
-              <div style="color: #94a3b8; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 0.4rem;">
-                <span>📱</span> Vista Previa en Vivo (9:16 Vertical)
+              <div style="color: #94a3b8; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                  <span id="videoMockupIcon">📱</span>
+                  <span id="videoMockupLabel">Vista Previa (9:16 Vertical)</span>
+                </div>
+                <span id="videoMockupResBadge" style="background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; color: #38bdf8;">720 × 1280</span>
               </div>
 
-              <!-- Marco del Teléfono Móvil -->
-              <div class="phone-frame">
-                <div class="phone-notch"></div>
+              <!-- Marco del Teléfono Móvil o Feed Cuadrado -->
+              <div id="videoPhoneFrameContainer" class="phone-frame">
+                <div id="videoPhoneNotch" class="phone-notch"></div>
                 <canvas id="videoCanvasPreview" width="720" height="1280"></canvas>
               </div>
 
@@ -1642,23 +1873,37 @@
                 🎬 Generar y Descargar Video MP4 / WebM
               </button>
 
-              <!-- Botones de Redes y WhatsApp -->
-              <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 0.75rem;">
-                <button type="button" class="btn btn-secondary" onclick="copiarTextoParaRedes()" style="width: 100%; justify-content: center; font-size: 0.85rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
-                  📋 Copiar Texto para WhatsApp / Redes
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="abrirWhatsAppConTexto()" style="width: 100%; justify-content: center; font-size: 0.85rem; background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80;">
-                  📲 Enviar Directo a WhatsApp Web
-                </button>
-              </div>
+              <!-- Generador de Copys Publicitarios Persuasivos -->
+              <div style="width: 100%; margin-top: 1rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
+                  <strong style="color: #38bdf8; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                    <span>📝</span> Textos Listos para Publicar:
+                  </strong>
+                  <!-- Pestañas de formato de copy -->
+                  <div style="display: flex; gap: 0.3rem;">
+                    <button type="button" class="btn btn-secondary" id="btnCopyTabFb" onclick="seleccionarTabCopy('facebook')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: #1e293b; border-color: #38bdf8; color: #fff;">
+                      📘 Facebook
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnCopyTabWa" onclick="seleccionarTabCopy('whatsapp')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
+                      💬 WhatsApp
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnCopyTabTt" onclick="seleccionarTabCopy('tiktok')" style="padding: 0.2rem 0.55rem; font-size: 0.72rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;">
+                      🎵 TikTok/Reels
+                    </button>
+                  </div>
+                </div>
 
-              <!-- Vista previa del texto publicitario para copiar -->
-              <div style="width: 100%; margin-top: 0.75rem;">
-                <label style="font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">
-                  📝 Texto listo para acompañar el video en tus redes:
-                </label>
-                <textarea id="videoTextoRedesPreview" readonly rows="4"
-                  style="width: 100%; font-size: 0.78rem; background: #060d1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #cbd5e1; padding: 0.5rem; resize: none; font-family: inherit;"></textarea>
+                <textarea id="videoTextoRedesPreview" readonly rows="5"
+                  style="width: 100%; font-size: 0.78rem; background: #020617; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #e2e8f0; padding: 0.6rem; resize: none; font-family: inherit; line-height: 1.45;"></textarea>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.6rem;">
+                  <button type="button" class="btn btn-secondary" onclick="copiarTextoParaRedes()" style="justify-content: center; font-size: 0.82rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 0.45rem;">
+                    📋 Copiar Texto
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="abrirWhatsAppConTexto()" style="justify-content: center; font-size: 0.82rem; background: rgba(34, 197, 94, 0.15); border-color: #22c55e; color: #4ade80; padding: 0.45rem;">
+                    📲 Abrir WhatsApp
+                  </button>
+                </div>
               </div>
 
             </div>
@@ -3590,19 +3835,26 @@ IMPORTANT DESIGN DIRECTIVES:
       modo: 'showcase',      // 'showcase', 'viajeros', 'ia'
       duracion: 20,          // 15, 20, 25 segundos
       estilo: 'beatsync',    // 'beatsync', 'kenburns', 'fade'
+      formato: '9:16',       // '9:16' (720x1280), '1:1' (1080x1080)
+      overlay: 'sunflare',   // 'sunflare', 'golddust', 'nature', 'none'
+      hookTipo: 'rutina',    // 'rutina', 'playas', 'alerta', 'escapada', 'aparta500', 'custom', 'none'
+      hookTextoPre: '🎒 ¿CANSADO DE LA RUTINA?',
+      hookTextoMain: 'Mira a dónde nos vamos este finde 👇',
       musica: 'rocky',       // 'rocky', 'tropical', 'pop', 'mexico', 'chill', 'custom'
       audioCustomBuffer: null,
       audioCustomUrl: '',
-      sticker: 'ultimos',    // 'none', 'ultimos', 'confirmadas', 'viaja', 'promo'
+      customBPM: 120,
+      sticker: 'aparta500',  // 'aparta500', 'sectur', 'salidas', 'ultimos', 'transporte', 'confirmadas', 'viaja', 'promo', 'none'
       mostrarDatos: true,
       incluirPlaca: true,
       placaTitulo: '¡Reserva tu Lugar Hoy!',
       placaSubtitulo: 'Salidas desde Puebla y Atlixco',
       placaIncluye: 'Transporte de Lujo · Seguro · Coordinador',
-      placaTelefono: '244 118 1829',
+      placaTelefono: '244 447 0237',
       modoCorte: 'beat',     // 'beat', 'doble', 'tap', 'regular'
       puntosCorteCustom: [], // Marcas registradas con tecla espacio / botón tap
       puntosCorteDetectados: null, // Puntos de corte calculados del audio custom
+      tipoCopyRedes: 'facebook', // 'facebook', 'whatsapp', 'tiktok'
       items: [],             // { id, tipo: 'img'|'video', src, imgEl, videoEl, titulo, destino, precio }
       reproduciendo: false,
       tiempoActual: 0,
@@ -3617,11 +3869,28 @@ IMPORTANT DESIGN DIRECTIVES:
     function inicializarEstudioVideos() {
       configurarDropzoneVideo();
       configurarCanvasMockup();
+
       const selModo = document.getElementById('videoSelectModoCorte');
       if (selModo) videoStudioState.modoCorte = selModo.value || 'beat';
+      const selFormato = document.getElementById('videoSelectFormato');
+      if (selFormato) videoStudioState.formato = selFormato.value || '9:16';
+      const selHook = document.getElementById('videoSelectHook');
+      if (selHook) videoStudioState.hookTipo = selHook.value || 'rutina';
+      const inputHookPre = document.getElementById('videoHookInputPre');
+      if (inputHookPre) inputHookPre.value = videoStudioState.hookTextoPre;
+      const inputHookMain = document.getElementById('videoHookInputMain');
+      if (inputHookMain) inputHookMain.value = videoStudioState.hookTextoMain;
+      const selOverlay = document.getElementById('videoSelectOverlay');
+      if (selOverlay) videoStudioState.overlay = selOverlay.value || 'sunflare';
+      const selSticker = document.getElementById('videoSelectSticker');
+      if (selSticker) videoStudioState.sticker = selSticker.value || 'aparta500';
+      const inputTel = document.getElementById('videoPlacaTelefono');
+      if (inputTel) videoStudioState.placaTelefono = inputTel.value || '244 447 0237';
+
       actualizarAudioStatusText();
+      poblarSelectorToursVideoIA();
+      generarPromptVideoIA();
       if (videoStudioState.items.length === 0) {
-        // Cargar por defecto las primeras salidas activas para que Verónica vea contenido de inmediato
         aplicarPresetVideo('playas', false);
       } else {
         renderizarTimeline();
@@ -3633,8 +3902,122 @@ IMPORTANT DESIGN DIRECTIVES:
     function configurarCanvasMockup() {
       const canvas = document.getElementById('videoCanvasPreview');
       if (!canvas) return;
-      canvas.width = 720;
-      canvas.height = 1280;
+      if (videoStudioState.formato === '1:1') {
+        canvas.width = 1080;
+        canvas.height = 1080;
+      } else {
+        canvas.width = 720;
+        canvas.height = 1280;
+      }
+      dibujarFrameActual();
+    }
+
+    function cambiarFormatoVideo(formato) {
+      videoStudioState.formato = formato || '9:16';
+      const canvas = document.getElementById('videoCanvasPreview');
+      const frameContainer = document.getElementById('videoPhoneFrameContainer');
+      const notch = document.getElementById('videoPhoneNotch');
+      const label = document.getElementById('videoMockupLabel');
+      const icon = document.getElementById('videoMockupIcon');
+      const resBadge = document.getElementById('videoMockupResBadge');
+
+      if (!canvas) return;
+
+      if (formato === '1:1') {
+        canvas.width = 1080;
+        canvas.height = 1080;
+        if (frameContainer) {
+          frameContainer.style.aspectRatio = '1 / 1';
+          frameContainer.style.maxWidth = '360px';
+          frameContainer.style.borderRadius = '16px';
+        }
+        if (notch) notch.style.display = 'none';
+        if (label) label.textContent = 'Vista Previa (1:1 Cuadrado)';
+        if (icon) icon.textContent = '🟦';
+        if (resBadge) resBadge.textContent = '1080 × 1080';
+      } else {
+        canvas.width = 720;
+        canvas.height = 1280;
+        if (frameContainer) {
+          frameContainer.style.aspectRatio = '9 / 16';
+          frameContainer.style.maxWidth = '320px';
+          frameContainer.style.borderRadius = '32px';
+        }
+        if (notch) notch.style.display = 'block';
+        if (label) label.textContent = 'Vista Previa (9:16 Vertical)';
+        if (icon) icon.textContent = '📱';
+        if (resBadge) resBadge.textContent = '720 × 1280';
+      }
+
+      dibujarFrameActual();
+    }
+
+    const ganchosPreset = {
+      'rutina': { pre: '🎒 ¿CANSADO DE LA RUTINA?', main: 'Mira a dónde nos vamos este finde 👇' },
+      'playas': { pre: '🌴 TOP PLAYAS 2026', main: 'Saliendo desde Puebla y Atlixco 🏖️' },
+      'alerta': { pre: '✈️ ¡ALERTA DE VIAJE ECONÓMICO!', main: 'Salidas 100% Confirmadas 🔥' },
+      'escapada': { pre: '🏖️ PARAÍSOS MEXICANOS', main: 'A menos de 5 horas de casa ✨' },
+      'aparta500': { pre: '🎟️ FACILIDAD EXCLUSIVA', main: '¡Aparta tu lugar con solo $500! 🚌' },
+      'custom': { pre: '📣 ¡ATENCIÓN VIAJEROS!', main: '¡Descubre tu próximo destino inolvidable!' }
+    };
+
+    function cambiarHookVideo(val) {
+      videoStudioState.hookTipo = val || 'rutina';
+      const editorWrap = document.getElementById('videoHookEditorWrap');
+      const inputPre = document.getElementById('videoHookInputPre');
+      const inputMain = document.getElementById('videoHookInputMain');
+
+      if (val === 'none') {
+        if (editorWrap) editorWrap.style.display = 'none';
+      } else {
+        if (editorWrap) editorWrap.style.display = 'flex';
+        const preset = ganchosPreset[val] || ganchosPreset['rutina'];
+        videoStudioState.hookTextoPre = preset.pre;
+        videoStudioState.hookTextoMain = preset.main;
+        if (inputPre) inputPre.value = preset.pre;
+        if (inputMain) inputMain.value = preset.main;
+
+        if (!videoStudioState.reproduciendo && videoStudioState.tiempoActual >= 2.8) {
+          videoStudioState.tiempoActual = 1.0;
+          const slider = document.getElementById('videoProgresoTimeline');
+          if (slider) slider.value = 1.0;
+        }
+      }
+      actualizarTextoRedesSociales();
+      dibujarFrameActual();
+    }
+
+    function editarTextoGancho(tipo) {
+      const inputPre = document.getElementById('videoHookInputPre');
+      const inputMain = document.getElementById('videoHookInputMain');
+      const selHook = document.getElementById('videoSelectHook');
+
+      if (inputPre) videoStudioState.hookTextoPre = inputPre.value;
+      if (inputMain) videoStudioState.hookTextoMain = inputMain.value;
+
+      if (selHook && selHook.value !== 'custom' && selHook.value !== 'none') {
+        let coincide = false;
+        for (const [k, p] of Object.entries(ganchosPreset)) {
+          if (p.pre === videoStudioState.hookTextoPre && p.main === videoStudioState.hookTextoMain) {
+            selHook.value = k;
+            videoStudioState.hookTipo = k;
+            coincide = true;
+            break;
+          }
+        }
+        if (!coincide) {
+          selHook.value = 'custom';
+          videoStudioState.hookTipo = 'custom';
+        }
+      }
+
+      if (!videoStudioState.reproduciendo && videoStudioState.tiempoActual >= 2.8) {
+        videoStudioState.tiempoActual = 1.0;
+        const slider = document.getElementById('videoProgresoTimeline');
+        if (slider) slider.value = 1.0;
+      }
+
+      actualizarTextoRedesSociales();
       dibujarFrameActual();
     }
 
@@ -3697,11 +4080,136 @@ IMPORTANT DESIGN DIRECTIVES:
         videoStudioState.estilo = 'kenburns';
         const selEstilo = document.getElementById('videoSelectEstilo');
         if (selEstilo) selEstilo.value = 'kenburns';
+
+        const panelIA = document.getElementById('panelGeneradorVideoIA');
+        if (panelIA) {
+          panelIA.style.display = 'block';
+          panelIA.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          panelIA.style.borderColor = '#c084fc';
+        }
+        generarPromptVideoIA();
       }
 
       actualizarAudioStatusText();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
+    }
+
+    /* ---- GENERADOR DE PROMPTS PARA VIDEO CON IA (GEMINI OMNI / VEO) ---- */
+
+    function generarPromptVideoIA() {
+      const destino = (document.getElementById('videoIADestinoInput')?.value || '').trim() || 'playa paradisíaca en Huatulco con sol brillante, mar turquesa y palmeras';
+      const camara = document.getElementById('videoIACamara')?.value || 'drone';
+      const luz = document.getElementById('videoIAIluminacion')?.value || 'golden';
+      const selFormato = document.getElementById('videoIAFormato')?.value || '9:16';
+      const formatoTxt = (selFormato === '1:1') ? '1:1 square aspect ratio (1080x1080)' : 'vertical 9:16 aspect ratio (1080x1920)';
+
+      let camTxt = '';
+      if (camara === 'drone') {
+        camTxt = 'Smooth, majestic cinematic 4K FPV aerial drone flyover shot soaring forward gracefully over the scenic landscape';
+      } else if (camara === 'pan') {
+        camTxt = 'Slow, sweeping cinematic horizontal camera pan revealing the breathtaking panoramic view';
+      } else if (camara === 'waves') {
+        camTxt = 'Ultra-detailed 60fps slow-motion tracking shot of crystal-clear ocean turquoise water splashing gently on golden sand';
+      } else if (camara === 'bus') {
+        camTxt = 'Cinematic highway tracking shot following a modern luxury white tourist coach bus traveling toward the scenic coastline';
+      } else {
+        camTxt = 'Gentle slow push-in zoom with high-end cinematic gimbal stabilization';
+      }
+
+      let luzTxt = '';
+      if (luz === 'golden') {
+        luzTxt = 'warm golden hour sunset lighting, soft sun rays reflecting on the surface, vibrant warm tones';
+      } else if (luz === 'sunny') {
+        luzTxt = 'bright radiant tropical midday sun, crystal clear vibrant turquoise waters, vivid lush colors, sharp contrast';
+      } else {
+        luzTxt = 'enchanting twilight blue hour with cozy warm ambient lights, starry sky, peaceful and inviting atmosphere';
+      }
+
+      const promptEn = `${camTxt}. Destination/Scene: ${destino}. Visual details: ${luzTxt}, photorealistic 8K resolution, national geographic style tourism commercial, cinematic film grain, perfectly smooth camera stabilization, 60fps, ${formatoTxt}, premium travel agency advertising reel. No text overlays, no artifacts.`;
+
+      const promptArea = document.getElementById('videoIAPromptOutput');
+      if (promptArea) promptArea.value = promptEn;
+
+      const descEs = document.getElementById('videoIAPromptDescEs');
+      if (descEs) {
+        const camaraEs = (camara === 'drone') ? 'dron aéreo sobrevolando' : (camara === 'pan') ? 'paneo horizontal panorámico' : (camara === 'waves') ? 'olas en cámara lenta 60fps' : (camara === 'bus') ? 'seguimiento al autobús turístico en carretera' : 'zoom cinematográfico';
+        const luzEs = (luz === 'golden') ? 'luz dorada de atardecer' : (luz === 'sunny') ? 'sol radiante tropical' : 'crepúsculo azul con iluminación cálida';
+        descEs.innerHTML = `<strong>🇪🇸 Explicación del prompt:</strong> Toma cinematográfica de ${camaraEs} mostrando <em>${destino}</em> con <em>${luzEs}</em>, resolución 4K a 60fps en formato ${selFormato === '1:1' ? 'cuadrado 1:1' : 'vertical 9:16'} para Reels/TikTok.`;
+      }
+    }
+
+    function aplicarIdeaVideoIA(texto) {
+      const inp = document.getElementById('videoIADestinoInput');
+      if (inp) {
+        inp.value = texto;
+        generarPromptVideoIA();
+      }
+    }
+
+    function cargarFotoParaPromptIA(input) {
+      const file = input?.files ? input.files[0] : null;
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('videoIAFotoPreview');
+        const container = document.getElementById('videoIAFotoPreviewWrap');
+        if (preview) preview.src = e.target.result;
+        if (container) container.style.display = 'flex';
+
+        const nom = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
+        const destInp = document.getElementById('videoIADestinoInput');
+        if (destInp) {
+          destInp.value = `Paisaje realista inspirado en: ${nom}`;
+        }
+        generarPromptVideoIA();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function poblarSelectorToursVideoIA() {
+      const sel = document.getElementById('videoIASelTour');
+      if (!sel) return;
+      const tours = (typeof catalogoGlobal !== 'undefined' && Array.isArray(catalogoGlobal)) ? catalogoGlobal : [];
+      let html = '<option value="">-- O elige uno de tus viajes del catálogo --</option>';
+      tours.forEach(t => {
+        if (t && t.titulo) {
+          html += `<option value="${t.titulo}" data-img="${t.imagen || ''}">${t.titulo} (${t.destino || ''})</option>`;
+        }
+      });
+      sel.innerHTML = html;
+    }
+
+    function seleccionarTourParaPromptIA(sel) {
+      const opt = sel.options[sel.selectedIndex];
+      if (!opt || !opt.value) return;
+      const destInp = document.getElementById('videoIADestinoInput');
+      if (destInp) destInp.value = `${opt.value} en México con paisajes espectaculares`;
+      const imgUrl = opt.getAttribute('data-img');
+      if (imgUrl) {
+        const preview = document.getElementById('videoIAFotoPreview');
+        const container = document.getElementById('videoIAFotoPreviewWrap');
+        if (preview) preview.src = imgUrl;
+        if (container) container.style.display = 'flex';
+      }
+      generarPromptVideoIA();
+    }
+
+    function copiarPromptVideoIA() {
+      const promptArea = document.getElementById('videoIAPromptOutput');
+      if (!promptArea || !promptArea.value.trim()) {
+        generarPromptVideoIA();
+      }
+      const txt = promptArea.value.trim();
+      navigator.clipboard.writeText(txt).then(() => {
+        alert('📋 ¡Prompt cinematográfico copiado al portapapeles!\n\n1. Se abrirá la pestaña de Google Gemini Omni.\n2. Presiona Ctrl + V para pegarlo y generar el clip.\n3. Descarga el video generado (.mp4).\n4. Regresa aquí y arrastra el archivo de video a la línea de tiempo.');
+        window.open('https://gemini.google.com', '_blank');
+      }).catch(() => {
+        promptArea.select();
+        document.execCommand('copy');
+        alert('📋 ¡Prompt copiado con éxito!');
+        window.open('https://gemini.google.com', '_blank');
+      });
     }
 
     function cambiarDuracionVideo(val) {
@@ -4058,7 +4566,7 @@ IMPORTANT DESIGN DIRECTIVES:
     function procesarArchivosArrastrados(fileList) {
       let cargadas = 0;
       fileList.forEach(file => {
-        const esVideo = file.type.startsWith('video/');
+        const esVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
         const reader = new FileReader();
         reader.onload = function(e) {
           const dataUrl = e.target.result;
@@ -4081,10 +4589,42 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function agregarItemAlTimeline(itemData) {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.src = itemData.src;
-      itemData.imgEl = img;
+      if (itemData.tipo === 'video') {
+        const video = document.createElement('video');
+        video.src = itemData.src;
+        video.muted = true;
+        video.playsInline = true;
+        video.crossOrigin = 'anonymous';
+        video.preload = 'auto';
+        itemData.videoEl = video;
+
+        video.onloadeddata = function() {
+          video.currentTime = 0.1;
+        };
+        video.onseeked = function() {
+          if (!itemData.imgEl) {
+            try {
+              const c = document.createElement('canvas');
+              c.width = 160;
+              c.height = Math.round(160 * (video.videoHeight || 160) / (video.videoWidth || 160));
+              const ctx = c.getContext('2d');
+              ctx.drawImage(video, 0, 0, c.width, c.height);
+              const img = new Image();
+              img.src = c.toDataURL();
+              itemData.imgEl = img;
+              renderizarTimeline();
+              dibujarFrameActual();
+            } catch(e) {
+              console.warn('Error capturando thumbnail de video:', e);
+            }
+          }
+        };
+      } else {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = itemData.src;
+        itemData.imgEl = img;
+      }
 
       videoStudioState.items.push(itemData);
       renderizarTimeline();
@@ -4153,9 +4693,16 @@ IMPORTANT DESIGN DIRECTIVES:
         };
 
         const img = document.createElement('img');
-        img.src = item.src;
+        img.src = item.imgEl ? item.imgEl.src : item.src;
         img.alt = item.titulo || 'Item';
         div.appendChild(img);
+
+        if (item.tipo === 'video') {
+          const vidTag = document.createElement('span');
+          vidTag.style.cssText = 'position: absolute; top: 4px; left: 4px; background: rgba(168, 85, 247, 0.85); color: #fff; font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.35rem; border-radius: 4px; pointer-events: none;';
+          vidTag.textContent = '🎥 VIDEO';
+          div.appendChild(vidTag);
+        }
 
         const badge = document.createElement('span');
         badge.className = 'timeline-item-badge';
@@ -4842,7 +5389,7 @@ IMPORTANT DESIGN DIRECTIVES:
       const canvas = document.getElementById('videoCanvasPreview');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      renderizarFrameEnCanvas(ctx, 720, 1280, videoStudioState.tiempoActual);
+      renderizarFrameEnCanvas(ctx, canvas.width, canvas.height, videoStudioState.tiempoActual);
     }
 
     function renderizarFrameEnCanvas(ctx, width, height, tSec) {
@@ -4887,38 +5434,62 @@ IMPORTANT DESIGN DIRECTIVES:
       const curItem = items[slideIdx];
       const nextItem = (slideIdx < items.length - 1) ? items[slideIdx + 1] : null;
 
-      // 4. Fondo de video: Imagen desenfocada + viñeta oscura
-      dibujarFondoDesenfocado(ctx, width, height, curItem.imgEl);
+      // 4. Fondo de video: Imagen/Video desenfocada + viñeta oscura
+      const mediaActual = (curItem.tipo === 'video' && curItem.videoEl) ? curItem.videoEl : curItem.imgEl;
+      if (curItem.tipo === 'video' && curItem.videoEl) {
+        const vidDur = curItem.videoEl.duration || duracionEsteSlide;
+        const targetTime = (slideProg * vidDur) % vidDur;
+        if (Math.abs(curItem.videoEl.currentTime - targetTime) > 0.08) {
+          curItem.videoEl.currentTime = targetTime;
+        }
+      }
+      dibujarFondoDesenfocado(ctx, width, height, mediaActual);
 
-      // 5. Imagen Principal en Primer Plano con Efecto Visual
-      dibujarImagenConEfecto(ctx, width, height, curItem.imgEl, slideProg, videoStudioState.estilo, slideTime);
+      // 5. Imagen/Video Principal en Primer Plano con Efecto Visual
+      dibujarImagenConEfecto(ctx, width, height, mediaActual, slideProg, videoStudioState.estilo, slideTime);
 
       // Si el efecto es disolución suave y estamos al final del slide, mezclar con la siguiente
       if (videoStudioState.estilo === 'fade' && nextItem && slideProg > 0.8) {
         const fadeAlpha = (slideProg - 0.8) / 0.2;
         ctx.save();
         ctx.globalAlpha = fadeAlpha;
-        dibujarImagenConEfecto(ctx, width, height, nextItem.imgEl, 0, 'none', 0);
+        const nextMedia = (nextItem.tipo === 'video' && nextItem.videoEl) ? nextItem.videoEl : nextItem.imgEl;
+        dibujarImagenConEfecto(ctx, width, height, nextMedia, 0, 'none', 0);
         ctx.restore();
       }
 
-      // 6. Insignia Promocional Superior (Sticker)
+      // 6. Overlay Cinemático de Partículas / Luz de Sol
+      if (videoStudioState.overlay && videoStudioState.overlay !== 'none') {
+        dibujarOverlayCinematico(ctx, width, height, tSec, videoStudioState.overlay);
+      }
+
+      // 7. Insignia Promocional Superior (Sticker)
       dibujarStickerPromocional(ctx, width, height, videoStudioState.sticker);
 
-      // 7. Franja Inferior con Datos del Viaje (Lower-Third Glassmorphic)
+      // 8. Gancho de Entrada Animado (Primeros 2.8 segundos)
+      if (tSec < 2.8 && videoStudioState.hookTipo !== 'none') {
+        dibujarHookAnimado(ctx, width, height, tSec);
+      }
+
+      // 9. Franja Inferior con Datos del Viaje (Lower-Third Glassmorphic)
       if (videoStudioState.mostrarDatos) {
         dibujarLowerThirdViaje(ctx, width, height, curItem);
       }
 
-      // 8. Barra de Progreso Superior (Estilo Instagram Stories / Reels)
+      // 10. Barra de Progreso Superior (Estilo Instagram Stories / Reels)
       dibujarBarraProgresoSuperior(ctx, width, height, tSec, totalDur);
     }
 
     function dibujarFondoDesenfocado(ctx, w, h, imgEl) {
       ctx.save();
-      if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+      const isVideo = imgEl && (imgEl.tagName === 'VIDEO');
+      const nw = isVideo ? imgEl.videoWidth : (imgEl ? imgEl.naturalWidth : 0);
+      const nh = isVideo ? imgEl.videoHeight : (imgEl ? imgEl.naturalHeight : 0);
+      const isReady = isVideo ? (imgEl.readyState >= 2 || nw > 0) : (imgEl && imgEl.complete && nw > 0);
+
+      if (isReady && nw > 0 && nh > 0) {
         // Escalar imagen para cubrir todo el canvas
-        const imgRatio = imgEl.naturalWidth / imgEl.naturalHeight;
+        const imgRatio = nw / nh;
         const canvasRatio = w / h;
         let dw, dh, dx, dy;
         if (imgRatio > canvasRatio) {
@@ -4949,14 +5520,18 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function dibujarImagenConEfecto(ctx, w, h, imgEl, prog, estilo, slideTime) {
-      if (!imgEl || !imgEl.complete || imgEl.naturalWidth === 0) return;
+      const isVideo = imgEl && (imgEl.tagName === 'VIDEO');
+      const nw = isVideo ? imgEl.videoWidth : (imgEl ? imgEl.naturalWidth : 0);
+      const nh = isVideo ? imgEl.videoHeight : (imgEl ? imgEl.naturalHeight : 0);
+      const isReady = isVideo ? (imgEl.readyState >= 2 || nw > 0) : (imgEl && imgEl.complete && nw > 0);
+      if (!isReady || nw === 0 || nh === 0) return;
 
       ctx.save();
 
       // Dimensiones máximas del flyer centrado
       const maxW = w * 0.90; // 648px
       const maxH = h * 0.74; // ~947px
-      const imgRatio = imgEl.naturalWidth / imgEl.naturalHeight;
+      const imgRatio = nw / nh;
       let dw, dh;
       if (imgRatio > (maxW / maxH)) {
         dw = maxW;
@@ -5040,26 +5615,43 @@ IMPORTANT DESIGN DIRECTIVES:
       if (!stickerTipo || stickerTipo === 'none') return;
 
       const textos = {
-        'ultimos': '🔥 ¡ÚLTIMOS LUGARES DISPONIBLES!',
-        'confirmadas': '🏖️ SALIDAS CONFIRMADAS 2026',
+        'aparta500': '🎟️ ¡APARTA TU LUGAR DESDE $500 MXN!',
+        'sectur': '🛡️ AGENCIA REGISTRADA EN SECTUR / RNT',
+        'salidas': '📍 SALIDAS DESDE ATLIXCO Y PUEBLA',
+        'ultimos': '🔥 ¡ÚLTIMOS 6 LUGARES DISPONIBLES!',
+        'transporte': '🚌 TRANSPORTE CON SEGURO Y COORDINADOR',
+        'confirmadas': '🏖️ SALIDAS 100% CONFIRMADAS 2026',
         'viaja': '⭐ VIAJA CON BETA AZUL',
         'promo': '🎒 PROMOCIÓN EXCLUSIVA'
       };
       const texto = textos[stickerTipo] || stickerTipo;
 
       ctx.save();
-      const badgeY = 65;
-      ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+      const badgeY = (h > w ? 60 : 35);
+      const fontSize = (w > 800 ? 24 : 20);
+      ctx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`;
       const textWidth = ctx.measureText(texto).width;
-      const boxW = textWidth + 40;
-      const boxH = 46;
+      const boxW = Math.min(w * 0.94, textWidth + 36);
+      const boxH = fontSize + 24;
       const boxX = (w - boxW) / 2;
 
       // Gradiente del sticker
       const grad = ctx.createLinearGradient(boxX, badgeY, boxX + boxW, badgeY + boxH);
-      if (stickerTipo === 'ultimos') {
+      if (stickerTipo === 'aparta500') {
+        grad.addColorStop(0, '#10b981');
+        grad.addColorStop(1, '#059669');
+      } else if (stickerTipo === 'sectur') {
+        grad.addColorStop(0, '#1e3a8a');
+        grad.addColorStop(1, '#2563eb');
+      } else if (stickerTipo === 'salidas') {
+        grad.addColorStop(0, '#0284c7');
+        grad.addColorStop(1, '#4f46e5');
+      } else if (stickerTipo === 'ultimos') {
         grad.addColorStop(0, '#ef4444');
         grad.addColorStop(1, '#f97316');
+      } else if (stickerTipo === 'transporte') {
+        grad.addColorStop(0, '#7c3aed');
+        grad.addColorStop(1, '#6366f1');
       } else if (stickerTipo === 'confirmadas') {
         grad.addColorStop(0, '#0284c7');
         grad.addColorStop(1, '#06b6d4');
@@ -5069,29 +5661,168 @@ IMPORTANT DESIGN DIRECTIVES:
       }
 
       // Sombra
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 6;
 
       // Píldora redondeada
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.roundRect(boxX, badgeY, boxW, boxH, 23);
+      ctx.roundRect(boxX, badgeY, boxW, boxH, boxH / 2);
       ctx.fill();
 
       // Borde brillante
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
       ctx.stroke();
 
       // Texto
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
       ctx.shadowBlur = 4;
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(texto, w / 2, badgeY + boxH / 2);
 
+      ctx.restore();
+    }
+
+    function dibujarHookAnimado(ctx, w, h, tSec) {
+      if (videoStudioState.hookTipo === 'none') return;
+
+      const preText = (videoStudioState.hookTextoPre !== undefined && videoStudioState.hookTextoPre !== null)
+        ? videoStudioState.hookTextoPre.trim()
+        : '';
+      const mainText = (videoStudioState.hookTextoMain !== undefined && videoStudioState.hookTextoMain !== null)
+        ? videoStudioState.hookTextoMain.trim()
+        : '';
+
+      if (!preText && !mainText) return;
+
+      ctx.save();
+
+      let alpha = 1.0;
+      let scale = 1.0;
+      let offsetY = 0;
+
+      if (tSec < 0.35) {
+        const p = tSec / 0.35;
+        scale = 0.5 + Math.sin(p * Math.PI * 0.5) * 0.55;
+        alpha = p;
+      } else if (tSec > 2.3) {
+        const p = (tSec - 2.3) / 0.5;
+        alpha = Math.max(0, 1 - p);
+        offsetY = -p * 30;
+      } else {
+        const p = (tSec - 0.35) / 1.95;
+        scale = 1.0 + Math.sin(p * Math.PI * 4) * 0.02;
+      }
+
+      ctx.globalAlpha = alpha;
+
+      const boxW = Math.min(w * 0.90, 640);
+      const boxH = preText ? 96 : 74;
+      const boxX = (w - boxW) / 2;
+      const boxY = (h > w ? 140 : 85) + offsetY;
+
+      const cx = boxX + boxW / 2;
+      const cy = boxY + boxH / 2;
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+      ctx.translate(-cx, -cy);
+
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = 12;
+
+      const bgGrad = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY + boxH);
+      bgGrad.addColorStop(0, 'rgba(15, 23, 42, 0.94)');
+      bgGrad.addColorStop(1, 'rgba(30, 27, 75, 0.94)');
+      ctx.fillStyle = bgGrad;
+      ctx.beginPath();
+      ctx.roundRect(boxX, boxY, boxW, boxH, 20);
+      ctx.fill();
+
+      ctx.lineWidth = 3;
+      const borderGrad = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY);
+      borderGrad.addColorStop(0, '#f59e0b');
+      borderGrad.addColorStop(0.5, '#ec4899');
+      borderGrad.addColorStop(1, '#38bdf8');
+      ctx.strokeStyle = borderGrad;
+      ctx.stroke();
+
+      ctx.shadowColor = 'transparent';
+      ctx.textAlign = 'center';
+
+      if (preText) {
+        ctx.fillStyle = '#facc15';
+        ctx.font = 'bold 15px system-ui, sans-serif';
+        ctx.fillText(preText, cx, boxY + 34);
+      }
+
+      if (mainText) {
+        ctx.fillStyle = '#ffffff';
+        let fontSize = 22;
+        if (mainText.length > 42) fontSize = 16;
+        else if (mainText.length > 32) fontSize = 18;
+        else if (mainText.length > 24) fontSize = 20;
+
+        ctx.font = `800 ${fontSize}px system-ui, sans-serif`;
+        const textY = preText ? (boxY + 68) : (boxY + boxH / 2 + 7);
+        ctx.fillText(mainText, cx, textY);
+      }
+
+      ctx.restore();
+    }
+
+    function dibujarOverlayCinematico(ctx, w, h, tSec, tipo) {
+      ctx.save();
+      if (tipo === 'sunflare') {
+        const flareX = w * 0.92;
+        const flareY = h * 0.08;
+        const pulse = 1.0 + Math.sin(tSec * 2.5) * 0.15;
+        const rad = Math.min(w, h) * 0.65 * pulse;
+
+        const flareGrad = ctx.createRadialGradient(flareX, flareY, 10, flareX, flareY, rad);
+        flareGrad.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
+        flareGrad.addColorStop(0.3, 'rgba(251, 191, 36, 0.20)');
+        flareGrad.addColorStop(0.7, 'rgba(245, 158, 11, 0.08)');
+        flareGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = flareGrad;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.fillStyle = 'rgba(254, 240, 138, 0.05)';
+        ctx.beginPath();
+        ctx.moveTo(flareX, flareY);
+        ctx.lineTo(0, h * 0.5);
+        ctx.lineTo(0, h * 0.7);
+        ctx.closePath();
+        ctx.fill();
+      } else if (tipo === 'golddust') {
+        ctx.fillStyle = '#facc15';
+        for (let i = 0; i < 24; i++) {
+          const px = ((i * 137.5) % w);
+          const py = (h - ((tSec * 45 + i * 55) % h));
+          const size = ((i % 4) + 1.5);
+          const pAlpha = 0.3 + Math.sin(tSec * 3 + i) * 0.25;
+          ctx.globalAlpha = Math.max(0.1, pAlpha);
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (tipo === 'nature') {
+        ctx.fillStyle = '#86efac';
+        for (let i = 0; i < 18; i++) {
+          const px = ((i * 173.3 + Math.sin(tSec + i) * 30) % w);
+          const py = (h - ((tSec * 35 + i * 70) % h));
+          const size = ((i % 3) + 2);
+          const pAlpha = 0.25 + Math.cos(tSec * 2 + i) * 0.2;
+          ctx.globalAlpha = Math.max(0.1, pAlpha);
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
       ctx.restore();
     }
 
@@ -5145,7 +5876,8 @@ IMPORTANT DESIGN DIRECTIVES:
       ctx.textAlign = 'right';
       ctx.fillStyle = '#4ade80';
       ctx.font = 'bold 16px system-ui, sans-serif';
-      ctx.fillText('💬 244 118 1829', barX + barW - 20, barY + 76);
+      const tel = videoStudioState.placaTelefono || '244 447 0237';
+      ctx.fillText('💬 ' + tel, barX + barW - 20, barY + 76);
 
       ctx.restore();
     }
@@ -5162,47 +5894,51 @@ IMPORTANT DESIGN DIRECTIVES:
       ctx.fillRect(0, 0, w, h);
 
       // Marco dorado doble
+      const paddingOuter = Math.min(30, w * 0.04);
+      const paddingInner = paddingOuter + 10;
       ctx.lineWidth = 4;
       ctx.strokeStyle = 'rgba(234, 179, 8, 0.6)';
-      ctx.strokeRect(30, 30, w - 60, h - 60);
+      ctx.strokeRect(paddingOuter, paddingOuter, w - paddingOuter * 2, h - paddingOuter * 2);
 
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = 'rgba(234, 179, 8, 0.3)';
-      ctx.strokeRect(40, 40, w - 80, h - 80);
+      ctx.strokeRect(paddingInner, paddingInner, w - paddingInner * 2, h - paddingInner * 2);
 
       // Icono de Estrella / Corona
       ctx.textAlign = 'center';
-      ctx.font = '70px system-ui';
-      ctx.fillText('🏆', w / 2, 220);
+      const yIcon = h * 0.16;
+      ctx.font = `${Math.round(h * 0.055)}px system-ui`;
+      ctx.fillText('🏆', w / 2, yIcon);
 
       // Título Principal
       ctx.fillStyle = '#facc15';
-      ctx.font = '800 38px system-ui, sans-serif';
-      ctx.fillText(videoStudioState.placaTitulo || '¡Reserva tu Lugar Hoy!', w / 2, 310);
+      ctx.font = `800 ${Math.round(w * 0.05)}px system-ui, sans-serif`;
+      ctx.fillText(videoStudioState.placaTitulo || '¡Reserva tu Lugar Hoy!', w / 2, yIcon + (h * 0.07));
 
       // Nombre de la Agencia
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 26px system-ui, sans-serif';
-      ctx.fillText('BETA AZUL VIAJES TURÍSTICOS', w / 2, 360);
+      ctx.font = `bold ${Math.round(w * 0.038)}px system-ui, sans-serif`;
+      ctx.fillText('BETA AZUL VIAJES TURÍSTICOS', w / 2, yIcon + (h * 0.11));
 
       // Subtítulo
       ctx.fillStyle = '#38bdf8';
-      ctx.font = '600 22px system-ui, sans-serif';
-      ctx.fillText(videoStudioState.placaSubtitulo || 'Salidas desde Puebla y Atlixco', w / 2, 405);
+      ctx.font = `600 ${Math.round(w * 0.032)}px system-ui, sans-serif`;
+      ctx.fillText(videoStudioState.placaSubtitulo || 'Salidas desde Puebla y Atlixco', w / 2, yIcon + (h * 0.145));
 
       // Separador dorado
       ctx.beginPath();
-      ctx.moveTo(w / 2 - 160, 435);
-      ctx.lineTo(w / 2 + 160, 435);
+      const sepY = yIcon + (h * 0.17);
+      ctx.moveTo(w / 2 - 160, sepY);
+      ctx.lineTo(w / 2 + 160, sepY);
       ctx.strokeStyle = '#eab308';
       ctx.lineWidth = 3;
       ctx.stroke();
 
       // Cuadro de Inclusiones
-      const boxW = w * 0.82;
-      const boxH = 220;
+      const boxW = w * 0.84;
+      const boxH = Math.min(220, h * 0.18);
       const boxX = (w - boxW) / 2;
-      const boxY = 475;
+      const boxY = sepY + 25;
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
       ctx.beginPath();
@@ -5213,7 +5949,8 @@ IMPORTANT DESIGN DIRECTIVES:
 
       ctx.textAlign = 'left';
       ctx.fillStyle = '#f8fafc';
-      ctx.font = '20px system-ui, sans-serif';
+      const fLine = Math.round(boxH * 0.10);
+      ctx.font = `${fLine}px system-ui, sans-serif`;
 
       const lineas = [
         '✨ Transporte turístico de lujo con A/C',
@@ -5222,14 +5959,14 @@ IMPORTANT DESIGN DIRECTIVES:
         '🎉 El mejor ambiente familiar y seguro'
       ];
       lineas.forEach((lin, i) => {
-        ctx.fillText(lin, boxX + 24, boxY + 45 + (i * 42));
+        ctx.fillText(lin, boxX + 24, boxY + (boxH * 0.22) + (i * (boxH * 0.21)));
       });
 
       // Botón Gigante de WhatsApp
-      const btnW = w * 0.82;
-      const btnH = 90;
+      const btnW = w * 0.84;
+      const btnH = Math.min(90, h * 0.075);
       const btnX = (w - btnW) / 2;
-      const btnY = 750;
+      const btnY = boxY + boxH + 28;
 
       const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
       btnGrad.addColorStop(0, '#22c55e');
@@ -5245,18 +5982,22 @@ IMPORTANT DESIGN DIRECTIVES:
       ctx.shadowColor = 'transparent';
       ctx.textAlign = 'center';
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 28px system-ui, sans-serif';
-      ctx.fillText('💬 WhatsApp: ' + (videoStudioState.placaTelefono || '244 118 1829'), w / 2, btnY + 42);
+      const fTel = Math.round(btnH * 0.35);
+      ctx.font = `bold ${fTel}px system-ui, sans-serif`;
+      const tel = videoStudioState.placaTelefono || '244 447 0237';
+      ctx.fillText('💬 WhatsApp: ' + tel, w / 2, btnY + (btnH * 0.46));
 
-      ctx.font = '18px system-ui, sans-serif';
+      ctx.font = `${Math.round(fTel * 0.65)}px system-ui, sans-serif`;
       ctx.fillStyle = '#f0fdf4';
-      ctx.fillText('Atención Personalizada con Verónica Hernández', w / 2, btnY + 70);
+      ctx.fillText('Atención Personalizada con Verónica Hernández', w / 2, btnY + (btnH * 0.78));
 
       // Sello SECTUR
       ctx.fillStyle = '#94a3b8';
-      ctx.font = '16px system-ui, sans-serif';
-      ctx.fillText('🛡️ Empresa Registrada en SECTUR México', w / 2, 910);
-      ctx.fillText('Atlixco, Puebla · www.viajesturisticosbetaazul.com', w / 2, 940);
+      const fStamp = Math.round(w * 0.024);
+      ctx.font = `${fStamp}px system-ui, sans-serif`;
+      const stampY = Math.min(h - 40, btnY + btnH + 45);
+      ctx.fillText('🛡️ Empresa Registrada en SECTUR México', w / 2, stampY);
+      ctx.fillText('Atlixco, Puebla · www.viajesturisticosbetaazul.com', w / 2, stampY + 24);
 
       ctx.restore();
     }
@@ -5396,15 +6137,15 @@ IMPORTANT DESIGN DIRECTIVES:
         btn.textContent = '⏳ Generando Reel en Alta Definición...';
       }
       if (progressWrap) progressWrap.style.display = 'block';
-      if (statusText) {
+      const canvas = document.getElementById('videoCanvasPreview');
+      const totalSec = videoStudioState.duracion;
+
+      if (statusText && canvas) {
         statusText.style.display = 'block';
-        statusText.textContent = 'Iniciando captura en 720x1280 9:16...';
+        statusText.textContent = `Iniciando captura en ${canvas.width}×${canvas.height} (${videoStudioState.formato})...`;
       }
 
       try {
-        const canvas = document.getElementById('videoCanvasPreview');
-        const totalSec = videoStudioState.duracion;
-
         // 1. Obtener stream de video a 30 FPS
         const videoStream = canvas.captureStream(30);
 
@@ -5467,7 +6208,7 @@ IMPORTANT DESIGN DIRECTIVES:
               return;
             }
             const t = frameActual / fps;
-            renderizarFrameEnCanvas(canvas.getContext('2d'), 720, 1280, t);
+            renderizarFrameEnCanvas(canvas.getContext('2d'), canvas.width, canvas.height, t);
 
             frameActual++;
             const pct = Math.round((frameActual / totalFrames) * 100);
@@ -5515,12 +6256,29 @@ IMPORTANT DESIGN DIRECTIVES:
 
     /* ---- TEXTO PUBLICITARIO PARA WHATSAPP Y REDES SOCIALES ---- */
 
+    function seleccionarTabCopy(tipo) {
+      videoStudioState.tipoCopyRedes = tipo || 'facebook';
+      const btnFb = document.getElementById('btnCopyTabFb');
+      const btnWa = document.getElementById('btnCopyTabWa');
+      const btnTt = document.getElementById('btnCopyTabTt');
+
+      const styleActivo = 'padding: 0.2rem 0.55rem; font-size: 0.72rem; background: #1e293b; border-color: #38bdf8; color: #fff; font-weight: 700;';
+      const styleInactivo = 'padding: 0.2rem 0.55rem; font-size: 0.72rem; background: transparent; border-color: rgba(255,255,255,0.15); color: #94a3b8;';
+
+      if (btnFb) btnFb.style.cssText = (tipo === 'facebook' ? styleActivo : styleInactivo);
+      if (btnWa) btnWa.style.cssText = (tipo === 'whatsapp' ? styleActivo : styleInactivo);
+      if (btnTt) btnTt.style.cssText = (tipo === 'tiktok' ? styleActivo : styleInactivo);
+
+      actualizarTextoRedesSociales();
+    }
+
     function actualizarTextoRedesSociales() {
       const textarea = document.getElementById('videoTextoRedesPreview');
       if (!textarea) return;
 
       const items = videoStudioState.items;
       let destinosLista = '';
+      let destinosLinea = '';
       if (items.length > 0) {
         const unicos = [];
         items.forEach(it => {
@@ -5528,26 +6286,71 @@ IMPORTANT DESIGN DIRECTIVES:
           if (nom && !unicos.includes(nom)) unicos.push(nom);
         });
         destinosLista = unicos.slice(0, 6).map(u => `✨ ${u}`).join('\n');
+        destinosLinea = unicos.slice(0, 4).join(', ');
       } else {
         destinosLista = '🏖️ Playas paradisíacas\n✨ Pueblos Mágicos inolvidables\n🧗 Rutas de Aventura y Naturaleza';
+        destinosLinea = 'Acapulco, Cancún, Huatulco y Pueblos Mágicos';
       }
 
-      const mensaje = `🚌✨ ¡NUEVAS SALIDAS CONFIRMADAS CON BETA AZUL VIAJES! 🏖️✨
+      const tipo = videoStudioState.tipoCopyRedes || 'facebook';
+      const telLimpio = '522444470237';
+      const waLink = `https://wa.me/${telLimpio}?text=Hola%20Ver%C3%B3nica,%20vi%20el%20video%20y%20quiero%20informes%20de%20las%20salidas`;
 
-Acompáñanos a disfrutar de las mejores experiencias con la seguridad, comodidad y ambiente que nos distingue:
+      const ganchoLlamativo = (videoStudioState.hookTipo !== 'none' && videoStudioState.hookTextoMain)
+        ? videoStudioState.hookTextoMain
+        : '¿Cansado de la rutina?';
+
+      let mensaje = '';
+
+      if (tipo === 'facebook') {
+        // Formato Completo y Persuasivo para Facebook e Instagram
+        mensaje = `🚌✨ ¡SALIDAS CONFIRMADAS CON BETA AZUL VIAJES! 🏖️✨
+
+${ganchoLlamativo} Escápate a los mejores destinos turísticos con la seguridad, calidez y ambiente familiar que nos caracteriza:
 
 ${destinosLista}
 
-✅ TODOS NUESTROS VIAJES INCLUYEN:
-🚍 Autobús turístico de lujo con aire acondicionado
-🛡️ Seguro de viajero en trayecto
-👨‍✈️ Coordinador de grupo certificado
-🎉 Gran ambiente familiar
+🎟️ ¡APARTA TU LUGAR CON SOLO $500 PESOS Y LIQUIDA AL ABORDAR!
+(Cupo limitado por autobús para mayor comodidad)
 
-📲 ¡Aparta tu lugar hoy mismo antes de que se agoten!
-WhatsApp directo: https://wa.me/522441181829?text=Hola%20Ver%C3%B3nica,%20vi%20el%20video%20y%20quiero%20informes%20de%20las%20salidas
-📍 Salidas desde Puebla y Atlixco
-🛡️ Empresa Registrada en SECTUR México`;
+✅ TODOS NUESTROS PAQUETES INCLUYEN:
+🚍 Autobús turístico de lujo con aire acondicionado, asientos reclinables y pantallas
+🛡️ Seguro de viajero en trayecto
+👨‍✈️ Coordinador de grupo durante todo el viaje
+🎉 El mejor ambiente familiar
+
+📲 ¡Envíanos un WhatsApp directo para enviarte itinerario completo y asegurar tus asientos!:
+👉 ${waLink}
+📞 O llámanos al: 244 447 0237
+
+📍 Salidas directas desde Puebla y Atlixco
+🛡️ Empresa Registrada en SECTUR México / RNT
+
+#BetaAzulViajes #ViajesPuebla #AtlixcoPuebla #ViajerosMexicanos #EscapadaDeFinDeSemana #TurismoMexico #ViajesEconomicos #PueblaDeZaragoza #PlayasMexicanas`;
+      } else if (tipo === 'whatsapp') {
+        // Formato Rápido para Estados de WhatsApp y Listas de Difusión
+        mensaje = `🏖️ ¡${ganchoLlamativo.toUpperCase()}! 🚌💨
+
+Nos vamos a disfrutar de: ${destinosLinea}
+
+🎟️ ¡Aparta tu asiento con solo $500 MXN!
+🚍 Autobús con clima · Seguro de viajero · Coordinador
+📍 Salidas desde Atlixco y Puebla
+
+📲 Escríbeme aquí para enviarte fotos, itinerario y apartar tus lugares:
+👉 ${waLink}
+📞 244 447 0237 (Verónica Hernández)`;
+      } else {
+        // Formato Corto para TikTok / Reels
+        mensaje = `${ganchoLlamativo} 🌴👇
+
+Nos vamos a ${destinosLinea}. ¡Aparta con solo $500 pesos! 
+
+Salidas desde Puebla y Atlixco en autobús de lujo 🚌
+📲 Envíanos mensaje a WhatsApp al 244 447 0237 o dale clic al link de nuestro perfil para enviarte los detalles ✨
+
+#ViajesPuebla #Atlixco #ViajesMexico #Turismo #Vacaciones #BetaAzulViajes`;
+      }
 
       textarea.value = mensaje;
     }
@@ -5570,7 +6373,7 @@ WhatsApp directo: https://wa.me/522441181829?text=Hola%20Ver%C3%B3nica,%20vi%20e
       actualizarTextoRedesSociales();
       const textarea = document.getElementById('videoTextoRedesPreview');
       const texto = textarea ? textarea.value : '';
-      const url = `https://wa.me/522441181829?text=${encodeURIComponent(texto)}`;
+      const url = `https://wa.me/522444470237?text=${encodeURIComponent(texto)}`;
       window.open(url, '_blank');
     }
 
