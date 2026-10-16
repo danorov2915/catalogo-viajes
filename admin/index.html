@@ -1497,6 +1497,19 @@
                   </select>
                 </div>
 
+                <!-- Sincronización Rítmica de Fotos -->
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem; color: #ec4899; font-weight: 700;">
+                    🥁 Cambio de Fotos al Ritmo:
+                  </label>
+                  <select id="videoSelectModoCorte" onchange="cambiarModoCorte(this.value)" style="padding: 0.6rem; border-color: rgba(236, 72, 153, 0.5);">
+                    <option value="beat" selected>🥊 Al Golpe Musical (Corta con cada acorde y bajo)</option>
+                    <option value="doble">⚡ Doble Ritmo / Acelerado (Cortes rápidos para Reels)</option>
+                    <option value="tap">🥁 Marcar Ritmo Manual (Pulsar Espacio al compás)</option>
+                    <option value="regular">⏱️ Tiempo Regular (Misma duración por foto)</option>
+                  </select>
+                </div>
+
               </div>
 
               <!-- Fila de Controles de Audio (Probar pista / Subir MP3) -->
@@ -1512,6 +1525,22 @@
                 </div>
                 <div id="videoAudioStatus" style="font-size: 0.8rem; color: #94a3b8;">
                   Pista: Rock Épico rítmico seleccionado
+                </div>
+              </div>
+
+              <!-- Marcador de Ritmo en Vivo (Tap to Beat) -->
+              <div id="videoTapTempoBox" style="display: none; background: rgba(236, 72, 153, 0.12); border: 1px dashed #ec4899; border-radius: 8px; padding: 0.85rem 1rem; margin-top: 0.85rem; text-align: center;">
+                <div style="font-size: 0.85rem; color: #fff; margin-bottom: 0.45rem;">
+                  <strong>🥁 Marcador de Ritmo en Vivo:</strong> Presiona <b>▶ Reproducir</b> en el celular y pulsa la <b>barra espaciadora</b> (o el botón rosa) exactamente en cada acorde o golpe donde quieras que cambie la foto.
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-primary" id="btnTapGolpe" onclick="registrarTapGolpe()" style="background: #ec4899; border: none; padding: 0.5rem 1.4rem; font-weight: 800; font-size: 0.95rem; box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);">
+                    🥁 ¡CAMBIAR FOTO AQUÍ! (ESPACIO)
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="reiniciarTaps()" style="font-size: 0.82rem;">
+                    🔄 Borrar Marcas
+                  </button>
+                  <span id="tapGolpesStatus" style="font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Marcas: 0 / 0 fotos</span>
                 </div>
               </div>
 
@@ -3571,6 +3600,9 @@ IMPORTANT DESIGN DIRECTIVES:
       placaSubtitulo: 'Salidas desde Puebla y Atlixco',
       placaIncluye: 'Transporte de Lujo · Seguro · Coordinador',
       placaTelefono: '244 118 1829',
+      modoCorte: 'beat',     // 'beat', 'doble', 'tap', 'regular'
+      puntosCorteCustom: [], // Marcas registradas con tecla espacio / botón tap
+      puntosCorteDetectados: null, // Puntos de corte calculados del audio custom
       items: [],             // { id, tipo: 'img'|'video', src, imgEl, videoEl, titulo, destino, precio }
       reproduciendo: false,
       tiempoActual: 0,
@@ -3585,6 +3617,9 @@ IMPORTANT DESIGN DIRECTIVES:
     function inicializarEstudioVideos() {
       configurarDropzoneVideo();
       configurarCanvasMockup();
+      const selModo = document.getElementById('videoSelectModoCorte');
+      if (selModo) videoStudioState.modoCorte = selModo.value || 'beat';
+      actualizarAudioStatusText();
       if (videoStudioState.items.length === 0) {
         // Cargar por defecto las primeras salidas activas para que Verónica vea contenido de inmediato
         aplicarPresetVideo('playas', false);
@@ -3697,6 +3732,12 @@ IMPORTANT DESIGN DIRECTIVES:
     function actualizarAudioStatusText() {
       const statusEl = document.getElementById('videoAudioStatus');
       if (!statusEl) return;
+      if (videoStudioState.musica === 'custom') {
+        const picosCount = videoStudioState.puntosCorteDetectados ? videoStudioState.puntosCorteDetectados.length : 0;
+        const bpmEst = videoStudioState.customBPM || 120;
+        statusEl.textContent = `📁 Tu MP3 personal (Ritmo: ~${bpmEst} BPM · ${picosCount} golpes detectados)`;
+        return;
+      }
       const nombres = {
         'rocky': '🎸 Rock Épico / "Ojo de Tigre" (Golpes rítmicos de batería y acordes)',
         'tropical': '🌴 Tropical House / Playa & Sol (Alegre, fresco y veraniego)',
@@ -3707,6 +3748,257 @@ IMPORTANT DESIGN DIRECTIVES:
       };
       statusEl.textContent = 'Pista activa: ' + (nombres[videoStudioState.musica] || videoStudioState.musica);
     }
+
+    /* ---- MOTOR DE SINCRONIZACIÓN RÍTMICA AL GOLPE MUSICAL (BEAT DETECTION) ---- */
+
+    function cambiarModoCorte(val) {
+      videoStudioState.modoCorte = val || 'beat';
+      const tapBox = document.getElementById('videoTapTempoBox');
+      if (tapBox) {
+        tapBox.style.display = (val === 'tap') ? 'block' : 'none';
+      }
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+    }
+
+    function registrarTapGolpe() {
+      if (!videoStudioState.items.length) return;
+      const t = Math.round(videoStudioState.tiempoActual * 100) / 100;
+      if (!videoStudioState.puntosCorteCustom.includes(t)) {
+        videoStudioState.puntosCorteCustom.push(t);
+        videoStudioState.puntosCorteCustom.sort((a, b) => a - b);
+      }
+      actualizarStatusTap();
+      renderizarTimeline();
+    }
+
+    function reiniciarTaps() {
+      videoStudioState.puntosCorteCustom = [];
+      actualizarStatusTap();
+      renderizarTimeline();
+      dibujarFrameActual();
+    }
+
+    function actualizarStatusTap() {
+      const el = document.getElementById('tapGolpesStatus');
+      if (!el) return;
+      const numTaps = videoStudioState.puntosCorteCustom.length;
+      const numFotos = videoStudioState.items.length;
+      el.textContent = `Marcas: ${numTaps} / ${numFotos} fotos`;
+    }
+
+    // Detector de Transientes de Audio en tiempo real (Web Audio API)
+    function calcularPuntosCorteAudio(buffer, numFotos, totalDur) {
+      if (!buffer) return null;
+      try {
+        const raw = buffer.getChannelData(0);
+        const sampleRate = buffer.sampleRate;
+        const maxSamples = Math.min(raw.length, Math.floor(sampleRate * totalDur));
+        const hopSize = 512; // ~11.6ms a 44.1kHz
+        const numFrames = Math.floor(maxSamples / hopSize);
+
+        if (numFrames < 10) return null;
+
+        // 1. Calcular envolvente de energía RMS en ventanas cortas
+        const energies = new Float32Array(numFrames);
+        for (let i = 0; i < numFrames; i++) {
+          let sum = 0;
+          const start = i * hopSize;
+          const end = Math.min(start + hopSize, raw.length);
+          for (let j = start; j < end; j++) {
+            sum += raw[j] * raw[j];
+          }
+          energies[i] = Math.sqrt(sum / (end - start));
+        }
+
+        // 2. Flujo espectral / Incremento de energía positiva (onset / golpe de percusión)
+        const flux = new Float32Array(numFrames);
+        let sumFlux = 0;
+        for (let i = 1; i < numFrames; i++) {
+          const diff = energies[i] - energies[i - 1];
+          flux[i] = diff > 0 ? diff : 0;
+          sumFlux += flux[i];
+        }
+
+        const avgFlux = sumFlux / numFrames;
+        const threshold = avgFlux * 1.35;
+        const peaks = [];
+        const minFramesDist = Math.floor(0.40 * sampleRate / hopSize); // min 0.40s entre picos
+
+        let lastPeakFrame = -minFramesDist;
+        for (let i = 2; i < numFrames - 2; i++) {
+          if (flux[i] > threshold &&
+              flux[i] > flux[i - 1] &&
+              flux[i] > flux[i + 1] &&
+              (i - lastPeakFrame) >= minFramesDist) {
+            peaks.push({
+              time: Math.round(((i * hopSize) / sampleRate) * 100) / 100,
+              strength: flux[i]
+            });
+            lastPeakFrame = i;
+          }
+        }
+
+        return peaks;
+      } catch (err) {
+        console.warn('Error calculando picos de audio:', err);
+        return null;
+      }
+    }
+
+    function seleccionarPuntosDeBeats(beats, numFotos, tiempoDiapos, modo) {
+      if (numFotos <= 0) return [];
+      if (numFotos === 1) return [0.0];
+
+      const puntos = [0.0];
+      const stepIdeal = tiempoDiapos / numFotos;
+      const minGap = (modo === 'doble') ? 0.35 : 0.45;
+
+      for (let i = 1; i < numFotos; i++) {
+        const tIdeal = i * stepIdeal;
+        const minT = puntos[puntos.length - 1] + minGap;
+        let maxT = Math.min(tiempoDiapos - 0.20, tIdeal + stepIdeal * 0.45);
+        if (maxT < minT) maxT = minT + 0.50;
+
+        const candidatos = beats.filter(b => b >= minT && b <= maxT);
+        if (candidatos.length > 0) {
+          // Elegir el candidato más cercano al tiempo ideal
+          let mejor = candidatos[0];
+          let mejorDist = Math.abs(mejor - tIdeal);
+          for (let k = 1; k < candidatos.length; k++) {
+            const dist = Math.abs(candidatos[k] - tIdeal);
+            if (dist < mejorDist) {
+              mejor = candidatos[k];
+              mejorDist = dist;
+            }
+          }
+          puntos.push(Math.round(mejor * 100) / 100);
+        } else {
+          // Si no hay en la ventana, buscar el siguiente golpe disponible después de minT
+          const siguientes = beats.filter(b => b >= minT && b < tiempoDiapos - 0.20);
+          if (siguientes.length > 0) {
+            puntos.push(Math.round(siguientes[0] * 100) / 100);
+          } else {
+            puntos.push(Math.round(Math.min(tiempoDiapos - 0.20, Math.max(minT, tIdeal)) * 100) / 100);
+          }
+        }
+      }
+      return puntos;
+    }
+
+    function obtenerPuntosCorteActuales(tiempoDiapos, numFotos) {
+      if (numFotos <= 0) return [];
+      if (numFotos === 1) return [0.0];
+
+      const modo = videoStudioState.modoCorte || 'beat';
+
+      // 1. Modo Manual por Pulsaciones (Tap to Beat)
+      if (modo === 'tap') {
+        const taps = [...videoStudioState.puntosCorteCustom]
+          .filter(t => t >= 0 && t < tiempoDiapos)
+          .sort((a, b) => a - b);
+        if (taps.length === 0 || taps[0] !== 0) {
+          taps.unshift(0.0);
+        }
+        if (taps.length >= numFotos) {
+          return taps.slice(0, numFotos);
+        }
+        // Extrapolar las fotos restantes si faltan marcas
+        const resultado = [...taps];
+        const ultMarca = resultado[resultado.length - 1];
+        const faltantes = numFotos - resultado.length;
+        const espacioRestante = Math.max(0.5, tiempoDiapos - ultMarca);
+        const paso = espacioRestante / (faltantes + 1);
+        for (let i = 1; i <= faltantes; i++) {
+          resultado.push(Math.round((ultMarca + (i * paso)) * 100) / 100);
+        }
+        return resultado;
+      }
+
+      // 2. Modo Regular (Misma duración dividida)
+      if (modo === 'regular') {
+        const res = [];
+        const paso = tiempoDiapos / numFotos;
+        for (let i = 0; i < numFotos; i++) {
+          res.push(Math.round((i * paso) * 100) / 100);
+        }
+        return res;
+      }
+
+      // 3. Canción Personalizada Subida por el Usuario
+      if (videoStudioState.musica === 'custom') {
+        const picos = videoStudioState.puntosCorteDetectados;
+        if (picos && picos.length >= 2) {
+          const beatsCustom = picos.map(p => p.time);
+          return seleccionarPuntosDeBeats(beatsCustom, numFotos, tiempoDiapos, modo);
+        } else {
+          // Si no hay buffer procesado, usar el BPM estimado
+          const bpm = videoStudioState.customBPM || 120;
+          const beatPeriod = (modo === 'doble') ? (30 / bpm) : (60 / bpm);
+          const beatsGen = [];
+          for (let t = 0; t < tiempoDiapos; t += beatPeriod) {
+            beatsGen.push(t);
+          }
+          return seleccionarPuntosDeBeats(beatsGen, numFotos, tiempoDiapos, modo);
+        }
+      }
+
+      // 4. Pistas Musicales Sintetizadas Integradas (Rocky, Tropical, Pop, Mexico, Chill)
+      const tablasRitmo = {
+        'rocky': [
+          0.0, 1.39, 1.67, 1.94, 2.22, 3.06, 3.33, 3.61, 4.44,
+          5.83, 6.11, 6.39, 6.67, 7.50, 8.89, 10.28, 11.67,
+          13.06, 14.44, 15.83, 17.22, 18.61, 20.00, 21.39, 22.78, 24.17
+        ],
+        'tropical': (() => {
+          const arr = [];
+          const step = (modo === 'doble') ? 0.4918 : 0.9836;
+          for (let t = 0; t <= 30; t += step) arr.push(Math.round(t * 100) / 100);
+          return arr;
+        })(),
+        'pop': (() => {
+          const arr = [];
+          const step = (modo === 'doble') ? 0.4688 : 0.9375;
+          for (let t = 0; t <= 30; t += step) arr.push(Math.round(t * 100) / 100);
+          return arr;
+        })(),
+        'mexico': (() => {
+          const arr = [];
+          const step = (modo === 'doble') ? 0.4545 : 0.9091;
+          for (let t = 0; t <= 30; t += step) arr.push(Math.round(t * 100) / 100);
+          return arr;
+        })(),
+        'chill': (() => {
+          const arr = [];
+          const step = (modo === 'doble') ? 0.7317 : 1.4634;
+          for (let t = 0; t <= 30; t += step) arr.push(Math.round(t * 100) / 100);
+          return arr;
+        })()
+      };
+
+      const beatsBase = tablasRitmo[videoStudioState.musica] || tablasRitmo['rocky'];
+      return seleccionarPuntosDeBeats(beatsBase, numFotos, tiempoDiapos, modo);
+    }
+
+    // Atajo de teclado: Barra espaciadora para marcar golpes en modo 'tap'
+    window.addEventListener('keydown', function(e) {
+      if (e.code === 'Space' || e.key === ' ') {
+        const active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) {
+          return;
+        }
+        if (videoStudioState.modoCorte === 'tap') {
+          e.preventDefault();
+          registrarTapGolpe();
+          const btnTap = document.getElementById('btnTapGolpe');
+          if (btnTap) {
+            btnTap.style.transform = 'scale(0.92)';
+            setTimeout(() => { btnTap.style.transform = ''; }, 100);
+          }
+        }
+      }
+    });
 
     /* ---- CARGA DE DIAPOSITIVAS Y MULTI-SELECCIÓN ---- */
 
@@ -3847,6 +4139,10 @@ IMPORTANT DESIGN DIRECTIVES:
       }
 
       strip.innerHTML = '';
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const tiempoDiapos = Math.max(1, videoStudioState.duracion - placaSec);
+      const puntosCorte = obtenerPuntosCorteActuales(tiempoDiapos, videoStudioState.items.length);
+
       videoStudioState.items.forEach((item, idx) => {
         const div = document.createElement('div');
         div.className = 'timeline-item';
@@ -3863,7 +4159,8 @@ IMPORTANT DESIGN DIRECTIVES:
 
         const badge = document.createElement('span');
         badge.className = 'timeline-item-badge';
-        badge.textContent = '#' + (idx + 1);
+        const secCorte = (puntosCorte[idx] !== undefined) ? puntosCorte[idx].toFixed(1) : '0.0';
+        badge.textContent = '#' + (idx + 1) + ' · ' + secCorte + 's';
         div.appendChild(badge);
 
         const delBtn = document.createElement('button');
@@ -3913,11 +4210,17 @@ IMPORTANT DESIGN DIRECTIVES:
       const totalSec = videoStudioState.duracion;
       const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
       const tiempoDiapos = Math.max(1, totalSec - placaSec);
-      const timePerSlide = count > 0 ? (tiempoDiapos / count).toFixed(1) : '0.0';
+      const modo = videoStudioState.modoCorte || 'beat';
+      let timePerSlide = count > 0 ? (tiempoDiapos / count).toFixed(1) + 's' : '0.0s';
+      if (modo === 'beat' || modo === 'doble') {
+        timePerSlide = 'Al Golpe 🥁';
+      } else if (modo === 'tap') {
+        timePerSlide = 'Manual ⏱️';
+      }
 
       const timeSlideEl = document.getElementById('videoTimePerSlide');
       const totalEl = document.getElementById('videoTimelineTotal');
-      if (timeSlideEl) timeSlideEl.textContent = timePerSlide + 's';
+      if (timeSlideEl) timeSlideEl.textContent = timePerSlide;
       if (totalEl) totalEl.textContent = totalSec + 's';
 
       actualizarRelojPreview();
@@ -3928,8 +4231,8 @@ IMPORTANT DESIGN DIRECTIVES:
       if (count === 0) return;
       const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
       const tiempoDiapos = Math.max(1, videoStudioState.duracion - placaSec);
-      const slideDur = tiempoDiapos / count;
-      videoStudioState.tiempoActual = idx * slideDur;
+      const puntos = obtenerPuntosCorteActuales(tiempoDiapos, count);
+      videoStudioState.tiempoActual = (puntos[idx] !== undefined) ? puntos[idx] : 0;
       dibujarFrameActual();
       actualizarRelojPreview();
     }
@@ -3998,6 +4301,10 @@ IMPORTANT DESIGN DIRECTIVES:
       if (selMusica) selMusica.value = videoStudioState.musica;
       const selSticker = document.getElementById('videoSelectSticker');
       if (selSticker) selSticker.value = videoStudioState.sticker;
+      videoStudioState.modoCorte = 'beat';
+      const selModoCorte = document.getElementById('videoSelectModoCorte');
+      if (selModoCorte) selModoCorte.value = 'beat';
+      actualizarAudioStatusText();
 
       renderizarTimeline();
       actualizarTiemposTimeline();
@@ -4039,20 +4346,57 @@ IMPORTANT DESIGN DIRECTIVES:
       if (!file) return;
       const ctx = getAudioContext();
       const reader = new FileReader();
+      const statusEl = document.getElementById('videoAudioStatus');
+      if (statusEl) statusEl.textContent = '⏳ Analizando ritmo y compás de "' + file.name + '"...';
+
       reader.onload = function(e) {
         ctx.decodeAudioData(e.target.result, function(buffer) {
           videoStudioState.audioCustomBuffer = buffer;
           videoStudioState.musica = 'custom';
+
+          // Detectar picos rítmicos y transientes del audio del usuario
+          const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+          const tiempoDiapos = Math.max(1, videoStudioState.duracion - placaSec);
+          const picos = calcularPuntosCorteAudio(buffer, videoStudioState.items.length || 8, tiempoDiapos);
+          videoStudioState.puntosCorteDetectados = picos;
+
+          // Estimar BPM del audio a partir del intervalo promedio entre transientes
+          if (picos && picos.length >= 3) {
+            let sumDelta = 0;
+            let deltasCount = 0;
+            for (let i = 1; i < picos.length; i++) {
+              const d = picos[i].time - picos[i - 1].time;
+              if (d >= 0.3 && d <= 1.5) {
+                sumDelta += d;
+                deltasCount++;
+              }
+            }
+            if (deltasCount > 0) {
+              const avgD = sumDelta / deltasCount;
+              videoStudioState.customBPM = Math.min(180, Math.max(70, Math.round(60 / avgD)));
+            } else {
+              videoStudioState.customBPM = 120;
+            }
+          } else {
+            videoStudioState.customBPM = 120;
+          }
+
           const sel = document.getElementById('videoSelectMusica');
           if (sel) sel.value = 'custom';
           actualizarAudioStatusText();
+          renderizarTimeline();
+          actualizarTiemposTimeline();
+
           if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
             detenerAudioSintetizado();
             iniciarAudioSintetizado();
           }
-          alert('🎵 ¡Tu archivo de audio "' + file.name + '" se cargó correctamente y será el fondo del video!');
+          dibujarFrameActual();
+          const numPicos = picos ? picos.length : 0;
+          alert('🎵 ¡Tu canción "' + file.name + '" se cargó y analizó con éxito!\n\n🥁 Se detectaron ' + numPicos + ' golpes de ritmo (~' + (videoStudioState.customBPM || 120) + ' BPM). Las fotos ahora cambiarán al compás de cada golpe.');
         }, function(err) {
           alert('❌ Error al procesar el archivo de audio. Asegúrate de que sea un MP3 válido.');
+          actualizarAudioStatusText();
         });
       };
       reader.readAsArrayBuffer(file);
@@ -4070,6 +4414,9 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function getTrackBPM() {
+      if (videoStudioState.musica === 'custom' && videoStudioState.customBPM) {
+        return videoStudioState.customBPM;
+      }
       const bpmMap = {
         'rocky': 108,
         'tropical': 122,
@@ -4519,12 +4866,23 @@ IMPORTANT DESIGN DIRECTIVES:
         return;
       }
 
-      // 3. Calcular diapositiva activa
-      const slideDur = tiempoDiapos / items.length;
-      let slideIdx = Math.floor(tSec / slideDur);
+      // 3. Calcular diapositiva activa según los puntos de corte rítmicos exactos
+      const puntos = obtenerPuntosCorteActuales(tiempoDiapos, items.length);
+      let slideIdx = 0;
+      for (let i = 0; i < puntos.length; i++) {
+        if (tSec >= puntos[i]) {
+          slideIdx = i;
+        } else {
+          break;
+        }
+      }
       if (slideIdx >= items.length) slideIdx = items.length - 1;
-      const slideTime = tSec - (slideIdx * slideDur);
-      const slideProg = Math.min(1, Math.max(0, slideTime / slideDur));
+
+      const tInicio = (puntos[slideIdx] !== undefined) ? puntos[slideIdx] : 0;
+      const tFin = (slideIdx + 1 < puntos.length) ? puntos[slideIdx + 1] : tiempoDiapos;
+      const duracionEsteSlide = Math.max(0.15, tFin - tInicio);
+      const slideTime = Math.max(0, tSec - tInicio);
+      const slideProg = Math.min(1, Math.max(0, slideTime / duracionEsteSlide));
 
       const curItem = items[slideIdx];
       const nextItem = (slideIdx < items.length - 1) ? items[slideIdx + 1] : null;
@@ -4617,16 +4975,21 @@ IMPORTANT DESIGN DIRECTIVES:
       let panY = 0;
 
       if (estilo === 'beatsync') {
-        // Golpes rítmicos sincronizados con el tempo BPM real de la pista activa
+        // Golpe de impacto instantáneo en cada corte de foto
+        const punchCut = Math.exp(-slideTime * 9) * 0.12;
+        // Más los pulsos rítmicos intermedios de la pista
         const bpm = getTrackBPM();
         const beatPeriod = 60 / bpm;
         const beatFraction = (slideTime % beatPeriod) / beatPeriod;
-        const punch = Math.exp(-beatFraction * 9) * 0.08; // Salto rítmico de escala
-        scale = 1.0 + punch;
+        const punchBeat = Math.exp(-beatFraction * 9) * 0.05;
+        scale = 1.0 + Math.max(punchCut, punchBeat);
 
-        // Destello blanco rítmico exactamente en cada golpe
-        if (beatFraction < 0.14) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${0.30 * (1 - beatFraction / 0.14)})`;
+        // Destello blanco rítmico: enérgico al cambiar de foto, sutil en pulsos intermedios
+        if (slideTime < 0.18) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.35 * (1 - slideTime / 0.18)})`;
+          ctx.fillRect(0, 0, w, h);
+        } else if (beatFraction < 0.12) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.15 * (1 - beatFraction / 0.12)})`;
           ctx.fillRect(0, 0, w, h);
         }
       } else if (estilo === 'kenburns') {
