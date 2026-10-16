@@ -1741,18 +1741,20 @@
 
                 <!-- SUBPANEL 3: UNIR VIDEOS MP4 + GEMINI OMNI -->
                 <div class="mode-subpanel" id="subPanel_modo_unir" style="display: none;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
                     <div>
                       <strong style="color: #c084fc; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
                         🎥 Videos con Gemini Omni & Concatenación con Cierre
                       </strong>
                       <span style="font-size: 0.75rem; color: #94a3b8;">
-                        Genera prompts cinematográficos, descarga el video y únelo con tu WhatsApp oficial.
+                        Genera prompts cinematográficos, descarga el video y únelo con tu audio original y WhatsApp oficial.
                       </span>
                     </div>
-                    <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
-                      🧹 Limpiar Secuencia
-                    </button>
+                    <div style="display: flex; gap: 0.4rem;">
+                      <button type="button" class="btn btn-secondary" onclick="limpiarSecuenciaParaVideos()" style="padding: 0.35rem 0.75rem; font-size: 0.76rem; color: #f87171; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.12); font-weight: 700;">
+                        🧹 Empezar Secuencia Limpia
+                      </button>
+                    </div>
                   </div>
 
                   <!-- CAJA DESTACADA: PASO 1 - GENERAR PROMPT GEMINI OMNI -->
@@ -1846,6 +1848,7 @@
                       </span>
                     </label>
                     <select id="videoSelectMusica" onchange="cambiarMusicaVideo(this.value)" style="padding: 0.6rem; font-size: 0.85rem;">
+                      <option value="none">🔇 Sin música de fondo (usar únicamente el audio original de mis videos)</option>
                       <option value="rocky" selected>🎸 Rock Épico / "Ojo de Tigre" (Rítmico con guitarra y batería)</option>
                       <option value="tropical">🌴 Tropical House / Playa & Sol (Vibra veraniega alegre)</option>
                       <option value="pop">⚡ Pop Energético / Aventura (Moderno y acelerado)</option>
@@ -4278,6 +4281,10 @@ IMPORTANT DESIGN DIRECTIVES:
       configurarDropzoneVideo();
       configurarCanvasMockup();
 
+      // Iniciar el estudio con la secuencia completamente limpia y sin diapositivas previas
+      videoStudioState.items = [];
+      videoStudioState.tiempoActual = 0;
+
       const selModo = document.getElementById('videoSelectModoCorte');
       if (selModo) videoStudioState.modoCorte = selModo.value || 'beat';
       const selFormato = document.getElementById('videoSelectFormato');
@@ -4299,7 +4306,7 @@ IMPORTANT DESIGN DIRECTIVES:
       poblarSelectorToursVideoIA();
       generarPromptVideoIA();
       cambiarTabEstudioVideo('medios');
-      activarModoEstudio(videoStudioState.modo || 'viajeros', false);
+      activarModoEstudio(videoStudioState.modo || 'unir', false);
       renderizarTimeline();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
@@ -4543,6 +4550,12 @@ IMPORTANT DESIGN DIRECTIVES:
       });
 
       if (modo === 'viajeros') {
+        // Si había videos de Modo 3, limpiar la secuencia para no mezclar
+        if (videoStudioState.items.some(it => it.tipo === 'video')) {
+          videoStudioState.items = [];
+          videoStudioState.tiempoActual = 0;
+          renderizarTimeline();
+        }
         videoStudioState.estilo = 'beatsync';
         videoStudioState.musica = 'rocky';
         videoStudioState.sticker = 'viaja';
@@ -4553,6 +4566,12 @@ IMPORTANT DESIGN DIRECTIVES:
         const selSticker = document.getElementById('videoSelectSticker');
         if (selSticker) selSticker.value = 'viaja';
       } else if (modo === 'showcase') {
+        // Si había videos de Modo 3, limpiar la secuencia para no mezclar
+        if (videoStudioState.items.some(it => it.tipo === 'video')) {
+          videoStudioState.items = [];
+          videoStudioState.tiempoActual = 0;
+          renderizarTimeline();
+        }
         videoStudioState.estilo = 'beatsync';
         videoStudioState.sticker = 'confirmadas';
         const selEstilo = document.getElementById('videoSelectEstilo');
@@ -4560,15 +4579,26 @@ IMPORTANT DESIGN DIRECTIVES:
         const selSticker = document.getElementById('videoSelectSticker');
         if (selSticker) selSticker.value = 'confirmadas';
       } else if (modo === 'unir') {
+        // Modo 3: Si había fotos o flyers de otros modos, limpiar la secuencia para dejar el lienzo limpio para videos
+        if (videoStudioState.items.some(it => it.tipo !== 'video')) {
+          videoStudioState.items = [];
+          videoStudioState.tiempoActual = 0;
+          renderizarTimeline();
+        }
         videoStudioState.estilo = 'none';
         videoStudioState.incluirPlaca = true;
+        // Por defecto en unir videos, usar SIN MÚSICA para escuchar el audio original de los videos:
+        videoStudioState.musica = 'none';
         const chkPlaca = document.getElementById('videoChkPlacaFinal');
         if (chkPlaca) chkPlaca.checked = true;
         const selEstilo = document.getElementById('videoSelectEstilo');
         if (selEstilo) selEstilo.value = 'none';
+        const selMusica = document.getElementById('videoSelectMusica');
+        if (selMusica) selMusica.value = 'none';
       }
 
       actualizarAudioStatusText();
+      actualizarTiemposTimeline();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
 
@@ -4607,7 +4637,27 @@ IMPORTANT DESIGN DIRECTIVES:
       }
     }
 
+    function limpiarSecuenciaParaVideos() {
+      detenerPreviewVideo();
+      videoStudioState.items = [];
+      videoStudioState.tiempoActual = 0;
+      activarModoEstudio('unir', false);
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+      mostrarNotificacionEstudio('🧹 Secuencia limpia. Ya puedes subir tus videos MP4.');
+    }
+
     function abrirSelectorVideosMP4() {
+      // Si la secuencia contiene fotos o flyers de otros modos, limpiarla primero
+      if (videoStudioState.items.some(it => it.tipo !== 'video')) {
+        videoStudioState.items = [];
+        videoStudioState.tiempoActual = 0;
+        renderizarTimeline();
+        dibujarFrameActual();
+      }
+      activarModoEstudio('unir', false);
       const inp = document.getElementById('videoFileInputVideos');
       if (inp) {
         inp.value = '';
@@ -4797,7 +4847,9 @@ IMPORTANT DESIGN DIRECTIVES:
         document.getElementById('videoCustomAudioInput').click();
       }
       actualizarAudioStatusText();
-      if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
+      if (val === 'none') {
+        detenerAudioSintetizado();
+      } else if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
         detenerAudioSintetizado();
         iniciarAudioSintetizado();
       }
@@ -4807,6 +4859,10 @@ IMPORTANT DESIGN DIRECTIVES:
     function actualizarAudioStatusText() {
       const statusEl = document.getElementById('videoAudioStatus');
       if (!statusEl) return;
+      if (videoStudioState.musica === 'none') {
+        statusEl.textContent = '🔇 Sin música de fondo activa · Se escuchará únicamente el audio original de tus videos.';
+        return;
+      }
       if (videoStudioState.musica === 'custom') {
         const picosCount = videoStudioState.puntosCorteDetectados ? videoStudioState.puntosCorteDetectados.length : 0;
         const bpmEst = videoStudioState.customBPM || 120;
@@ -4962,9 +5018,62 @@ IMPORTANT DESIGN DIRECTIVES:
       return puntos;
     }
 
+    function recalcularDuracionModoUnir() {
+      if (videoStudioState.modo !== 'unir') return;
+      const videos = videoStudioState.items.filter(it => it.tipo === 'video');
+      if (!videos.length) return;
+
+      let sumaSec = 0;
+      videos.forEach(v => {
+        const d = (v.duracionReal || (v.videoEl && v.videoEl.duration) || 5);
+        sumaSec += d;
+      });
+
+      const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+      const totalEstimado = Math.max(5, Math.ceil(sumaSec + placaSec));
+      videoStudioState.duracion = totalEstimado;
+
+      const selDuracion = document.getElementById('videoSelectDuracion');
+      if (selDuracion) {
+        let opt = selDuracion.querySelector(`option[value="${totalEstimado}"]`);
+        if (!opt) {
+          opt = document.createElement('option');
+          opt.value = totalEstimado;
+          opt.textContent = `⏱️ ${totalEstimado} segundos (Duración exacta de videos + cierre)`;
+          selDuracion.appendChild(opt);
+        }
+        selDuracion.value = totalEstimado;
+      }
+      actualizarTiemposTimeline();
+      actualizarRelojPreview();
+    }
+
     function obtenerPuntosCorteActuales(tiempoDiapos, numFotos) {
       if (numFotos <= 0) return [];
       if (numFotos === 1) return [0.0];
+
+      // Modo 3: Si estamos en modo unir videos o todos los items son videos, respetar la duración real de cada clip:
+      if (videoStudioState.modo === 'unir' || videoStudioState.items.every(it => it.tipo === 'video')) {
+        const puntos = [0.0];
+        let acum = 0;
+        for (let i = 0; i < numFotos - 1; i++) {
+          const it = videoStudioState.items[i];
+          const d = (it && (it.duracionReal || (it.videoEl && it.videoEl.duration))) || (tiempoDiapos / numFotos);
+          acum += d;
+          puntos.push(Math.round(acum * 100) / 100);
+        }
+        return puntos;
+      }
+
+      // Si no hay música de fondo activa, repartir equitativamente:
+      if (videoStudioState.musica === 'none') {
+        const res = [];
+        const paso = tiempoDiapos / numFotos;
+        for (let i = 0; i < numFotos; i++) {
+          res.push(Math.round((i * paso) * 100) / 100);
+        }
+        return res;
+      }
 
       const modo = videoStudioState.modoCorte || 'beat';
 
@@ -5128,72 +5237,108 @@ IMPORTANT DESIGN DIRECTIVES:
         if (modo && modo !== 'auto') {
           activarModoEstudio(modo, false);
         }
-        procesarArchivosArrastrados(Array.from(files), true);
+        // Si estamos uniendo videos y ya había fotos o flyers en la secuencia, reemplazamos para dejarla limpia
+        const contieneFotos = videoStudioState.items.some(it => it.tipo !== 'video');
+        const reemplazar = (modo === 'unir') ? contieneFotos : true;
+        procesarArchivosArrastrados(Array.from(files), reemplazar);
         input.value = '';
       }
     }
 
-    function procesarArchivosArrastrados(fileList, reemplazar = false) {
+    async function procesarArchivosArrastrados(fileList, reemplazar = false) {
       if (!fileList || fileList.length === 0) return;
 
-      // Si se solicita reemplazar o si la lista actual solo contiene items de demo/preset automático,
-      // limpiamos la secuencia para dar paso inmediato a los archivos subidos por el usuario:
+      const hayVideosEnSubida = fileList.some(f => f.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(f.name));
+      const contieneFotos = videoStudioState.items.some(it => it.tipo !== 'video');
       const esSoloDemo = videoStudioState.items.every(it => it.esDemo || it.id.startsWith('v-') || it.id.startsWith('preset-'));
-      if (reemplazar || esSoloDemo) {
+
+      if (reemplazar || (hayVideosEnSubida && contieneFotos) || esSoloDemo) {
         videoStudioState.items = [];
+        videoStudioState.tiempoActual = 0;
       }
 
-      let cargadas = 0;
       let hayVideo = false;
+      const ctx = getAudioContext();
+      if (ctx.state === 'suspended') {
+        try { await ctx.resume(); } catch(e){}
+      }
 
-      fileList.forEach(file => {
+      for (const file of fileList) {
         const esVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
         if (esVideo) hayVideo = true;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const dataUrl = e.target.result;
-          agregarItemAlTimeline({
-            id: 'file-' + Date.now() + Math.random().toString(36).substr(2, 4),
-            tipo: esVideo ? 'video' : 'imagen',
-            src: dataUrl,
-            titulo: file.name.replace(/\.[^/.]+$/, ""),
-            destino: esVideo ? 'Clip de Video' : 'Foto Subida',
-            precio: 'Beta Azul',
-            categoria: esVideo ? 'Video MP4' : 'Foto',
-            esDemo: false
-          });
-          cargadas++;
-          if (cargadas === fileList.length) {
-            if (hayVideo) {
-              videoStudioState.incluirPlaca = true;
-              videoStudioState.estilo = 'none';
-              const chk = document.getElementById('videoChkPlacaFinal');
-              if (chk) chk.checked = true;
-              const selEstilo = document.getElementById('videoSelectEstilo');
-              if (selEstilo) selEstilo.value = 'none';
-              activarModoEstudio('unir', false);
-            }
-            renderizarTimeline();
-            actualizarTiemposTimeline();
-            dibujarFrameActual();
-            actualizarTextoRedesSociales();
-            mostrarNotificacionEstudio(`✅ ¡Se agregaron ${fileList.length} archivo(s) a la secuencia!`);
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        });
+
+        let audioBufferDecodificado = null;
+        if (esVideo) {
+          try {
+            const arrayBuf = await file.arrayBuffer();
+            audioBufferDecodificado = await ctx.decodeAudioData(arrayBuf.slice(0));
+            console.log('✅ Pista de audio de video extraída con éxito:', file.name, audioBufferDecodificado.duration, 'segundos');
+          } catch(errAudio) {
+            console.warn('Video sin pista de audio decodificable o formato mudo:', errAudio);
           }
-        };
-        reader.readAsDataURL(file);
-      });
+        }
+
+        agregarItemAlTimeline({
+          id: 'file-' + Date.now() + Math.random().toString(36).substr(2, 4),
+          tipo: esVideo ? 'video' : 'imagen',
+          src: dataUrl,
+          titulo: file.name.replace(/\.[^/.]+$/, ""),
+          destino: esVideo ? 'Clip de Video' : 'Foto Subida',
+          precio: 'Beta Azul',
+          categoria: esVideo ? 'Video MP4' : 'Foto',
+          esDemo: false,
+          audioBuffer: audioBufferDecodificado,
+          duracionReal: null
+        });
+      }
+
+      if (hayVideo) {
+        videoStudioState.incluirPlaca = true;
+        videoStudioState.estilo = 'none';
+        videoStudioState.musica = 'none';
+        const chk = document.getElementById('videoChkPlacaFinal');
+        if (chk) chk.checked = true;
+        const selEstilo = document.getElementById('videoSelectEstilo');
+        if (selEstilo) selEstilo.value = 'none';
+        const selMusica = document.getElementById('videoSelectMusica');
+        if (selMusica) selMusica.value = 'none';
+        activarModoEstudio('unir', false);
+        actualizarAudioStatusText();
+        recalcularDuracionModoUnir();
+      }
+
+      renderizarTimeline();
+      actualizarTiemposTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
+      mostrarNotificacionEstudio(`✅ ¡Se agregaron ${fileList.length} archivo(s) a la secuencia!`);
     }
 
     function agregarItemAlTimeline(itemData) {
       if (itemData.tipo === 'video') {
         const video = document.createElement('video');
         video.src = itemData.src;
-        video.muted = true;
+        video.muted = false; // Permitir que suene el audio del video
+        video.volume = 1.0;
         video.playsInline = true;
         video.crossOrigin = 'anonymous';
         video.preload = 'auto';
         itemData.videoEl = video;
+
+        video.onloadedmetadata = function() {
+          if (video.duration && isFinite(video.duration)) {
+            itemData.duracionReal = video.duration;
+            if (videoStudioState.modo === 'unir') {
+              recalcularDuracionModoUnir();
+            }
+          }
+        };
 
         video.onloadeddata = function() {
           video.currentTime = 0.1;
@@ -5548,6 +5693,10 @@ IMPORTANT DESIGN DIRECTIVES:
 
     function toggleProbarAudio() {
       const btn = document.getElementById('btnProbarAudio');
+      if (videoStudioState.musica === 'none') {
+        alert('🔇 Tienes seleccionada la opción "Sin música de fondo". Para escuchar el audio original que traen tus videos, pulsa "▶ Reproducir" en la vista previa del celular a la derecha.');
+        return;
+      }
       if (videoStudioState.audioNodeActivo) {
         detenerAudioSintetizado();
         if (btn) btn.textContent = '▶ Probar Música';
@@ -5562,6 +5711,7 @@ IMPORTANT DESIGN DIRECTIVES:
         return videoStudioState.customBPM;
       }
       const bpmMap = {
+        'none': 120,
         'rocky': 108,
         'tropical': 122,
         'pop': 128,
@@ -5934,6 +6084,16 @@ IMPORTANT DESIGN DIRECTIVES:
         masterGain.connect(destStream);
       }
 
+      if (track === 'none') {
+        if (waveEl) waveEl.style.display = 'none';
+        videoStudioState.audioNodeActivo = {
+          stop: () => {
+            try { masterGain.disconnect(); } catch(e){}
+          }
+        };
+        return;
+      }
+
       if (track === 'custom' && videoStudioState.audioCustomBuffer) {
         const src = ctx.createBufferSource();
         src.buffer = videoStudioState.audioCustomBuffer;
@@ -6035,11 +6195,34 @@ IMPORTANT DESIGN DIRECTIVES:
       const mediaActual = (curItem.tipo === 'video' && curItem.videoEl) ? curItem.videoEl : curItem.imgEl;
       if (curItem.tipo === 'video' && curItem.videoEl) {
         const vidDur = curItem.videoEl.duration || duracionEsteSlide;
-        const targetTime = (slideProg * vidDur) % vidDur;
-        if (Math.abs(curItem.videoEl.currentTime - targetTime) > 0.08) {
-          curItem.videoEl.currentTime = targetTime;
+        const targetTime = Math.min(vidDur - 0.05, Math.max(0, (slideProg * vidDur) % vidDur));
+
+        if (videoStudioState.reproduciendo) {
+          // Solo resincronizar si hay desfase grande (> 0.4s) o al inicio del slide para permitir que el audio fluya sin trabas
+          if (slideProg < 0.03 || Math.abs(curItem.videoEl.currentTime - targetTime) > 0.4) {
+            curItem.videoEl.currentTime = targetTime;
+          }
+          if (curItem.videoEl.paused) {
+            curItem.videoEl.muted = (videoStudioState.musica !== 'none');
+            curItem.videoEl.play().catch(() => {});
+          }
+        } else {
+          // Si está en pausa o estático, ubicar el frame exacto
+          if (Math.abs(curItem.videoEl.currentTime - targetTime) > 0.05) {
+            curItem.videoEl.currentTime = targetTime;
+          }
+          if (!curItem.videoEl.paused) {
+            curItem.videoEl.pause();
+          }
         }
       }
+
+      // Pausar cualquier otro video que no sea el actual
+      items.forEach((it, idx) => {
+        if (idx !== slideIdx && it.videoEl && !it.videoEl.paused) {
+          it.videoEl.pause();
+        }
+      });
       dibujarFondoDesenfocado(ctx, width, height, mediaActual);
 
       // 5. Imagen/Video Principal en Primer Plano con Efecto Visual
@@ -6708,6 +6891,11 @@ IMPORTANT DESIGN DIRECTIVES:
         videoStudioState.animId = null;
       }
       detenerAudioSintetizado();
+      videoStudioState.items.forEach(it => {
+        if (it.videoEl && !it.videoEl.paused) {
+          it.videoEl.pause();
+        }
+      });
       const btn = document.getElementById('btnPlayPausePreview');
       if (btn) btn.textContent = '▶ Reproducir';
     }
@@ -6715,6 +6903,12 @@ IMPORTANT DESIGN DIRECTIVES:
     function reiniciarPreviewVideo() {
       detenerPreviewVideo();
       videoStudioState.tiempoActual = 0;
+      videoStudioState.items.forEach(it => {
+        if (it.videoEl) {
+          it.videoEl.pause();
+          it.videoEl.currentTime = 0;
+        }
+      });
       dibujarFrameActual();
       actualizarRelojPreview();
     }
@@ -6765,8 +6959,42 @@ IMPORTANT DESIGN DIRECTIVES:
 
         // 2. Audio graph conectado a stream
         const ctx = getAudioContext();
+        if (ctx.state === 'suspended') {
+          try { await ctx.resume(); } catch(e){}
+        }
         const audioDest = ctx.createMediaStreamDestination();
-        iniciarAudioSintetizado(audioDest);
+        if (videoStudioState.musica !== 'none') {
+          iniciarAudioSintetizado(audioDest);
+        }
+
+        // Programar el audio de cada video subido sincronizado al segundo exacto:
+        const placaSec = videoStudioState.incluirPlaca ? 3.0 : 0.0;
+        const tiempoDiapos = Math.max(1, totalSec - placaSec);
+        const puntos = obtenerPuntosCorteActuales(tiempoDiapos, videoStudioState.items.length);
+        const nodosAudioProgramados = [];
+
+        videoStudioState.items.forEach((item, idx) => {
+          if (item.tipo === 'video' && item.audioBuffer) {
+            const tInicio = puntos[idx] || 0;
+            const tFin = (idx + 1 < puntos.length) ? puntos[idx + 1] : tiempoDiapos;
+            const durSlide = Math.max(0.1, tFin - tInicio);
+
+            const sourceNode = ctx.createBufferSource();
+            sourceNode.buffer = item.audioBuffer;
+            const gainNode = ctx.createGain();
+            gainNode.gain.setValueAtTime(videoStudioState.musica === 'none' ? 1.0 : 0.85, ctx.currentTime);
+            sourceNode.connect(gainNode);
+            gainNode.connect(audioDest);
+            // Sincronizar el audio del video con el render:
+            sourceNode.start(ctx.currentTime + tInicio, 0, Math.min(durSlide, item.audioBuffer.duration));
+            nodosAudioProgramados.push(sourceNode);
+          }
+        });
+
+        // Silenciar elementos video de bocinas locales mientras se renderiza
+        videoStudioState.items.forEach(it => {
+          if (it.videoEl) it.videoEl.muted = true;
+        });
 
         // Combinar audio y video en un solo stream
         const combinedStream = new MediaStream([
@@ -6835,7 +7063,15 @@ IMPORTANT DESIGN DIRECTIVES:
         });
 
         recorder.stop();
+        nodosAudioProgramados.forEach(node => {
+          try { node.stop(); } catch(e){}
+        });
         detenerAudioSintetizado();
+
+        // Restaurar estado de audio
+        videoStudioState.items.forEach(it => {
+          if (it.videoEl) it.videoEl.muted = (videoStudioState.musica !== 'none');
+        });
 
         const videoBlob = await exportPromise;
 
@@ -6861,6 +7097,9 @@ IMPORTANT DESIGN DIRECTIVES:
         alert('❌ Error al compilar el video: ' + (err.message || 'Error desconocido'));
       } finally {
         videoStudioState.grabando = false;
+        videoStudioState.items.forEach(it => {
+          if (it.videoEl) it.videoEl.muted = (videoStudioState.musica !== 'none');
+        });
         if (btn) {
           btn.disabled = false;
           btn.textContent = '🎬 Generar y Descargar Video MP4 / WebM';
