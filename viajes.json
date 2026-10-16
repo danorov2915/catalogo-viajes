@@ -28,13 +28,17 @@
     },
     {
       "id": "viaje-03",
-      "titulo": "Viaje & Promoción #03",
-      "categoria": "Pueblos Magicos",
-      "precio": "Consultar tarifa",
-      "destino": "Destino Turístico",
+      "titulo": "Tour Beta Azul Chipilo: Parapente y Cuatrimoto - Adrenalina en las Alturas",
+      "categoria": "Aventura",
+      "precio": "Desde $1,200 MXN",
+      "tipoServicio": "Tour de 1 día (Tour privado o grupal, Pet Friendly)",
+      "destino": "Chipilo, Puebla",
+      "lugaresVisita": "Chipilo",
+      "incluye": "Casco de seguridad, fotografías, explicación de manejo y atención personalizada",
+      "noIncluye": "Alimentos ni entradas no especificadas",
       "activo": true,
       "destacado": true,
-      "descripcion": "Consulta itinerario, fechas y lo que incluye directamente por WhatsApp con Verónica.",
+      "descripcion": "Vive una experiencia llena de adrenalina combinando una emocionante ruta en cuatrimoto y un vuelo en parapente con vistas increíbles. ¡Reserva tu aventura y disfruta con tu mascota!",
       "flyer": "03.jpg"
     },
     {
