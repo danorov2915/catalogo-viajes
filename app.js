@@ -120,12 +120,27 @@ async function cargarViajes() {
   const countEl = document.getElementById("resultsCount");
   if (countEl) countEl.innerText = "Cargando catalogo...";
 
+  // 1. Cargar primero de memoria local si existen cambios recién guardados en panel admin
+  try {
+    const cache = localStorage.getItem('betaazul_viajes_cache');
+    if (cache) {
+      const cData = JSON.parse(cache);
+      if (cData.viajes && cData.viajes.length) todosLosViajes = cData.viajes;
+      if (cData.galeria && cData.galeria.length) todaLaGaleria = cData.galeria;
+      if (todosLosViajes.length) {
+        renderizarViajes();
+      }
+    }
+  } catch(e) {}
+
   try {
     const res = await fetch("viajes.json?v=" + Date.now());
     if (!res.ok) throw new Error("No cargo viajes.json local");
     const data = await res.json();
-    todosLosViajes = data.viajes || [];
-    todaLaGaleria = (data.galeria && data.galeria.length > 0) ? data.galeria : GALERIA_DEFAULT;
+    if (!todosLosViajes.length) {
+      todosLosViajes = data.viajes || [];
+      todaLaGaleria = (data.galeria && data.galeria.length > 0) ? data.galeria : GALERIA_DEFAULT;
+    }
     renderizarViajes();
   } catch (err) {
     console.warn("Fallo local, usando respaldo remoto:", err);
@@ -551,6 +566,9 @@ function cambiarTabCertificado(tabId) {
    ========================================================= */
 
 function abrirModalGaleria() {
+  if (typeof cerrarMenuMovil === "function") {
+    cerrarMenuMovil();
+  }
   const modal = document.getElementById("galeriaModal");
   if (!modal) return;
   modal.classList.add("active");
