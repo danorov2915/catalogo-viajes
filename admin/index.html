@@ -3687,10 +3687,11 @@ IMPORTANT DESIGN DIRECTIVES:
         document.getElementById('videoCustomAudioInput').click();
       }
       actualizarAudioStatusText();
-      if (videoStudioState.reproduciendo) {
+      if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
         detenerAudioSintetizado();
         iniciarAudioSintetizado();
       }
+      dibujarFrameActual();
     }
 
     function actualizarAudioStatusText() {
@@ -4064,6 +4065,366 @@ IMPORTANT DESIGN DIRECTIVES:
       }
     }
 
+    function getTrackBPM() {
+      const bpmMap = {
+        'rocky': 108,
+        'tropical': 122,
+        'pop': 128,
+        'mexico': 132,
+        'chill': 82,
+        'custom': 120
+      };
+      return bpmMap[videoStudioState.musica] || 120;
+    }
+
+    let audioNoiseBuffer = null;
+    function getAudioNoiseBuffer(ctx) {
+      if (!audioNoiseBuffer) {
+        const bufferSize = ctx.sampleRate * 2;
+        audioNoiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = audioNoiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+      }
+      return audioNoiseBuffer;
+    }
+
+    function playKick(ctx, dest, time, isAcoustic = false) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(isAcoustic ? 140 : 160, time);
+      osc.frequency.exponentialRampToValueAtTime(isAcoustic ? 42 : 32, time + 0.09);
+      gain.gain.setValueAtTime(0.85, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.28);
+      osc.connect(gain);
+      gain.connect(dest);
+      osc.start(time);
+      osc.stop(time + 0.28);
+    }
+
+    function playSnare(ctx, dest, time, isRock = false) {
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(isRock ? 190 : 210, time);
+      osc.frequency.exponentialRampToValueAtTime(80, time + 0.08);
+      oscGain.gain.setValueAtTime(0.6, time);
+      oscGain.gain.exponentialRampToValueAtTime(0.01, time + 0.12);
+      osc.connect(oscGain);
+      oscGain.connect(dest);
+      osc.start(time);
+      osc.stop(time + 0.12);
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = getAudioNoiseBuffer(ctx);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(isRock ? 1200 : 1600, time);
+      filter.Q.setValueAtTime(1.5, time);
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(isRock ? 0.7 : 0.5, time);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, time + (isRock ? 0.22 : 0.15));
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(dest);
+      noise.start(time);
+      noise.stop(time + (isRock ? 0.22 : 0.15));
+    }
+
+    function playHiHat(ctx, dest, time, open = false) {
+      const noise = ctx.createBufferSource();
+      noise.buffer = getAudioNoiseBuffer(ctx);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(open ? 6500 : 8000, time);
+      const gain = ctx.createGain();
+      const dur = open ? 0.16 : 0.04;
+      gain.gain.setValueAtTime(open ? 0.35 : 0.22, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(dest);
+      noise.start(time);
+      noise.stop(time + dur);
+    }
+
+    function playRockGuitar(ctx, dest, time, freqs, duration, isPunch = false) {
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+
+        osc.type = (idx === 0) ? 'sawtooth' : 'square';
+        osc.frequency.setValueAtTime(freq, time);
+        osc.detune.setValueAtTime((idx - 1) * 7, time);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(isPunch ? 3800 : 1400, time);
+        filter.Q.setValueAtTime(2.0, time);
+
+        const vol = isPunch ? 0.35 : 0.18;
+        gain.gain.setValueAtTime(vol, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(dest);
+
+        osc.start(time);
+        osc.stop(time + duration);
+      });
+    }
+
+    function playMarimba(ctx, dest, time, freq, duration = 0.28) {
+      [1, 3].forEach((mult, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = (idx === 0) ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq * mult, time);
+        const vol = (idx === 0) ? 0.45 : 0.15;
+        gain.gain.setValueAtTime(vol, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+        osc.connect(gain);
+        gain.connect(dest);
+        osc.start(time);
+        osc.stop(time + duration);
+      });
+    }
+
+    function playTrumpet(ctx, dest, time, freq, duration = 0.35) {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, time);
+
+      const vibrato = ctx.createOscillator();
+      const vibratoGain = ctx.createGain();
+      vibrato.frequency.setValueAtTime(5.5, time);
+      vibratoGain.gain.setValueAtTime(4.0, time);
+      vibrato.connect(osc.frequency);
+      vibrato.start(time);
+      vibrato.stop(time + duration);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1400, time);
+      filter.Q.setValueAtTime(2.5, time);
+
+      gain.gain.setValueAtTime(0.01, time);
+      gain.gain.linearRampToValueAtTime(0.38, time + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(dest);
+
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    function playGuitarStrum(ctx, dest, time, freqs, duration = 0.22) {
+      freqs.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const strTime = time + i * 0.012;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, strTime);
+        gain.gain.setValueAtTime(0.25, strTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, strTime + duration);
+        osc.connect(gain);
+        gain.connect(dest);
+        osc.start(strTime);
+        osc.stop(strTime + duration);
+      });
+    }
+
+    function playSynthArp(ctx, dest, time, freq, duration = 0.18) {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, time);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(2800, time);
+      filter.frequency.exponentialRampToValueAtTime(400, time + duration);
+
+      gain.gain.setValueAtTime(0.30, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(dest);
+
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    function playBass(ctx, dest, time, freq, duration = 0.3) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, time);
+      gain.gain.setValueAtTime(0.5, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+      osc.connect(gain);
+      gain.connect(dest);
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    function ejecutarPasoMusical(track, step, ctx, dest, now) {
+      const bar = Math.floor(step / 16); // 0 o 1
+
+      // 1. ROCK ÉPICO / "OJO DE TIGRE" (108 BPM)
+      if (track === 'rocky') {
+        if (step % 8 === 0) playKick(ctx, dest, now, true);
+        if (step % 8 === 4) playSnare(ctx, dest, now, true);
+        if (step % 2 === 0) playHiHat(ctx, dest, now, step % 8 === 4);
+
+        const C5 = [130.81, 196.00, 261.63];
+        const Bb4 = [116.54, 174.61, 233.08];
+        const Ab4 = [103.83, 155.56, 207.65];
+
+        if (bar === 0) {
+          if (step === 0) {
+            playRockGuitar(ctx, dest, now, C5, 0.45, true);
+            playBass(ctx, dest, now, 65.4, 0.45);
+          } else if (step === 2 || step === 4 || step === 6 || step === 8) {
+            playRockGuitar(ctx, dest, now, [130.81], 0.12, false);
+          } else if (step === 10) {
+            playRockGuitar(ctx, dest, now, Bb4, 0.22, true);
+            playBass(ctx, dest, now, 58.27, 0.22);
+          } else if (step === 12) {
+            playRockGuitar(ctx, dest, now, C5, 0.22, true);
+            playBass(ctx, dest, now, 65.4, 0.22);
+          } else if (step === 14) {
+            playRockGuitar(ctx, dest, now, Bb4, 0.22, true);
+            playBass(ctx, dest, now, 58.27, 0.22);
+          }
+        } else {
+          if (step === 16) {
+            playRockGuitar(ctx, dest, now, C5, 0.45, true);
+            playBass(ctx, dest, now, 65.4, 0.45);
+          } else if (step === 18 || step === 20) {
+            playRockGuitar(ctx, dest, now, [130.81], 0.12, false);
+          } else if (step === 22) {
+            playRockGuitar(ctx, dest, now, Bb4, 0.22, true);
+            playBass(ctx, dest, now, 58.27, 0.22);
+          } else if (step === 24) {
+            playRockGuitar(ctx, dest, now, C5, 0.22, true);
+            playBass(ctx, dest, now, 65.4, 0.22);
+          } else if (step === 26) {
+            playRockGuitar(ctx, dest, now, Ab4, 0.22, true);
+            playBass(ctx, dest, now, 51.9, 0.22);
+          } else if (step === 28) {
+            playRockGuitar(ctx, dest, now, Ab4, 0.15, true);
+          } else if (step === 29) {
+            playRockGuitar(ctx, dest, now, Bb4, 0.15, true);
+          } else if (step === 30) {
+            playRockGuitar(ctx, dest, now, C5, 0.35, true);
+            playBass(ctx, dest, now, 65.4, 0.35);
+          }
+        }
+      }
+
+      // 2. TROPICAL HOUSE / PLAYA & SOL (122 BPM)
+      else if (track === 'tropical') {
+        if (step % 4 === 0) playKick(ctx, dest, now, false);
+        if (step % 8 === 4) playSnare(ctx, dest, now, false);
+        if (step % 4 === 2) playHiHat(ctx, dest, now, true);
+
+        const notasMarimba = [
+          523.25, 0, 659.25, 0,
+          783.99, 0, 880.00, 783.99,
+          659.25, 0, 587.33, 0,
+          523.25, 659.25, 587.33, 0,
+          698.46, 0, 880.00, 0,
+          783.99, 0, 659.25, 0,
+          587.33, 0, 523.25, 0,
+          659.25, 0, 523.25, 0
+        ];
+        const f = notasMarimba[step];
+        if (f > 0) playMarimba(ctx, dest, now, f, 0.22);
+
+        if (step === 0 || step === 3) playBass(ctx, dest, now, 130.81, 0.25);
+        if (step === 8 || step === 11) playBass(ctx, dest, now, 98.00, 0.25);
+        if (step === 16 || step === 19) playBass(ctx, dest, now, 110.00, 0.25);
+        if (step === 24 || step === 27) playBass(ctx, dest, now, 87.31, 0.25);
+      }
+
+      // 3. POP ENERGÉTICO / AVENTURA (128 BPM)
+      else if (track === 'pop') {
+        if (step % 4 === 0) playKick(ctx, dest, now, false);
+        if (step % 8 === 4) playSnare(ctx, dest, now, false);
+        playHiHat(ctx, dest, now, step % 2 === 1);
+
+        const arpegio = [
+          440.00, 523.25, 659.25, 880.00, 440.00, 523.25, 659.25, 880.00,
+          349.23, 440.00, 523.25, 698.46, 349.23, 440.00, 523.25, 698.46,
+          261.63, 329.63, 392.00, 523.25, 261.63, 329.63, 392.00, 523.25,
+          392.00, 493.88, 587.33, 783.99, 392.00, 493.88, 587.33, 783.99
+        ];
+        playSynthArp(ctx, dest, now, arpegio[step], 0.12);
+
+        if (step % 4 === 0) {
+          const bassNotes = [110.00, 87.31, 130.81, 98.00];
+          playBass(ctx, dest, now, bassNotes[Math.floor(step / 8)], 0.28);
+        }
+      }
+
+      // 4. FOLCLOR MEXICANO / PUEBLOS MÁGICOS (132 BPM)
+      else if (track === 'mexico') {
+        if (step === 0 || step === 12 || step === 16 || step === 28) {
+          playBass(ctx, dest, now, 73.42, 0.35);
+          playKick(ctx, dest, now, true);
+        }
+        if (step === 6 || step === 22) {
+          playBass(ctx, dest, now, 98.00, 0.35);
+          playKick(ctx, dest, now, true);
+        }
+
+        const acordeD = [293.66, 369.99, 440.00, 587.33];
+        const acordeA7 = [220.00, 277.18, 329.63, 440.00];
+        if ([2, 4, 8, 10, 14, 18, 20, 24, 26, 30].includes(step)) {
+          const ac = (step >= 12 && step <= 24) ? acordeA7 : acordeD;
+          playGuitarStrum(ctx, dest, now, ac, 0.18);
+        }
+
+        const notasTrompeta = {
+          0: 587.33, 3: 739.99, 6: 880.00, 8: 987.77,
+          10: 880.00, 14: 739.99, 16: 587.33, 20: 659.25,
+          22: 739.99, 24: 880.00, 27: 739.99, 30: 587.33
+        };
+        if (notasTrompeta[step]) {
+          playTrumpet(ctx, dest, now, notasTrompeta[step], 0.28);
+        }
+      }
+
+      // 5. CHILL / NATURALEZA & SENDERISMO (82 BPM)
+      else if (track === 'chill') {
+        if (step === 0 || step === 16) playKick(ctx, dest, now, true);
+        if (step === 8 || step === 24) playSnare(ctx, dest, now, false);
+        if (step % 4 === 2) playHiHat(ctx, dest, now, false);
+
+        const chillChords = [
+          [164.81, 196.00, 246.94, 329.63],
+          [130.81, 164.81, 196.00, 246.94],
+          [196.00, 246.94, 293.66, 392.00],
+          [146.83, 220.00, 293.66, 369.99]
+        ];
+        const chordIdx = Math.floor(step / 8);
+        if (step % 8 === 0) {
+          playGuitarStrum(ctx, dest, now, chillChords[chordIdx], 0.7);
+          playBass(ctx, dest, now, chillChords[chordIdx][0] / 2, 0.7);
+        }
+      }
+    }
+
     function iniciarAudioSintetizado(destStream = null) {
       detenerAudioSintetizado();
       const ctx = getAudioContext();
@@ -4072,13 +4433,12 @@ IMPORTANT DESIGN DIRECTIVES:
       if (waveEl) waveEl.style.display = 'inline-flex';
 
       const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.7, ctx.currentTime);
+      masterGain.gain.setValueAtTime(0.75, ctx.currentTime);
       masterGain.connect(ctx.destination);
       if (destStream) {
         masterGain.connect(destStream);
       }
 
-      // Si es audio personalizado del usuario
       if (track === 'custom' && videoStudioState.audioCustomBuffer) {
         const src = ctx.createBufferSource();
         src.buffer = videoStudioState.audioCustomBuffer;
@@ -4094,11 +4454,17 @@ IMPORTANT DESIGN DIRECTIVES:
         return;
       }
 
-      // Sintetizador procedural para cada estilo musical
+      let currentStep = 0;
+      const bpm = getTrackBPM();
+      const stepMs = ((60 / bpm) / 4) * 1000;
+
+      ejecutarPasoMusical(track, currentStep, ctx, masterGain, ctx.currentTime);
+      currentStep = (currentStep + 1) % 32;
+
       const intervalId = setInterval(() => {
-        // Ticks periódicos de batería y acordes
-        tocarGolpeMusical(track, ctx, masterGain);
-      }, 500); // 120 BPM base
+        ejecutarPasoMusical(track, currentStep, ctx, masterGain, ctx.currentTime);
+        currentStep = (currentStep + 1) % 32;
+      }, stepMs);
 
       videoStudioState.audioNodeActivo = {
         stop: () => {
@@ -4106,96 +4472,6 @@ IMPORTANT DESIGN DIRECTIVES:
           masterGain.disconnect();
         }
       };
-    }
-
-    function tocarGolpeMusical(tipo, ctx, dest) {
-      const now = ctx.currentTime;
-
-      // 1. Bombo / Kick punch
-      const oscKick = ctx.createOscillator();
-      const gainKick = ctx.createGain();
-      oscKick.type = 'sine';
-      oscKick.frequency.setValueAtTime(130, now);
-      oscKick.frequency.exponentialRampToValueAtTime(0.01, now + 0.35);
-      gainKick.gain.setValueAtTime(0.8, now);
-      gainKick.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-      oscKick.connect(gainKick);
-      gainKick.connect(dest);
-      oscKick.start(now);
-      oscKick.stop(now + 0.35);
-
-      // 2. Acorde rítmico según estilo
-      if (tipo === 'rocky') {
-        // Power Chord de guitarra con distorsión / armónicos estilo Eye of the Tiger
-        [164.81, 246.94, 329.63].forEach(freq => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, now);
-          g.gain.setValueAtTime(0.25, now);
-          g.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-          osc.connect(g);
-          g.connect(dest);
-          osc.start(now);
-          osc.stop(now + 0.45);
-        });
-      } else if (tipo === 'tropical') {
-        // Marimba / Pluck veraniego
-        [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now + i * 0.05);
-          g.gain.setValueAtTime(0.3, now + i * 0.05);
-          g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.05 + 0.3);
-          osc.connect(g);
-          g.connect(dest);
-          osc.start(now + i * 0.05);
-          osc.stop(now + i * 0.05 + 0.3);
-        });
-      } else if (tipo === 'mexico') {
-        // Rasgueo alegre mexicano
-        [196.00, 246.94, 293.66, 392.00].forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(freq, now + i * 0.03);
-          g.gain.setValueAtTime(0.22, now + i * 0.03);
-          g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.03 + 0.4);
-          osc.connect(g);
-          g.connect(dest);
-          osc.start(now + i * 0.03);
-          osc.stop(now + i * 0.03 + 0.4);
-        });
-      } else if (tipo === 'pop') {
-        // Synth de sintetizador dance moderno
-        [220, 277.18, 329.63].forEach(freq => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(freq, now);
-          g.gain.setValueAtTime(0.18, now);
-          g.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-          osc.connect(g);
-          g.connect(dest);
-          osc.start(now);
-          osc.stop(now + 0.3);
-        });
-      } else if (tipo === 'chill') {
-        // Acorde suave envolvente
-        [130.81, 164.81, 196.00, 261.63].forEach(freq => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now);
-          g.gain.setValueAtTime(0.15, now);
-          g.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
-          osc.connect(g);
-          g.connect(dest);
-          osc.start(now);
-          osc.stop(now + 0.7);
-        });
-      }
     }
 
     function detenerAudioSintetizado() {
@@ -4337,14 +4613,16 @@ IMPORTANT DESIGN DIRECTIVES:
       let panY = 0;
 
       if (estilo === 'beatsync') {
-        // Golpes rítmicos marcados: Cada 0.5s salta el beat
-        const beatFraction = (slideTime % 0.5) / 0.5;
-        const punch = Math.exp(-beatFraction * 8) * 0.06; // Expande un 6% y rebota
+        // Golpes rítmicos sincronizados con el tempo BPM real de la pista activa
+        const bpm = getTrackBPM();
+        const beatPeriod = 60 / bpm;
+        const beatFraction = (slideTime % beatPeriod) / beatPeriod;
+        const punch = Math.exp(-beatFraction * 9) * 0.08; // Salto rítmico de escala
         scale = 1.0 + punch;
 
-        // Destello blanco rítmico en el golpe
-        if (beatFraction < 0.15) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${0.28 * (1 - beatFraction / 0.15)})`;
+        // Destello blanco rítmico exactamente en cada golpe
+        if (beatFraction < 0.14) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.30 * (1 - beatFraction / 0.14)})`;
           ctx.fillRect(0, 0, w, h);
         }
       } else if (estilo === 'kenburns') {
