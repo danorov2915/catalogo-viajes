@@ -850,6 +850,47 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .video-modes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 992px) {
+      .video-modes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .video-mode-card {
+      background: #0d1b2a;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .video-mode-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.4);
+      background: #112240;
+    }
+
+    .mode-subpanel {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.15rem;
+      margin-bottom: 1rem;
+      animation: fadeInStudio 0.2s ease forwards;
+    }
+
     .studio-stage-column {
       background: #081120;
       padding: 1.25rem;
@@ -1474,6 +1515,11 @@
               <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('aventura')">🧗 Aventura</button>
               <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('viajeros')">📸 Viajeros</button>
               <button type="button" class="pill-filter-btn" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;" onclick="aplicarPresetVideo('todos')">🎒 Catálogo</button>
+              <button type="button" class="pill-filter-btn" onclick="cambiarTabEstudioVideo('promptia')" 
+                style="background: linear-gradient(135deg, #9333ea, #c084fc); color: #fff; font-weight: 700; border: none; padding: 0.3rem 0.75rem; font-size: 0.76rem; box-shadow: 0 2px 10px rgba(147,51,234,0.4); cursor: pointer; display: flex; align-items: center; gap: 0.35rem; margin-left: 0.25rem;">
+                <span>✨</span>
+                <span>Prompt IA (Gemini)</span>
+              </button>
             </div>
 
             <!-- Derecha: Selector de Formato & Empezar de Cero -->
@@ -1500,8 +1546,8 @@
             <!-- 1. BARRA LATERAL IZQUIERDA (DOCK DE HERRAMIENTAS) -->
             <div class="studio-sidebar-dock">
               <button type="button" class="studio-dock-btn active" id="studioDockBtn_medios" onclick="cambiarTabEstudioVideo('medios')">
-                <span class="dock-icon">📂</span>
-                <span>Diapositivas</span>
+                <span class="dock-icon">🎛️</span>
+                <span>Modo & Fotos</span>
               </button>
               <button type="button" class="studio-dock-btn" id="studioDockBtn_musica" onclick="cambiarTabEstudioVideo('musica')">
                 <span class="dock-icon">🎵</span>
@@ -1519,9 +1565,10 @@
                 <span class="dock-icon">✨</span>
                 <span>Estilo & Efectos</span>
               </button>
-              <button type="button" class="studio-dock-btn" id="studioDockBtn_promptia" onclick="cambiarTabEstudioVideo('promptia')" style="border-left: 2px solid #c084fc;">
-                <span class="dock-icon">🎥</span>
-                <span style="color: #e9d5ff;">Prompt IA (Gemini)</span>
+              <button type="button" class="studio-dock-btn" id="studioDockBtn_promptia" onclick="cambiarTabEstudioVideo('promptia')" 
+                style="background: rgba(147, 51, 234, 0.18); border: 1px solid rgba(168, 85, 247, 0.5); color: #f3e8ff;">
+                <span class="dock-icon">🎥✨</span>
+                <span style="color: #f3e8ff; font-weight: 700;">Prompt IA (Gemini)</span>
               </button>
               <button type="button" class="studio-dock-btn" id="studioDockBtn_copys" onclick="cambiarTabEstudioVideo('copys')">
                 <span class="dock-icon">📢</span>
@@ -1532,48 +1579,252 @@
             <!-- 2. ÁREA CENTRAL: PANEL DE LA HERRAMIENTA ACTIVA -->
             <div class="studio-tool-content">
               
-              <!-- PANE 1: DIAPOSITIVAS Y MEDIOS -->
+              <!-- PANE 1: MODOS Y DIAPOSITIVAS / MEDIOS -->
               <div class="studio-tab-pane active" id="studioPane_medios">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
-                  <div>
-                    <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
-                      📂 Diapositivas & Fotos del Video
-                    </h4>
-                    <span style="font-size: 0.78rem; color: #94a3b8;">
-                      Agrega fotos de tus salidas turísticas o videos MP4 (descargados de Gemini o celular)
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Filtros de Categorías para carga rápida -->
-                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 0.85rem; margin-bottom: 1rem;">
-                  <span style="font-size: 0.76rem; color: #38bdf8; font-weight: 700; display: block; margin-bottom: 0.4rem;">
-                    ⚡ Cargar Salidas de tu Catálogo por Categoría:
+                
+                <!-- ENCABEZADO: SELECTOR DE LOS 3 MODOS DE CREACIÓN -->
+                <div style="margin-bottom: 0.85rem;">
+                  <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700; margin: 0 0 0.25rem 0; display: flex; align-items: center; gap: 0.4rem;">
+                    🎛️ ¿Qué tipo de video vas a crear hoy?
+                  </h4>
+                  <span style="font-size: 0.78rem; color: #94a3b8;">
+                    Selecciona una de las 3 opciones para configurar las herramientas a tu gusto:
                   </span>
-                  <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Playa')">🏖️ + Salidas Playa</button>
-                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Pueblos Magicos')">✨ + Pueblos Mágicos</button>
-                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Aventura')">🧗 + Aventura</button>
-                    <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoria('Senderismo')">🥾 + Senderismo</button>
-                    <button type="button" class="pill-filter-btn" onclick="cargarFotosGaleriaEnVideo()">📸 + Fotos de Galería Real</button>
+                </div>
+
+                <!-- 3 TARJETAS GRANDES E INTERACTIVAS -->
+                <div class="video-modes-grid">
+                  
+                  <!-- MODO 1: FOTOS DE CLIENTES -->
+                  <div class="video-mode-card" id="cardModo_viajeros" onclick="activarModoEstudio('viajeros', true)">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 1.5rem;">📸</span>
+                      <span style="background: rgba(56,189,248,0.18); color: #38bdf8; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;">
+                        Al Ritmo (Beat Sync)
+                      </span>
+                    </div>
+                    <strong style="color: #fff; font-size: 0.9rem; margin-top: 0.2rem;">
+                      1. Fotos de Clientes
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.74rem; margin: 0; line-height: 1.35;">
+                      Crea un reel con fotos reales de tus viajeros (en el camión, tours). Cambian al golpe de batería ("Ojo de Tigre").
+                    </p>
+                  </div>
+
+                  <!-- MODO 2: FLYERS DEL CATÁLOGO -->
+                  <div class="video-mode-card" id="cardModo_showcase" onclick="activarModoEstudio('showcase', true)">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 1.5rem;">🏖️</span>
+                      <span style="background: rgba(236,72,153,0.18); color: #ec4899; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;">
+                        Venta de Salidas
+                      </span>
+                    </div>
+                    <strong style="color: #fff; font-size: 0.9rem; margin-top: 0.2rem;">
+                      2. Flyers del Catálogo
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.74rem; margin: 0; line-height: 1.35;">
+                      Promociona tus salidas por categoría (Playas, Pueblos Mágicos, Aventura) con precios e itinerarios.
+                    </p>
+                  </div>
+
+                  <!-- MODO 3: GEMINI OMNI (PROMPT IA) & UNIR VIDEOS -->
+                  <div class="video-mode-card" id="cardModo_unir" onclick="activarModoEstudio('unir', true)">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 1.5rem;">🎥✨</span>
+                      <span style="background: rgba(168,85,247,0.25); color: #e9d5ff; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(192,132,252,0.4);">
+                        Gemini Omni & Videos
+                      </span>
+                    </div>
+                    <strong style="color: #fff; font-size: 0.9rem; margin-top: 0.2rem;">
+                      3. Gemini Omni & Unir Videos
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.74rem; margin: 0; line-height: 1.35;">
+                      Genera el prompt cinematográfico para Gemini Omni (o anima una foto), sube los clips MP4 y únelos con el cierre.
+                    </p>
+                  </div>
+
+                </div>
+
+                <!-- SUBPANEL 1: FOTOS DE CLIENTES -->
+                <div class="mode-subpanel" id="subPanel_modo_viajeros">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div>
+                      <strong style="color: #38bdf8; font-size: 0.92rem; display: flex; align-items: center; gap: 0.35rem;">
+                        📸 Opciones para Video con Fotos de Clientes
+                      </strong>
+                      <span style="font-size: 0.75rem; color: #94a3b8;">
+                        Sube tus fotos o jala las fotos de la galería web para sincronizarlas con el ritmo.
+                      </span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
+                      🧹 Limpiar Secuencia
+                    </button>
+                  </div>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.85rem;">
+                    <button type="button" class="btn btn-primary" onclick="abrirSelectorFotosClientes()" 
+                      style="padding: 0.8rem 1rem; font-size: 0.86rem; font-weight: 700; background: linear-gradient(135deg, #0284c7, #38bdf8); border: none; justify-content: center; box-shadow: 0 4px 15px rgba(56,189,248,0.25);">
+                      📁 Subir Fotos de Clientes (PC)
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="cargarModoViajerosGaleria(true)" 
+                      style="padding: 0.8rem 1rem; font-size: 0.86rem; font-weight: 700; justify-content: center; border-color: rgba(56,189,248,0.4); color: #38bdf8;">
+                      📸 Cargar Fotos de Galería Web
+                    </button>
+                  </div>
+
+                  <div class="video-dropzone" onclick="abrirSelectorFotosClientes()" style="margin-bottom: 0.75rem; padding: 1.25rem 1rem;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.25rem;">📁📥</div>
+                    <strong style="color: #fff; font-size: 0.88rem;">
+                      O arrastra aquí las fotos de tus clientes (JPG, PNG, WebP)
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.75rem; margin: 0.25rem 0 0 0;">
+                      Puedes arrastrar 8, 12, 15 o las fotos que quieras al mismo tiempo.
+                    </p>
+                  </div>
+
+                  <div style="background: rgba(2,6,23,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.65rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <span style="font-size: 0.76rem; color: #94a3b8;">
+                      ⚡ Ritmo recomendado: <strong style="color: #38bdf8;">Beat Sync "Ojo de Tigre"</strong>
+                    </span>
+                    <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('musica')" style="padding: 0.3rem 0.65rem; font-size: 0.75rem;">
+                      Ajustar Canción & Ritmo 🎵 ➔
+                    </button>
                   </div>
                 </div>
 
-                <!-- Dropzone para arrastrar fotos o videos MP4 -->
-                <div class="video-dropzone" id="videoDropzone" onclick="document.getElementById('videoMultiFileInput').click()" style="margin-bottom: 1rem;">
-                  <div style="font-size: 2rem;">📁📥</div>
-                  <strong style="color: #fff; font-size: 0.95rem;">
-                    Arrastra aquí tus fotos o videos MP4 (o da clic para seleccionarlos)
-                  </strong>
-                  <p style="color: #94a3b8; font-size: 0.8rem; margin: 0.25rem 0 0 0;">
-                    Puedes seleccionar 8, 11, 15 o las fotos y videos que quieras juntos (JPG, PNG, WebP o videos MP4).
-                  </p>
-                  <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this)">
+                <!-- SUBPANEL 2: FLYERS DEL CATÁLOGO -->
+                <div class="mode-subpanel" id="subPanel_modo_showcase" style="display: none;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div>
+                      <strong style="color: #ec4899; font-size: 0.92rem; display: flex; align-items: center; gap: 0.35rem;">
+                        🏖️ Opciones para Video con Flyers de Salidas
+                      </strong>
+                      <span style="font-size: 0.75rem; color: #94a3b8;">
+                        Carga salidas de tu catálogo por categoría en 1 clic o sube nuevos flyers.
+                      </span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
+                      🧹 Limpiar Secuencia
+                    </button>
+                  </div>
+
+                  <div style="margin-bottom: 0.85rem;">
+                    <span style="font-size: 0.75rem; color: #f472b6; font-weight: 700; display: block; margin-bottom: 0.4rem;">
+                      ⚡ Carga Temática en 1 Clic (Reemplaza la secuencia actual):
+                    </span>
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                      <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoriaConReemplazo('Playa')">🏖️ Salidas de Playa</button>
+                      <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoriaConReemplazo('Pueblos Magicos')">✨ Pueblos Mágicos</button>
+                      <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoriaConReemplazo('Aventura')">🧗 Aventura</button>
+                      <button type="button" class="pill-filter-btn" onclick="cargarSalidasPorCategoriaConReemplazo('Senderismo')">🥾 Senderismo</button>
+                      <button type="button" class="pill-filter-btn" onclick="aplicarPresetVideo('todos', false)">🎒 Catálogo Completo</button>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <button type="button" class="btn btn-secondary" onclick="abrirSelectorFlyers()" 
+                      style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700; font-size: 0.85rem; border-color: rgba(236,72,153,0.4); color: #f472b6;">
+                      📁 Subir Nuevos Flyers desde mi PC
+                    </button>
+                  </div>
+
+                  <div class="video-dropzone" onclick="abrirSelectorFlyers()" style="margin-bottom: 0.75rem; padding: 1.25rem 1rem;">
+                    <div style="font-size: 1.8rem; margin-bottom: 0.25rem;">🏖️📥</div>
+                    <strong style="color: #fff; font-size: 0.88rem;">
+                      O arrastra aquí imágenes de flyers adicionales
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.75rem; margin: 0.25rem 0 0 0;">
+                      Se colocarán en la secuencia respetando el diseño del flyer.
+                    </p>
+                  </div>
                 </div>
 
-                <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('musica')" style="width: 100%; justify-content: center; font-weight: 700; padding: 0.75rem;">
-                  Continuar a Música & Ritmo 🎵 ➔
-                </button>
+                <!-- SUBPANEL 3: UNIR VIDEOS MP4 + GEMINI OMNI -->
+                <div class="mode-subpanel" id="subPanel_modo_unir" style="display: none;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div>
+                      <strong style="color: #c084fc; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
+                        🎥 Videos con Gemini Omni & Concatenación con Cierre
+                      </strong>
+                      <span style="font-size: 0.75rem; color: #94a3b8;">
+                        Genera prompts cinematográficos, descarga el video y únelo con tu WhatsApp oficial.
+                      </span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="vaciarTimeline()" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; color: #f87171; border-color: rgba(239,68,68,0.3);">
+                      🧹 Limpiar Secuencia
+                    </button>
+                  </div>
+
+                  <!-- CAJA DESTACADA: PASO 1 - GENERAR PROMPT GEMINI OMNI -->
+                  <div style="background: linear-gradient(135deg, rgba(88, 28, 135, 0.45), rgba(15, 23, 42, 0.95)); border: 2px solid rgba(192, 132, 252, 0.55); border-radius: 12px; padding: 1.15rem; margin-bottom: 1rem; box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.4rem;">
+                      <strong style="color: #f3e8ff; font-size: 0.98rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span style="font-size: 1.4rem;">🎥✨</span>
+                        Paso 1: Generar el Prompt para Gemini Omni
+                      </strong>
+                      <span style="background: #9333ea; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">
+                        Texto o Foto ➔ Video IA
+                      </span>
+                    </div>
+                    <p style="color: #cbd5e1; font-size: 0.8rem; margin: 0 0 0.85rem 0; line-height: 1.45;">
+                      ¿Quieres que Gemini Omni genere una toma de dron, olas de playa o anime una foto de tu viaje? Pulsa aquí para abrir la herramienta que redacta el prompt optimizado en inglés y te da el enlace directo a Gemini:
+                    </p>
+                    <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('promptia')" 
+                      style="width: 100%; justify-content: center; font-weight: 800; font-size: 0.92rem; padding: 0.8rem 1.25rem; background: linear-gradient(135deg, #9333ea, #c084fc); border: none; box-shadow: 0 4px 15px rgba(147,51,234,0.4);">
+                      ✨ Abrir Generador de Prompts para Gemini Omni ➔
+                    </button>
+                  </div>
+
+                  <!-- CAJA DESTACADA: PASO 2 - SUBIR LOS VIDEOS MP4 -->
+                  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1.15rem; margin-bottom: 1rem;">
+                    <strong style="color: #38bdf8; font-size: 0.92rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem;">
+                      <span>📥</span>
+                      Paso 2: Subir los Videos MP4 para Unir
+                    </strong>
+                    <p style="color: #94a3b8; font-size: 0.78rem; margin: 0 0 0.85rem 0; line-height: 1.4;">
+                      Sube el video que descargaste de Gemini Omni y/o clips de tu celular. El sistema los reproducirá en orden:
+                    </p>
+
+                    <button type="button" class="btn btn-primary" onclick="abrirSelectorVideosMP4()" 
+                      style="width: 100%; justify-content: center; padding: 0.85rem 1.25rem; font-size: 0.92rem; font-weight: 800; background: linear-gradient(135deg, #0284c7, #38bdf8); border: none; box-shadow: 0 4px 15px rgba(56,189,248,0.3); margin-bottom: 0.75rem;">
+                      🎥 Subir 2 o más Videos MP4 desde mi PC
+                    </button>
+
+                    <div class="video-dropzone" onclick="abrirSelectorVideosMP4()" style="padding: 1.25rem 1rem;">
+                      <div style="font-size: 1.8rem; margin-bottom: 0.25rem;">🎬📥</div>
+                      <strong style="color: #fff; font-size: 0.88rem;">
+                        O arrastra aquí tus archivos de video (MP4, WebM, MOV)
+                      </strong>
+                      <p style="color: #94a3b8; font-size: 0.75rem; margin: 0.25rem 0 0 0;">
+                        Se colocarán en secuencia continua y mantendrán su movimiento original.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- PASO 3: PLACA FINAL DE CONTACTO AUTOMÁTICA -->
+                  <div style="background: rgba(2, 6, 23, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.78rem; color: #cbd5e1; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.4rem;">🏆</span>
+                    <div>
+                      <strong style="color: #4ade80;">Paso 3: Placa de Cierre Oficial Activada</strong><br>
+                      Al final de los videos se agregará automáticamente la pantalla oficial con WhatsApp <strong>+52 244 447 0237</strong>, salidas desde Atlixco y Puebla, y seguro de viajero.
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Inputs de archivos independientes fuera de los dropzones para evitar bugs de eventos -->
+                <input type="file" id="videoFileInputClientes" multiple accept="image/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this, 'viajeros')">
+                <input type="file" id="videoFileInputFlyers" multiple accept="image/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this, 'showcase')">
+                <input type="file" id="videoFileInputVideos" multiple accept="video/mp4,video/webm,video/quicktime,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this, 'unir')">
+                <input type="file" id="videoMultiFileInput" multiple accept="image/*,video/*" style="display: none;" onchange="procesarMultiplesArchivosVideo(this, 'auto')">
+
+                <!-- Botón de Continuación a la siguiente etapa -->
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                  <button type="button" class="btn btn-primary" onclick="cambiarTabEstudioVideo('musica')" style="flex: 1; justify-content: center; font-weight: 700; padding: 0.75rem;">
+                    Continuar a Música & Ritmo 🎵 ➔
+                  </button>
+                </div>
+
               </div>
 
               <!-- PANE 2: MÚSICA Y RITMO -->
@@ -1940,9 +2191,19 @@
                 </div>
 
                 <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(192, 132, 252, 0.35); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.74rem; color: #cbd5e1;">
-                  <strong style="color: #38bdf8; display: block; margin-bottom: 0.25rem;">🔄 Cómo juntarlo con tus fotos:</strong>
+                  <strong style="color: #38bdf8; display: block; margin-bottom: 0.25rem;">🔄 Cómo juntarlo con tus fotos o placas:</strong>
                   1. Pega el prompt en Gemini con <kbd style="background: #1e1b4b; padding: 0.1rem 0.25rem; border-radius: 3px;">Ctrl + V</kbd> y descarga el archivo <code>.mp4</code>.<br>
-                  2. Ve a la pestaña <b>"Diapositivas"</b> y arrastra el archivo de video. ¡El Estudio lo reproducirá en tu reel junto con tu música y placa final!
+                  2. Regresa aquí y presiona el botón morado de abajo para unirlo y colocarle la Placa Oficial con tu WhatsApp.
+                </div>
+
+                <div style="margin-top: 1rem; display: flex; gap: 0.65rem; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-secondary" onclick="cambiarTabEstudioVideo('medios')">
+                    ◀ Volver a Modos y Fotos
+                  </button>
+                  <button type="button" class="btn btn-primary" onclick="activarModoEstudio('unir', false); cambiarTabEstudioVideo('medios'); abrirSelectorVideosMP4();" 
+                    style="flex: 1; justify-content: center; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; font-weight: 700; padding: 0.65rem 1rem;">
+                    🎥 Ya descargué mi video de Gemini ➔ Subir para Unir con el Cierre
+                  </button>
                 </div>
               </div>
 
@@ -4038,13 +4299,10 @@ IMPORTANT DESIGN DIRECTIVES:
       poblarSelectorToursVideoIA();
       generarPromptVideoIA();
       cambiarTabEstudioVideo('medios');
-      if (videoStudioState.items.length === 0) {
-        aplicarPresetVideo('playas', false);
-      } else {
-        renderizarTimeline();
-        dibujarFrameActual();
-        actualizarTextoRedesSociales();
-      }
+      activarModoEstudio(videoStudioState.modo || 'viajeros', false);
+      renderizarTimeline();
+      dibujarFrameActual();
+      actualizarTextoRedesSociales();
     }
 
     function configurarCanvasMockup() {
@@ -4146,6 +4404,7 @@ IMPORTANT DESIGN DIRECTIVES:
         }
       });
       if (tab === 'promptia') {
+        poblarSelectorToursVideoIA();
         generarPromptVideoIA();
       } else if (tab === 'copys') {
         actualizarTextoRedesSociales();
@@ -4222,62 +4481,180 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function configurarDropzoneVideo() {
-      const dropzone = document.getElementById('videoDropzone');
-      if (!dropzone || dropzone.dataset.configurado) return;
-      dropzone.dataset.configurado = 'true';
+      const dropzones = document.querySelectorAll('.video-dropzone');
+      dropzones.forEach(dropzone => {
+        if (dropzone.dataset.configurado) return;
+        dropzone.dataset.configurado = 'true';
 
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dropzone.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzone.classList.add('dragover');
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add('dragover');
+          });
         });
-      });
 
-      ['dragleave', 'drop'].forEach(eventName => {
-        dropzone.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzone.classList.remove('dragover');
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove('dragover');
+          });
         });
-      });
 
-      dropzone.addEventListener('drop', (e) => {
-        const dt = e.dataTransfer;
-        const files = dt ? dt.files : null;
-        if (files && files.length > 0) {
-          procesarArchivosArrastrados(Array.from(files));
-        }
+        dropzone.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt ? dt.files : null;
+          if (files && files.length > 0) {
+            procesarArchivosArrastrados(Array.from(files), true);
+          }
+        });
       });
     }
 
-    function seleccionarModoVideo(modo) {
+    function activarModoEstudio(modo, showAlert = false) {
       videoStudioState.modo = modo;
 
-      if (modo === 'showcase') {
-        videoStudioState.estilo = 'beatsync';
-        const selEstilo = document.getElementById('videoSelectEstilo');
-        if (selEstilo) selEstilo.value = 'beatsync';
-        cambiarTabEstudioVideo('medios');
-      } else if (modo === 'viajeros') {
+      const modos = ['viajeros', 'showcase', 'unir'];
+      modos.forEach(m => {
+        const card = document.getElementById('cardModo_' + m);
+        const sub = document.getElementById('subPanel_modo_' + m);
+        const isActive = (m === modo);
+
+        if (card) {
+          if (isActive) {
+            card.style.borderColor = (m === 'unir') ? '#a855f7' : (m === 'viajeros' ? '#38bdf8' : '#ec4899');
+            card.style.background = (m === 'unir') 
+              ? 'linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.1))'
+              : (m === 'viajeros' 
+                 ? 'linear-gradient(135deg, rgba(56,189,248,0.18), rgba(14,165,233,0.1))'
+                 : 'linear-gradient(135deg, rgba(236,72,153,0.18), rgba(168,85,247,0.1))');
+            card.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
+          } else {
+            card.style.borderColor = 'rgba(255,255,255,0.1)';
+            card.style.background = '#0d1b2a';
+            card.style.boxShadow = 'none';
+          }
+        }
+
+        if (sub) {
+          sub.style.display = isActive ? 'block' : 'none';
+        }
+      });
+
+      if (modo === 'viajeros') {
         videoStudioState.estilo = 'beatsync';
         videoStudioState.musica = 'rocky';
-        const selMus = document.getElementById('videoSelectMusica');
-        if (selMus) selMus.value = 'rocky';
-        if (videoStudioState.items.length === 0 || videoStudioState.items[0]?.tipo === 'showcase') {
-          cargarFotosGaleriaEnVideo();
-        }
-        cambiarTabEstudioVideo('musica');
-      } else if (modo === 'ia') {
-        videoStudioState.estilo = 'kenburns';
+        videoStudioState.sticker = 'viaja';
         const selEstilo = document.getElementById('videoSelectEstilo');
-        if (selEstilo) selEstilo.value = 'kenburns';
-        cambiarTabEstudioVideo('promptia');
+        if (selEstilo) selEstilo.value = 'beatsync';
+        const selMusica = document.getElementById('videoSelectMusica');
+        if (selMusica) selMusica.value = 'rocky';
+        const selSticker = document.getElementById('videoSelectSticker');
+        if (selSticker) selSticker.value = 'viaja';
+      } else if (modo === 'showcase') {
+        videoStudioState.estilo = 'beatsync';
+        videoStudioState.sticker = 'confirmadas';
+        const selEstilo = document.getElementById('videoSelectEstilo');
+        if (selEstilo) selEstilo.value = 'beatsync';
+        const selSticker = document.getElementById('videoSelectSticker');
+        if (selSticker) selSticker.value = 'confirmadas';
+      } else if (modo === 'unir') {
+        videoStudioState.estilo = 'none';
+        videoStudioState.incluirPlaca = true;
+        const chkPlaca = document.getElementById('videoChkPlacaFinal');
+        if (chkPlaca) chkPlaca.checked = true;
+        const selEstilo = document.getElementById('videoSelectEstilo');
+        if (selEstilo) selEstilo.value = 'none';
       }
 
       actualizarAudioStatusText();
       dibujarFrameActual();
       actualizarTextoRedesSociales();
+
+      if (showAlert) {
+        const nombres = {
+          'viajeros': '📸 Modo 1: Fotos de Clientes al Ritmo',
+          'showcase': '🏖️ Modo 2: Videos con Flyers del Catálogo',
+          'unir': '🎥 Modo 3: Unir Videos MP4 + Placa Final de Cierre'
+        };
+        mostrarNotificacionEstudio(`Activado: ${nombres[modo] || modo}`);
+      }
+    }
+
+    function seleccionarModoVideo(modo) {
+      activarModoEstudio(modo === 'ia' ? 'unir' : modo, false);
+      if (modo === 'ia') {
+        cambiarTabEstudioVideo('promptia');
+      } else {
+        cambiarTabEstudioVideo('medios');
+      }
+    }
+
+    function abrirSelectorFotosClientes() {
+      const inp = document.getElementById('videoFileInputClientes');
+      if (inp) {
+        inp.value = '';
+        inp.click();
+      }
+    }
+
+    function abrirSelectorFlyers() {
+      const inp = document.getElementById('videoFileInputFlyers');
+      if (inp) {
+        inp.value = '';
+        inp.click();
+      }
+    }
+
+    function abrirSelectorVideosMP4() {
+      const inp = document.getElementById('videoFileInputVideos');
+      if (inp) {
+        inp.value = '';
+        inp.click();
+      }
+    }
+
+    function abrirSelectorGeneral() {
+      const inp = document.getElementById('videoMultiFileInput');
+      if (inp) {
+        inp.value = '';
+        inp.click();
+      }
+    }
+
+    function cargarModoViajerosGaleria(reemplazar = true) {
+      if (reemplazar) {
+        videoStudioState.items = [];
+      }
+      activarModoEstudio('viajeros', false);
+      cargarFotosGaleriaEnVideo();
+      mostrarNotificacionEstudio('📸 Fotos de la Galería de Viajeros cargadas en la secuencia.');
+    }
+
+    function cargarSalidasPorCategoriaConReemplazo(cat) {
+      videoStudioState.items = [];
+      activarModoEstudio('showcase', false);
+      cargarSalidasPorCategoria(cat);
+      mostrarNotificacionEstudio(`🏖️ Salidas de ${cat} cargadas en la secuencia.`);
+    }
+
+    function mostrarNotificacionEstudio(msg) {
+      let toast = document.getElementById('studioToastNotification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'studioToastNotification';
+        toast.style.cssText = 'position: fixed; bottom: 24px; right: 24px; background: #0f172a; border: 1px solid #38bdf8; color: #fff; padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.88rem; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 999999; display: flex; align-items: center; gap: 0.5rem; transition: opacity 0.3s ease;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.display = 'flex';
+      toast.style.opacity = '1';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => { toast.style.display = 'none'; }, 300);
+      }, 3500);
     }
 
     /* ---- GENERADOR DE PROMPTS PARA VIDEO CON IA (GEMINI OMNI / VEO) ---- */
@@ -4355,11 +4732,15 @@ IMPORTANT DESIGN DIRECTIVES:
     function poblarSelectorToursVideoIA() {
       const sel = document.getElementById('videoIASelTour');
       if (!sel) return;
-      const tours = (typeof catalogoGlobal !== 'undefined' && Array.isArray(catalogoGlobal)) ? catalogoGlobal : [];
+      const tours = (typeof viajes !== 'undefined' && Array.isArray(viajes)) ? viajes : [];
       let html = '<option value="">-- O elige uno de tus viajes del catálogo --</option>';
       tours.forEach(t => {
         if (t && t.titulo) {
-          html += `<option value="${t.titulo}" data-img="${t.imagen || ''}">${t.titulo} (${t.destino || ''})</option>`;
+          let img = t.flyer || '';
+          if (img && !img.startsWith('http') && !img.startsWith('../') && !img.startsWith('data:')) {
+            img = '../' + img;
+          }
+          html += `<option value="${t.titulo}" data-img="${img}" data-dest="${t.destino || ''}">${t.titulo} (${t.destino || ''})</option>`;
         }
       });
       sel.innerHTML = html;
@@ -4369,7 +4750,8 @@ IMPORTANT DESIGN DIRECTIVES:
       const opt = sel.options[sel.selectedIndex];
       if (!opt || !opt.value) return;
       const destInp = document.getElementById('videoIADestinoInput');
-      if (destInp) destInp.value = `${opt.value} en México con paisajes espectaculares`;
+      const dest = opt.getAttribute('data-dest') || '';
+      if (destInp) destInp.value = `${opt.value} (${dest}) en México con paisajes espectaculares`;
       const imgUrl = opt.getAttribute('data-img');
       if (imgUrl) {
         const preview = document.getElementById('videoIAFotoPreview');
@@ -4740,18 +5122,34 @@ IMPORTANT DESIGN DIRECTIVES:
       });
     }
 
-    function procesarMultiplesArchivosVideo(input) {
+    function procesarMultiplesArchivosVideo(input, modo) {
       const files = input ? input.files : null;
       if (files && files.length > 0) {
-        procesarArchivosArrastrados(Array.from(files));
+        if (modo && modo !== 'auto') {
+          activarModoEstudio(modo, false);
+        }
+        procesarArchivosArrastrados(Array.from(files), true);
         input.value = '';
       }
     }
 
-    function procesarArchivosArrastrados(fileList) {
+    function procesarArchivosArrastrados(fileList, reemplazar = false) {
+      if (!fileList || fileList.length === 0) return;
+
+      // Si se solicita reemplazar o si la lista actual solo contiene items de demo/preset automático,
+      // limpiamos la secuencia para dar paso inmediato a los archivos subidos por el usuario:
+      const esSoloDemo = videoStudioState.items.every(it => it.esDemo || it.id.startsWith('v-') || it.id.startsWith('preset-'));
+      if (reemplazar || esSoloDemo) {
+        videoStudioState.items = [];
+      }
+
       let cargadas = 0;
+      let hayVideo = false;
+
       fileList.forEach(file => {
         const esVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
+        if (esVideo) hayVideo = true;
+
         const reader = new FileReader();
         reader.onload = function(e) {
           const dataUrl = e.target.result;
@@ -4760,13 +5158,27 @@ IMPORTANT DESIGN DIRECTIVES:
             tipo: esVideo ? 'video' : 'imagen',
             src: dataUrl,
             titulo: file.name.replace(/\.[^/.]+$/, ""),
-            destino: 'Salida Especial',
-            precio: 'Promoción',
-            categoria: 'Personalizado'
+            destino: esVideo ? 'Clip de Video' : 'Foto Subida',
+            precio: 'Beta Azul',
+            categoria: esVideo ? 'Video MP4' : 'Foto',
+            esDemo: false
           });
           cargadas++;
           if (cargadas === fileList.length) {
+            if (hayVideo) {
+              videoStudioState.incluirPlaca = true;
+              videoStudioState.estilo = 'none';
+              const chk = document.getElementById('videoChkPlacaFinal');
+              if (chk) chk.checked = true;
+              const selEstilo = document.getElementById('videoSelectEstilo');
+              if (selEstilo) selEstilo.value = 'none';
+              activarModoEstudio('unir', false);
+            }
+            renderizarTimeline();
+            actualizarTiemposTimeline();
+            dibujarFrameActual();
             actualizarTextoRedesSociales();
+            mostrarNotificacionEstudio(`✅ ¡Se agregaron ${fileList.length} archivo(s) a la secuencia!`);
           }
         };
         reader.readAsDataURL(file);
@@ -4856,8 +5268,8 @@ IMPORTANT DESIGN DIRECTIVES:
 
       if (videoStudioState.items.length === 0) {
         strip.innerHTML = `
-          <div id="timelineEmptyNotice" style="color: #64748b; font-size: 0.85rem; width: 100%; text-align: center; padding: 1.5rem;">
-            Tu secuencia está vacía. Selecciona una categoría arriba o arrastra fotos para comenzar.
+          <div id="timelineEmptyNotice" style="color: #94a3b8; font-size: 0.8rem; width: 100%; text-align: center; padding: 1.25rem; line-height: 1.4;">
+            ✨ Secuencia lista. Elige una de las 3 opciones en la herramienta para agregar fotos, flyers o videos.
           </div>
         `;
         return;
@@ -6213,21 +6625,38 @@ IMPORTANT DESIGN DIRECTIVES:
     }
 
     function renderizarCanvasVacio(ctx, w, h) {
-      ctx.fillStyle = '#08111e';
+      // Fondo degradado elegante de estudio
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#060d1a');
+      grad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
-      ctx.fillStyle = '#94a3b8';
-      ctx.textAlign = 'center';
-      ctx.font = '60px system-ui';
-      ctx.fillText('🎬', w / 2, h / 2 - 80);
+      // Marco interior con acento turquesa
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(16, 16, w - 32, h - 32);
 
+      ctx.textAlign = 'center';
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 28px system-ui, sans-serif';
-      ctx.fillText('Estudio de Video & Reels', w / 2, h / 2 - 10);
+      ctx.font = 'bold 32px system-ui, sans-serif';
+      ctx.fillText('🎬 BetaAzul Studio Pro', w / 2, h / 2 - 130);
 
       ctx.fillStyle = '#38bdf8';
-      ctx.font = '18px system-ui, sans-serif';
-      ctx.fillText('Selecciona una categoría arriba o arrastra fotos', w / 2, h / 2 + 30);
+      ctx.font = 'bold 20px system-ui, sans-serif';
+      ctx.fillText('Elige una de las 3 Opciones para Crear:', w / 2, h / 2 - 80);
+
+      // Opciones numeradas
+      ctx.fillStyle = '#f1f5f9';
+      ctx.font = 'bold 18px system-ui, sans-serif';
+      ctx.fillText('📸 1. Fotos de tus Clientes (Beat Sync)', w / 2, h / 2 - 25);
+      ctx.fillText('🏖️ 2. Salidas y Flyers del Catálogo', w / 2, h / 2 + 20);
+      ctx.fillText('🎥 3. Unir Videos MP4 + Placa Final', w / 2, h / 2 + 65);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '14px system-ui, sans-serif';
+      ctx.fillText('Pulsa en las tarjetas de la izquierda para agregar tus fotos,', w / 2, h / 2 + 130);
+      ctx.fillText('o pulsa "⚡ Carga Exprés" arriba para ver un demo rápido.', w / 2, h / 2 + 155);
     }
 
     /* ---- CONTROLES DE REPRODUCCIÓN EN EL CELULAR ---- */
