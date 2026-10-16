@@ -4046,6 +4046,10 @@ IMPORTANT DESIGN DIRECTIVES:
           const sel = document.getElementById('videoSelectMusica');
           if (sel) sel.value = 'custom';
           actualizarAudioStatusText();
+          if (videoStudioState.reproduciendo || videoStudioState.audioNodeActivo) {
+            detenerAudioSintetizado();
+            iniciarAudioSintetizado();
+          }
           alert('🎵 ¡Tu archivo de audio "' + file.name + '" se cargó correctamente y será el fondo del video!');
         }, function(err) {
           alert('❌ Error al procesar el archivo de audio. Asegúrate de que sea un MP3 válido.');
